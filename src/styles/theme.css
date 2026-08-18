@@ -349,8 +349,12 @@ html {
     linear-gradient(168deg, rgba(18, 60, 105, 0.5) 0%, rgba(6, 27, 50, 0.4) 100%);
 }
 
+/* The card inverts to this scrim over its photograph on hover. The
+   template's 0.65 was set against a flat placeholder; over a real
+   photograph - a lit office, a whiteboard full of diagram - the white copy
+   on top of it drops below 4.5:1 in patches. 0.8 holds it. */
 .service-style-2 .thumb::before {
-  background: rgba(10, 42, 75, 0.65);
+  background: rgba(10, 42, 75, 0.8);
 }
 
 /* ---------------------------------------------------------------------------
@@ -579,12 +583,17 @@ html {
 
 /* ---- Section photography ----
  *
- * The hero photograph carries `width`/`height` so the layout is reserved
- * before it loads. The template only sets `width: 100%` on it, which leaves
- * the height attribute as the used height and squashes the photo to the
- * box's width at its full pixel height - a 2:1 vertical stretch. `height:
- * auto` is the other half of that pattern and has to come with it. */
-.hero-images-box img {
+ * Photographs carry `width`/`height` so their layout is reserved before they
+ * load. The template's only global rule for images is `max-width: 100%`,
+ * which leaves the height *attribute* as the used height - so an image
+ * scaled down by its container gets squashed to that container's width at
+ * its full pixel height. The hero was rendering 610x1514 against a 610x757
+ * photograph before this. `height: auto` is the other half of the pattern
+ * and belongs everywhere the attributes do.
+ *
+ * A bare `img` selector is deliberate: any component that means to control
+ * an image's height does it from a class, which outranks this. */
+img {
   height: auto;
 }
 

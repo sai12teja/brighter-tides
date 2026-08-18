@@ -26,7 +26,10 @@ export const cards = serviceRoutes.map((route, i) => ({
   icon: route.icon,
   number: String(i + 1).padStart(2, "0"),
   to: `/services/${route.slug}`,
-  image: `/assets/images/service/h1-service-${i + 1}.webp`,
+  // The same photograph the home page's card uses, at its 1x width - here
+  // it sits behind a navy scrim and only appears on hover, so it does not
+  // need the 2x file.
+  image: `/assets/images/bt/photos/service-0${i + 1}-645.webp`,
 }));
 
 export const cardCopy = {

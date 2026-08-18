@@ -11,7 +11,8 @@ export const serviceDetails = {
     title: "Make Your Next ServiceNow Investment Decision With Confidence.",
     desc: "We provide independent guidance to help you understand your ServiceNow licensing, utilization, future needs, and options before you renew, expand, or true-up.",
     cta: { label: "Discuss Your Licensing Challenge", to: "/contact" },
-    image: "/assets/images/service/tj-service-1.webp",
+    image: "/assets/images/bt/photos/service-01-banner.webp",
+    imageSmall: "/assets/images/bt/photos/service-01-banner-831.webp",
 
     intro: {
       title: "Know What You're Paying For—and Why.",
@@ -108,7 +109,8 @@ export const serviceDetails = {
     title: "Solve the Challenge Without Creating More Complexity.",
     desc: "Sometimes you don't need another implementation partner. You need experienced perspective to evaluate the problem, challenge assumptions, and determine what makes sense.",
     cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
-    image: "/assets/images/service/tj-service-2.webp",
+    image: "/assets/images/bt/photos/service-02-banner.webp",
+    imageSmall: "/assets/images/bt/photos/service-02-banner-831.webp",
     engagementFirst: true,
 
     intro: {
@@ -216,7 +218,8 @@ export const serviceDetails = {
     title: "Senior ServiceNow Leadership Without Another Full-Time Hire.",
     desc: "We provide experienced platform leadership through a flexible engagement—helping protect your investment, guide priorities, manage partners, and keep ServiceNow aligned with business value.",
     cta: { label: "Discuss Fractional Leadership", to: "/contact" },
-    image: "/assets/images/service/tj-service-3.webp",
+    image: "/assets/images/bt/photos/service-03-banner.webp",
+    imageSmall: "/assets/images/bt/photos/service-03-banner-831.webp",
 
     intro: {
       title: "Your Platform Still Needs an Owner.",

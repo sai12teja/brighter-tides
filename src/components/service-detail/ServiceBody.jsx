@@ -39,8 +39,17 @@ export default function ServiceBody({ slug, service }) {
   return (
     <div className="tj-post-wrapper">
       <div className="tj-post-single-post mb-0">
+        {/* The banner is 831px wide in the reading column, so it ships at
+            1x and 2x like the home page's cards. */}
         <div className="tj-post-thumb hover:shine wow fadeInUp" data-wow-delay="0.1s">
-          <img src={service.image} alt={service.eyebrow} />
+          <img
+            src={service.image}
+            srcSet={service.imageSmall ? `${service.imageSmall} 831w, ${service.image} 1662w` : undefined}
+            sizes={service.imageSmall ? "(max-width: 991px) 100vw, 831px" : undefined}
+            alt={service.eyebrow}
+            width="1662"
+            height="1108"
+          />
         </div>
 
         <span className="sub-title wow fadeInUp" data-wow-delay="0.1s">
