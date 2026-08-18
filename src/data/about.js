@@ -21,7 +21,11 @@ export const purpose = {
     "We help you step back from day-to-day complexity, understand what's working, identify what isn't, and make informed decisions about where to go next.",
   ],
   note: "Our goal is simple: help you get more value from the investment you've already made.",
+  // PLACEHOLDER - h4-about-1.webp is the template's grey 423x570 sizing
+  // block, not a photograph. `imageAlt` describes the picture that belongs
+  // here, so it is already right when the real one is dropped in.
   image: "/assets/images/about/h4-about-1.webp",
+  imageAlt: "Two colleagues in conversation over a laptop in a bright office",
 };
 
 export const approach = {
@@ -49,6 +53,10 @@ export const approach = {
       desc: "Every recommendation considers value, cost, risk, priorities, and long-term impact.",
     },
   ],
+  // The About page's one route into the services. Everything else on this
+  // page ends at the contact form, which left the site's second-most-read
+  // page passing nothing on to the three pages it exists to support.
+  cta: { label: "See how that works in practice", to: "/services" },
 };
 
 export const founder = {

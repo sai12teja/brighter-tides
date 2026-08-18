@@ -1004,3 +1004,464 @@ html.lenis body {
     margin-bottom: 10px;
   }
 }
+
+/* Internal links added for search: the last line of an FAQ answer, the About
+   page's one route into the services, and the list on the 404. All three use
+   the theme's existing `.text-btn`, so they only need placing. */
+
+.bt-faq-link {
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+.bt-faq-link .text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.bt-approach-link {
+  margin-top: 44px;
+}
+
+.bt-approach-link .text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The 404's list of everywhere else. `.service-check-list` is a left-aligned
+   tick list; centred here because the page around it is. */
+.bt-notfound-links {
+  display: inline-block;
+  text-align: left;
+  margin-top: 8px;
+}
+
+.bt-notfound-links a {
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.bt-notfound-links a:hover {
+  color: var(--teal);
+}
+
+/* ===========================================================================
+   Phones and tablets
+ *
+ * The template was drawn for a 1440px canvas and patched downwards: its
+ * breakpoints mostly stop caring below 768px, where a handful of values are
+ * set once and then hold all the way down to 320px. That is what made the
+ * small screens feel like a shrunken desktop rather than a design - the
+ * headline is the same 45px on a 360px phone as on a 767px tablet, every
+ * section is separated by the same 160px of air whatever the screen, and the
+ * cards keep their desktop vertical padding while their side padding is
+ * squeezed to 15px.
+ *
+ * So this section does three things: it stops anything scrolling sideways,
+ * it makes the type and the vertical rhythm scale with the viewport instead
+ * of stepping at 768px, and it brings every control up to a size a thumb can
+ * hit. Nothing here touches the animations - they were checked at 360, 390,
+ * 430, 768 and 1024 and every reveal completes, so the fix is proportion,
+ * not motion.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   1. Nothing scrolls sideways
+   ------------------------------------------------------------------------- */
+
+/*
+ * The off-canvas drawer sits to the right of the viewport, so on a narrow
+ * screen it could push the document a couple of pixels wider than the window
+ * and leave the whole page rocking horizontally.
+ *
+ * `clip`, not `hidden`: `overflow: hidden` on the root turns it into a
+ * scroll container, and the home page's footer is `position: sticky` - it
+ * would stop sticking. `clip` trims the overflow without creating that
+ * container, so the sticky footer keeps working.
+ */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* ---------------------------------------------------------------------------
+   2. Vertical rhythm
+ *
+ * 120px of section padding is right on a desktop, where it separates bands
+ * that are themselves 600px tall. The template holds 80px from 991px all the
+ * way down, and on a phone - where the same section is now a single stacked
+ * column - that reads as a gap rather than as breathing room, and it made the
+ * home page 15,000px tall on a 390px screen. These are the same proportions,
+ * measured against the screen they are actually on.
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 575px) {
+  .section-space {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  .section-bottom-space {
+    padding-bottom: 56px;
+  }
+
+  .footer-top-area {
+    padding-top: 56px;
+    padding-bottom: 44px;
+  }
+
+  /* The header is 73px tall over the hero, so this is clearance plus a
+     breath - not the 140px the template holds down to 320px. */
+  .tj-hero-section {
+    padding-top: 116px;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .section-space {
+    padding-top: 68px;
+    padding-bottom: 68px;
+  }
+
+  .section-bottom-space {
+    padding-bottom: 68px;
+  }
+
+  .footer-top-area {
+    padding-top: 68px;
+    padding-bottom: 52px;
+  }
+
+  .tj-hero-section {
+    padding-top: 126px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3. Type that scales with the screen
+ *
+ * Each of these was a single fixed size across the whole 360-767px range.
+ * The `clamp()` curves below start where the old value was comfortable on the
+ * narrowest phone and arrive exactly at the size the template already uses at
+ * 768px, so the step at that breakpoint disappears.
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  /* Was 45px flat. Now 40px at 360 -> 48px at 767. */
+  .tj-hero-section .hero-title {
+    font-size: clamp(2.5rem, 1.72rem + 3.47vw, 3rem);
+    line-height: 1.12;
+    margin-bottom: 18px;
+  }
+
+  /* Was 30px to 575 then 35px. Now 28px at 360 -> 40px at 767, which is the
+     size 768px already uses. */
+  .sec-title {
+    font-size: clamp(1.75rem, 1.05rem + 3.1vw, 2.5rem);
+    line-height: 1.18;
+  }
+
+  /* Was 36px flat, against 42px at 768. Now 30px -> 42px. */
+  .tj-page-title {
+    font-size: clamp(1.875rem, 1.125rem + 3.33vw, 2.625rem);
+    line-height: 1.16;
+  }
+
+  /* The banner is shorter on a phone, so the trail needs less room above it. */
+  .tj-page-header {
+    padding-top: 132px;
+    padding-bottom: 60px;
+  }
+}
+
+/* A tablet held in portrait is still one column, so it can carry a larger
+   headline than the phone - and a larger one than 992px, where the hero
+   splits into two columns and the text column narrows again. */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .tj-hero-section .hero-title {
+    font-size: 52px;
+    line-height: 1.1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   4. Cards
+ *
+ * The template's cards keep 35px of vertical padding on a phone while their
+ * side padding is cut to 15px, so the copy runs almost to the edges inside a
+ * box that is otherwise mostly air. Evening the two out gets four cards back
+ * into the space three used to take.
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 575px) {
+  .feature-item {
+    padding: 28px 22px;
+  }
+
+  .tj-feature {
+    padding: 26px 22px;
+  }
+
+  /* Icon, heading and copy were spaced for a 300px-tall desktop card. */
+  .feature-item .feature-icon {
+    margin-bottom: 18px;
+  }
+
+  .feature-item .feature-content .title {
+    margin-bottom: 10px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   5. Things a thumb has to hit
+ *
+ * Every one of these was under 32px in its smallest dimension. The guidance
+ * is 44px (Apple) / 48px (Android); WCAG 2.2 asks for 24px as a floor. The
+ * text links were the worst of it at 20px tall - and they are the secondary
+ * calls to action, including the one under the hero button and the ones that
+ * close out each FAQ answer.
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 991px), (pointer: coarse) {
+  .text-btn {
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .menu_btn,
+  .hamburger_close_btn,
+  .search_close_btn,
+  .header_search {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keeps the label and the icon where the template put them; only the box
+     around them grows. */
+  .menu_btn {
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* The chevron that opens the Services submenu in the drawer. */
+  .hamburger-area .mean-expand {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+  }
+
+  .hamburger-infos .contact_item .link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .hamburger-socials ul li a {
+    width: 44px;
+    height: 44px;
+  }
+
+  .copyright-socails ul li a {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   6. The inquiry form
+ *
+ * Fields were 42px tall. 48px is the comfortable minimum on a phone, and the
+ * 16px font size the template already sets is what stops iOS zooming the page
+ * in when a field takes focus - so that stays as it is.
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 991px), (pointer: coarse) {
+  .form-input input,
+  .form-input .nice-select {
+    min-height: 48px;
+  }
+
+  .form-input textarea {
+    min-height: 140px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   7. Hover effects on a screen with no pointer
+ *
+ * The image "shine" sweep and the card lift are pointer affordances. A touch
+ * device has no hover, so they either never fire or - worse - stick on after
+ * a tap, leaving a card raised until something else is touched.
+   ------------------------------------------------------------------------- */
+
+@media (hover: none) {
+  .hover\:shine::before,
+  .hover\:shine:hover::before {
+    animation: none;
+    opacity: 0;
+  }
+
+  .feature-item.hover-bg:hover {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   8. The drawer's call to action
+ *
+ * Takes the slot the template's search field had - see components/layout/
+ * HamburgerMenu. Full width, because it is the one thing in the drawer a
+ * visitor is meant to act on, and the drawer is only 320px wide.
+   ------------------------------------------------------------------------- */
+
+.bt-hamburger-cta {
+  margin: 30px 0 34px;
+  padding-bottom: 34px;
+  border-bottom: 1px solid var(--border-on-dark);
+}
+
+.bt-hamburger-cta .tj-primary-btn {
+  display: flex;
+  width: 100%;
+}
+
+.bt-hamburger-cta .tj-primary-btn .btn_inner {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------------------
+   9. The rest of the touch targets
+ *
+ * These needed selectors as specific as the ones in the vendor sheet, so they
+ * are kept apart from the general rules in 5 above rather than fighting them
+ * with `!important`.
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 991px), (pointer: coarse) {
+  /*
+   * meanmenu builds its own hamburger button when it clones the nav into the
+   * drawer. The drawer is opened by the header's Menu button, so that one is
+   * a second, invisible control sitting in the drawer doing nothing - and the
+   * bar it lives in was holding open 42px of empty space above the menu.
+   *
+   * `!important` because meanmenu.js writes `display` into the element's
+   * style attribute, and re-writes it every time the nav is re-cloned after a
+   * route change. An inline declaration cannot be outranked by specificity,
+   * only by importance.
+   */
+  .mobile_menu.mean-container .mean-bar > a.meanmenu-reveal {
+    display: none !important;
+  }
+
+  .mobile_menu.mean-container .mean-bar {
+    min-height: 0;
+    padding: 0;
+  }
+
+  /* The chevron that opens the Services submenu. 30px, inside a 53px row. */
+  .mobile_menu .mean-nav ul li.has-dropdown > a.mean-expand {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+  }
+
+  /* Footer link lists, the legal links in the copyright bar, and the contact
+     page's email link - all single lines of text, all around 20px tall. */
+  .footer-widget .widget-menu ul li a,
+  .copyright-content-area .copyright-menu ul li a,
+  .contact-item .contact-list li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .copyright-content-area .copyright-socails ul li a {
+    width: 44px;
+    height: 44px;
+  }
+
+  /*
+   * The breadcrumb is the exception: these are links inside a line of text,
+   * which is the case WCAG's target-size rule explicitly excepts, and giving
+   * them 44px would add 25px to a banner that is mostly there to be scrolled
+   * past. 32px is enough to hit without redrawing the header.
+   */
+  .tj-page-header .tj-page-link span a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   10. Two things the stacked layouts got wrong
+   ------------------------------------------------------------------------- */
+
+/*
+ * The hero's play badge is 150px wide at every screen size. Over the 610px
+ * image on a desktop that is a quarter of the width; over the 366px image on
+ * a phone it is over 40% of it, sitting across the faces in the photograph.
+ * Scaled to the picture it is on, it reads as a mark on the image rather than
+ * as an object covering it.
+ */
+/*
+ * Scaled rather than resized. The badge is a masked box with the rotating
+ * caption ring and the play button positioned inside it by fixed pixel
+ * offsets; setting a smaller width leaves those offsets where they were and
+ * the ring hangs off the edge. A transform scales the whole thing - mask,
+ * ring and button together - and `translateY(-50%)` is repeated because it is
+ * the centring the template already had on this element.
+ */
+@media (max-width: 575px) {
+  .hero-circle {
+    transform: translateY(-50%) scale(0.7);
+    transform-origin: left center;
+  }
+}
+
+/*
+ * Below 992px the About page's two columns stack, and the image - which is
+ * 423px wide - stayed hard against the left of a column that is now up to
+ * 720px, leaving a third of the row empty beside it. Centred and allowed to
+ * fill the column up to its own natural size, it reads as a deliberate plate
+ * rather than as a float that lost its text.
+ */
+@media (max-width: 991px), (pointer: coarse) {
+  .tj-about-section-two .about-images-group-one {
+    display: flex;
+    justify-content: center;
+    /* The template gives this box a fixed width so it can sit beside a copy
+       column. Once the two have stacked there is nothing beside it, and the
+       fixed width is what pinned it to the left of a full-width row. */
+    width: 100%;
+    max-width: none;
+  }
+
+  .tj-about-section-two .about-images-group-one img {
+    width: 100%;
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 991px), (pointer: coarse) {
+  /*
+   * The topbar is a 40px utility strip, so its links cannot be 44px without
+   * redrawing it. These are inline links inside a line of text - the case
+   * WCAG's target-size rule excepts - and 32px is what the bar can carry.
+   */
+  .header-topbar .topbar_note > a,
+  .header-topbar .topbar_infos .info_item > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+}

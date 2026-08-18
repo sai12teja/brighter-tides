@@ -15,7 +15,7 @@ export default function MeetFounder() {
           <div className="col-lg-5">
             <div className="bt-founder-images wow fadeInLeft" data-wow-delay="0.1s">
               <div className="hover:shine">
-                <img src={founder.image} alt={founder.name} />
+                <img src={founder.image} alt={`${founder.name}, ${founder.role} of Brighter Tides`} />
               </div>
             </div>
           </div>

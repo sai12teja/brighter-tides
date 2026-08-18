@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import FaqAccordion from "../sections/FaqAccordion";
+import { servicePhotoAlt } from "../../data/servicePhotos";
 
 /**
  * The main column of service-details.html (`tj-post-wrapper`): banner image,
@@ -46,7 +47,7 @@ export default function ServiceBody({ slug, service }) {
             src={service.image}
             srcSet={service.imageSmall ? `${service.imageSmall} 831w, ${service.image} 1662w` : undefined}
             sizes={service.imageSmall ? "(max-width: 991px) 100vw, 831px" : undefined}
-            alt={service.eyebrow}
+            alt={servicePhotoAlt[slug]}
             width="1662"
             height="1108"
           />

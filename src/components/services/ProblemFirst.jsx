@@ -47,13 +47,13 @@ export default function ProblemFirst() {
       </div>
       <div className="about-bg-images">
         <div className="about-shape-1 hover:shine">
-          <img src="/assets/images/about/h2-shape-1.webp" alt="Shapes" />
+          <img src="/assets/images/about/h2-shape-1.webp" alt="" />
         </div>
         <div className="about-shape-2 hover:shine">
-          <img src="/assets/images/about/h2-shape-2.webp" alt="Shapes" />
+          <img src="/assets/images/about/h2-shape-2.webp" alt="" />
         </div>
         <div className="about-shape-3 zoominout">
-          <img src="/assets/images/bt/star.svg" alt="Shapes" />
+          <img src="/assets/images/bt/star.svg" alt="" />
         </div>
       </div>
     </section>

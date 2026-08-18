@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
+import Seo from "../components/seo/Seo";
 import PageHeader from "../components/layout/PageHeader";
 import LegalBody from "../components/legal/LegalBody";
 import LegalContents from "../components/legal/LegalContents";
 import CtaBand from "../components/sections/CtaBand";
 import { whenBundleReady } from "../hooks/useSiteScripts";
 import { legalDocuments } from "../data/legal";
+import { seoFor } from "../lib/pageSeo";
 
 /**
  * Deep links into a document (`/privacy-policy#liability`) land before the
@@ -50,6 +52,7 @@ export default function Legal({ slug }) {
 
   return (
     <>
+      <Seo {...seoFor(`/${slug}`)} />
       <PageHeader title={doc.title} />
 
       <section className="tj-service-area section-space">

@@ -47,8 +47,8 @@ export default function CtaBand({ content, size = "display" }) {
         </div>
       </div>
 
-      <img className="cta-shape-1" src="/assets/images/shapes/cta-shapes-1.png" alt="Shapes" />
-      <img className="cta-shape-2" src="/assets/images/shapes/cta-shapes-2.png" alt="Shapes" />
+      <img className="cta-shape-1" src="/assets/images/shapes/cta-shapes-1.png" alt="" />
+      <img className="cta-shape-2" src="/assets/images/shapes/cta-shapes-2.png" alt="" />
     </section>
   );
 }

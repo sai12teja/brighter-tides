@@ -1,11 +1,13 @@
 import { useParams, Navigate } from "react-router-dom";
 
+import Seo from "../components/seo/Seo";
 import PageHeader from "../components/layout/PageHeader";
 import ServiceBody from "../components/service-detail/ServiceBody";
 import ServiceSidebar from "../components/service-detail/ServiceSidebar";
 import CtaBand from "../components/sections/CtaBand";
 import { services } from "../data/navigation";
 import { serviceDetails } from "../data/serviceDetails";
+import { seoFor } from "../lib/pageSeo";
 
 export default function ServiceDetail() {
   const { slug } = useParams();
@@ -16,6 +18,7 @@ export default function ServiceDetail() {
 
   return (
     <>
+      <Seo {...seoFor(`/services/${slug}`)} />
       <PageHeader title={route.label} crumbs={[{ label: "Services", to: "/services" }]} />
 
       <section className="tj-service-area section-space">

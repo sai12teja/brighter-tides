@@ -1,3 +1,4 @@
+import Seo from "../components/seo/Seo";
 import PageHeader from "../components/layout/PageHeader";
 import AboutIntro from "../components/about/AboutIntro";
 import Purpose from "../components/about/Purpose";
@@ -8,10 +9,14 @@ import LogoMarquee from "../components/sections/LogoMarquee";
 import Beliefs from "../components/about/Beliefs";
 import CtaBand from "../components/sections/CtaBand";
 import { experience, cta } from "../data/about";
+import { seoFor } from "../lib/pageSeo";
+
+const seo = seoFor("/about");
 
 export default function About() {
   return (
     <>
+      <Seo {...seo} />
       <PageHeader title="About" />
       <AboutIntro />
       <Purpose />

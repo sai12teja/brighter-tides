@@ -58,7 +58,7 @@ function EvoluteContent({ animate }) {
 function Portrait() {
   return (
     <div className="tj-evolute-image hover:shine">
-      <img src={founder.image} alt={founder.name} />
+      <img src={founder.image} alt={`${founder.name}, ${founder.role} of Brighter Tides`} />
     </div>
   );
 }

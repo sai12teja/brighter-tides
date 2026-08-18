@@ -1,5 +1,8 @@
+import { Link } from "react-router-dom";
+
 import BrandLogo from "./BrandLogo";
 import { socialLinks } from "../../data/footer";
+import { headerCta } from "../../data/navigation";
 import { email, location } from "../../data/site";
 
 export default function HamburgerMenu() {
@@ -19,18 +22,34 @@ export default function HamburgerMenu() {
               </button>
             </div>
           </div>
-          <div className="hamburger_search">
-            <form method="get" action="#0" onSubmit={(e) => e.preventDefault()}>
-              <button type="submit">
-                <i className="fal fa-search"></i>
-              </button>
-              <input type="search" autoComplete="off" name="s" defaultValue="" placeholder="Search here" />
-            </form>
-          </div>
-
           {/* meanmenu.js clones #main-menu's markup into this container at runtime */}
           <div className="hamburger_menu">
             <div className="mobile_menu"></div>
+          </div>
+
+          {/* The header's call to action is `d-none d-md-inline-flex` - on a
+              phone it is not on the page at all, which left the drawer as the
+              only navigation with no way to act on it. It sits below the menu
+              rather than above it so the nav still opens the drawer.
+
+              This replaced the template's search field, which submitted
+              nowhere: the drawer is the most valuable surface on a phone and
+              a control that does nothing is a poor use of it. The markup is
+              in the file's history if a working search ever arrives. */}
+          <div className="bt-hamburger-cta">
+            <Link to={headerCta.to} className="tj-primary-btn">
+              <div className="btn_inner">
+                <div className="btn_icon">
+                  <span>
+                    <i className="tji-arrow-right"></i>
+                    <i className="tji-arrow-right"></i>
+                  </span>
+                </div>
+                <div className="btn_text">
+                  <span>{headerCta.label}</span>
+                </div>
+              </div>
+            </Link>
           </div>
 
           <div className="hamburger-infos">

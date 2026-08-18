@@ -39,7 +39,7 @@ export default function ServiceCards() {
                     </Link>
                   </div>
                   <div className="thumb">
-                    <img src={card.image} alt="image" />
+                    <img src={card.image} alt={card.imageAlt} />
                   </div>
                 </div>
               </div>

@@ -18,6 +18,15 @@ export const location = {
   label: "Boca Raton, Florida",
   region: "Florida, United States",
   mapQuery: "Boca Raton, Florida, USA",
+  // The same place in the form schema.org wants it - see lib/schema.js.
+  // There is no street address on purpose: the practice advises remotely,
+  // and inventing one to fill a field would be a false signal about having
+  // an office someone could visit.
+  postal: {
+    addressLocality: "Boca Raton",
+    addressRegion: "FL",
+    addressCountry: "US",
+  },
 };
 
 /**
@@ -30,3 +39,21 @@ export const linkedin = {
   handle: "Shannon Chapman",
   href: "https://www.linkedin.com/in/shannonchapman/",
 };
+
+/**
+ * The site's canonical origin - scheme and host, no trailing slash.
+ *
+ * Every absolute URL the site emits is built from this: the canonical link
+ * and Open Graph tags on each page, the `@id`s that tie the JSON-LD entity
+ * graph together, and the URLs in the sitemap. If the practice launches on a
+ * different host (a `www.` prefix counts) this is the line to change - along
+ * with public/sitemap.xml, public/robots.txt and the site-wide JSON-LD in
+ * index.html, which are static files and cannot import it.
+ */
+export const siteUrl = "https://brighter-tides.com";
+
+/**
+ * Absolute URL for a site-relative path, for the places that require one:
+ * canonical links, `og:`/`twitter:` tags, and JSON-LD.
+ */
+export const absoluteUrl = (path = "/") => `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;

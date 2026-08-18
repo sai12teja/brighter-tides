@@ -30,7 +30,7 @@ export default function Services() {
                     </div>
                     <div className="service-text">
                       <div className="service-icons">
-                        <img src={service.icon} alt="Icons" />
+                        <img src={service.icon} alt="" />
                       </div>
                       <h3 className="title">
                         <Link to={service.to}>

@@ -1,0 +1,64 @@
+# Brighter Tides - https://brighter-tides.com
+#
+# The whole site is meant to be found, quoted and cited, so nothing here is
+# disallowed. The AI crawlers are named explicitly rather than left to the
+# wildcard: appearing in AI-generated answers is a stated goal for this site,
+# and several of these bots are blocked by default by hosting platforms and
+# CDN bot rules. If the practice ever changes its mind about being used as a
+# source for AI answers, this file is where that decision gets made.
+#
+# NOTE: this file names the production host in the Sitemap line below. It is
+# a static file and cannot read src/data/site.js, so if the site launches on
+# a different host, change it here too.
+
+User-agent: *
+Allow: /
+
+# Search
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# AI answer engines and their training/indexing crawlers
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+Sitemap: https://brighter-tides.com/sitemap.xml

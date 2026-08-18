@@ -62,7 +62,7 @@ export default function ServiceSidebar({ currentSlug }) {
                 gives this shape (`.tj-sidebar-cta .cta-btn .shapes` is
                 absolute). As a sibling it stayed in flow and rendered as a
                 full-width image across the card. */}
-            <img className="shapes move-anim-2" src="/assets/images/shapes/carrow.png" alt="shape" />
+            <img className="shapes move-anim-2" src="/assets/images/shapes/carrow.png" alt="" />
           </div>
         </div>
       </div>

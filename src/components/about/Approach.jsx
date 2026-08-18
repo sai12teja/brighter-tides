@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { approach } from "../../data/about";
 
 /**
@@ -36,6 +38,17 @@ export default function Approach() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="row">
+          <div className="col-12">
+            {/* About -> Services. The cards above describe how the practice
+                works; this is where a reader goes to see what that buys. */}
+            <div className="bt-approach-link text-center wow fadeInUp" data-wow-delay="0.5s">
+              <Link className="text-btn" to={approach.cta.to}>
+                {approach.cta.label} <i className="tji-arrow-right" aria-hidden="true"></i>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>

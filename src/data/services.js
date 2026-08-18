@@ -1,4 +1,5 @@
 import { services as serviceRoutes } from "./navigation";
+import { servicePhotoAlt } from "./servicePhotos";
 
 // Home 01 service slider. The detail-page links are resolved against
 // navigation.js so the slider, the menu, and the routes cannot drift apart:
@@ -21,7 +22,7 @@ export const services = [
     image: "/assets/images/bt/photos/service-01.webp",
     // Second width for the card's srcset - see components/home/Services.
     imageSmall: "/assets/images/bt/photos/service-01-645.webp",
-    imageAlt: "Two colleagues reviewing a licensing document at a desk",
+    imageAlt: servicePhotoAlt["servicenow-licensing-contract-advisory"],
     to: routeFor("servicenow-licensing-contract-advisory"),
     stacked: true,
   },
@@ -33,7 +34,7 @@ export const services = [
     desc: "Get experienced guidance around platform value, health, roadmap, use cases, and operating model.",
     image: "/assets/images/bt/photos/service-02.webp",
     imageSmall: "/assets/images/bt/photos/service-02-645.webp",
-    imageAlt: "Two colleagues working through a process diagram on a glass wall",
+    imageAlt: servicePhotoAlt["servicenow-strategic-advisory"],
     to: routeFor("servicenow-strategic-advisory"),
     stacked: true,
   },
@@ -45,7 +46,7 @@ export const services = [
     desc: "Bring experienced oversight to strategy, governance, vendors, licensing, priorities, and platform value.",
     image: "/assets/images/bt/photos/service-03.webp",
     imageSmall: "/assets/images/bt/photos/service-03-645.webp",
-    imageAlt: "A platform lead briefing four colleagues around a boardroom table",
+    imageAlt: servicePhotoAlt["fractional-servicenow-platform-leadership"],
     to: routeFor("fractional-servicenow-platform-leadership"),
     stacked: false,
   },

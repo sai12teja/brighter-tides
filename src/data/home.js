@@ -148,30 +148,35 @@ export const faq = {
       question: "What does a ServiceNow advisory consultant do?",
       answer:
         "We help organizations make informed decisions around ServiceNow licensing, platform strategy, governance, operating models, optimization, and leadership.",
+      link: { label: "See how we help", to: "/services" },
     },
     {
       id: "licensing-renewals",
       question: "Can you help with ServiceNow licensing and renewals?",
       answer:
         "Yes. We can review agreements, utilization, anticipated demand, renewal needs, and licensing options before you make your next investment decision.",
+      link: { label: "ServiceNow Licensing & Contract Advisory", to: "/services/servicenow-licensing-contract-advisory" },
     },
     {
       id: "implementations",
       question: "Do you provide ServiceNow implementations?",
       answer:
         "Our primary focus is advisory, strategy, licensing, governance, and platform leadership. When implementation support is needed, we can help determine the right approach and resources.",
+      link: { label: "ServiceNow Strategic Advisory", to: "/services/servicenow-strategic-advisory" },
     },
     {
       id: "fractional-leadership",
       question: "What is Fractional ServiceNow Platform Leadership?",
       answer:
         "It gives your organization experienced ServiceNow platform leadership on a flexible basis without requiring another full-time senior position.",
+      link: { label: "Fractional ServiceNow Platform Leadership", to: "/services/fractional-servicenow-platform-leadership" },
     },
     {
       id: "which-service",
       question: "What if we don't know which service we need?",
       answer:
         "That's okay. Tell us what's happening or what decision you're trying to make. We'll help determine the right approach.",
+      link: { label: "Start with the problem", to: "/contact" },
     },
   ],
 };

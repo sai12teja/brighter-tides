@@ -39,10 +39,10 @@ export default function Hero() {
                   </Link>
                 </div>
                 <div className="hero-shapes-1 move-anim">
-                  <img src="/assets/images/shapes/hero-1.png" alt="Shapes" />
+                  <img src="/assets/images/shapes/hero-1.png" alt="" />
                 </div>
                 <div className="hero-shapes-2 zoominout">
-                  <img src="/assets/images/shapes/hero-3.png" alt="Shapes" />
+                  <img src="/assets/images/shapes/hero-3.png" alt="" />
                 </div>
               </div>
               <div className="hero-images-box">
@@ -63,11 +63,11 @@ export default function Hero() {
                   />
                 </div>
                 <div className="images-shapes move-anim-2">
-                  <img src="/assets/images/shapes/hero-2.png" alt="Shapes" />
+                  <img src="/assets/images/shapes/hero-2.png" alt="" />
                 </div>
                 <div className="hero-circle">
                   <div className="circle-wrap">
-                    <img className="rotate-image" src="/assets/images/shapes/play-text.png" alt="image" />
+                    <img className="rotate-image" src="/assets/images/shapes/play-text.png" alt="" />
                     <a
                       className="circle video-popup"
                       data-autoplay="true"

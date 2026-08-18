@@ -1,3 +1,4 @@
+import Seo from "../components/seo/Seo";
 import Hero from "../components/home/Hero";
 import About from "../components/home/About";
 import MeetFounder from "../components/home/MeetFounder";
@@ -7,16 +8,21 @@ import Features from "../components/home/Features";
 import Services from "../components/home/Services";
 import WhyUs from "../components/home/WhyUs";
 import Process from "../components/home/Process";
-import Skills from "../components/home/Skills";
-import Testimonials from "../components/home/Testimonials";
-import Blog from "../components/home/Blog";
+// Hidden, not deleted - see the block further down where these would render.
+// import Skills from "../components/home/Skills";
+// import Testimonials from "../components/home/Testimonials";
+// import Blog from "../components/home/Blog";
 import Faq from "../components/home/Faq";
 import CtaBand from "../components/sections/CtaBand";
 import { experience, finalCta } from "../data/home";
+import { seoFor } from "../lib/pageSeo";
+
+const seo = seoFor("/");
 
 export default function Home() {
   return (
     <>
+      <Seo {...seo} />
       <Hero />
       <About />
       {/* Shannon's credentials live inside this section, not in the
@@ -29,14 +35,26 @@ export default function Home() {
       <Services />
       <WhyUs />
       <Process />
-      {/* Template sections still carrying Solvior placeholder content. */}
-      <Skills />
-      <Testimonials />
-      {/* "Our projects" is off the home page: its four case studies are the
-          template's placeholders and there is no real project work to show
-          yet. components/home/Projects and data/projects are kept, so the
-          section is two lines away from returning once there is. */}
-      <Blog />
+
+      {/* HIDDEN FOR LAUNCH - not deleted. The components and their data files
+          are all still in the repo, so each of these is an uncomment away
+          from returning:
+
+          - Skills: the template's generic percentage bars. A "ServiceNow
+            strategy - 85%" figure is not a claim the practice can stand
+            behind, and it reads as template filler.
+          - Testimonials: the template's invented quotes. Back when Brighter
+            Tides has genuine ones to show.
+          - Blog: placeholder posts, every link pointing at "#". Back when
+            there is something real to publish.
+
+          Projects (components/home/Projects) was hidden the same way
+          earlier, and the odometer fun-facts counter (components/home/
+          Counter) is superseded by MeetFounder above. */}
+      {/* <Skills /> */}
+      {/* <Testimonials /> */}
+      {/* <Blog /> */}
+
       <Faq />
       <CtaBand content={finalCta} />
     </>

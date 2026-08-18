@@ -88,12 +88,14 @@ export const serviceDetails = {
         question: "Are you a ServiceNow reseller?",
         answer:
           "Our advisory is independent and focused on helping you determine what makes sense for your organization.",
+        link: { label: "How we work", to: "/about" },
       },
       {
         id: "evaluate-product",
         question: "Can you evaluate a proposed ServiceNow product before we purchase it?",
         answer:
           "Yes. We can evaluate the business need, existing capabilities, expected utilization, cost, and licensing implications.",
+        link: { label: "ServiceNow Strategic Advisory", to: "/services/servicenow-strategic-advisory" },
       },
     ],
 
@@ -197,12 +199,14 @@ export const serviceDetails = {
         question: "Can you help simplify an overly customized ServiceNow platform?",
         answer:
           "Yes. We can help establish a strategy for moving toward a healthier and more sustainable platform approach.",
+        link: { label: "Fractional ServiceNow Platform Leadership", to: "/services/fractional-servicenow-platform-leadership" },
       },
       {
         id: "long-term-contract",
         question: "Do strategic advisory engagements require a long-term contract?",
         answer:
           "Not necessarily. Engagements can range from a focused advisory session to a multi-week assessment depending on the challenge.",
+        link: { label: "Discuss your challenge", to: "/contact" },
       },
     ],
 
@@ -309,12 +313,14 @@ export const serviceDetails = {
         question: "What can a fractional ServiceNow leader manage?",
         answer:
           "Support can include strategy, roadmap, governance, vendors, licensing, platform health, prioritization, executive reporting, and value realization.",
+        link: { label: "ServiceNow Licensing & Contract Advisory", to: "/services/servicenow-licensing-contract-advisory" },
       },
       {
         id: "existing-partner",
         question: "Can you work with our existing ServiceNow partner?",
         answer:
           "Yes. We can work alongside your existing partners while providing independent oversight and helping keep recommendations aligned with your organization's priorities.",
+        link: { label: "ServiceNow Strategic Advisory", to: "/services/servicenow-strategic-advisory" },
       },
       {
         id: "ongoing",

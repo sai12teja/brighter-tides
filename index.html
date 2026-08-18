@@ -1,15 +1,55 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en-US">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--
+      Defaults, and only defaults.
+
+      At build time scripts/prerender.mjs replaces everything between the
+      markers below with the metadata for whichever page it is writing, so
+      each route ships its own title, description, canonical and JSON-LD in
+      the served HTML - including the graph describing the practice and
+      Shannon, which is built from the content files by src/lib/schema.js
+      rather than written out here where it would drift.
+
+      At run time src/components/seo/Seo replaces the same set again on every
+      navigation; it recognises the tags it owns by `data-bt-seo`.
+
+      What is written here is what a page would carry if both of those failed,
+      so it is the home page's. Do not add a tag between the markers without
+      teaching src/lib/headTags.js to emit it, or that tag will survive onto
+      every page unchanged.
+    -->
+    <!--seo-->
+    <title>ServiceNow Advisory | Brighter Tides</title>
     <meta
       name="description"
-      content="Brighter Tides - ServiceNow licensing and contract advisory, strategic advisory, and fractional platform leadership."
+      data-bt-seo
+      content="Independent ServiceNow advisory on licensing, platform strategy, governance, and fractional platform leadership - executive guidance, no oversized engagement."
     />
+    <link rel="canonical" data-bt-seo href="https://brighter-tides.com/" />
 
-    <title>Brighter Tides</title>
+    <meta property="og:type" data-bt-seo content="website" />
+    <meta property="og:site_name" data-bt-seo content="Brighter Tides" />
+    <meta property="og:title" data-bt-seo content="ServiceNow Advisory | Brighter Tides" />
+    <meta
+      property="og:description"
+      data-bt-seo
+      content="Independent ServiceNow advisory on licensing, platform strategy, governance, and fractional platform leadership."
+    />
+    <meta property="og:url" data-bt-seo content="https://brighter-tides.com/" />
+    <meta property="og:locale" data-bt-seo content="en_US" />
+    <meta
+      property="og:image"
+      data-bt-seo
+      content="https://brighter-tides.com/assets/images/bt/og-brighter-tides.png"
+    />
+    <meta property="og:image:alt" data-bt-seo content="Brighter Tides - independent ServiceNow advisory" />
+    <meta name="twitter:card" data-bt-seo content="summary_large_image" />
+    <!--/seo-->
 
     <meta name="theme-color" content="#0a2a4b" />
 

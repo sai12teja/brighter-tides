@@ -1,3 +1,4 @@
+import Seo from "../components/seo/Seo";
 import PageHeader from "../components/layout/PageHeader";
 import ContactIntro from "../components/contact/ContactIntro";
 import DirectContact from "../components/contact/DirectContact";
@@ -6,6 +7,9 @@ import ContactMap from "../components/contact/ContactMap";
 import ContactReassurance from "../components/contact/ContactReassurance";
 import CtaBand from "../components/sections/CtaBand";
 import { cta } from "../data/contact";
+import { seoFor } from "../lib/pageSeo";
+
+const seo = seoFor("/contact");
 
 /**
  * contact.html's running order, kept intact: breadcrumb header, a centred
@@ -19,6 +23,7 @@ import { cta } from "../data/contact";
 export default function Contact() {
   return (
     <>
+      <Seo {...seo} />
       <PageHeader title="Contact" />
       <ContactIntro />
       <DirectContact />

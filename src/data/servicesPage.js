@@ -1,6 +1,7 @@
 // Brighter Tides - Services page content.
 
 import { services as serviceRoutes } from "./navigation";
+import { servicePhotoAlt } from "./servicePhotos";
 
 export const hero = {
   eyebrow: "ServiceNow Advisory Services",
@@ -30,6 +31,7 @@ export const cards = serviceRoutes.map((route, i) => ({
   // it sits behind a navy scrim and only appears on hover, so it does not
   // need the 2x file.
   image: `/assets/images/bt/photos/service-0${i + 1}-645.webp`,
+  imageAlt: servicePhotoAlt[route.slug],
 }));
 
 export const cardCopy = {

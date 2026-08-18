@@ -77,7 +77,7 @@ export default function About() {
           />
         </div>
         <div className="about-shape-3 zoominout">
-          <img src="/assets/images/bt/star.svg" alt="Shapes" />
+          <img src="/assets/images/bt/star.svg" alt="" />
         </div>
       </div>
     </section>
