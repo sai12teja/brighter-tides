@@ -46,13 +46,19 @@ export const socialLinks = [
 export const copyright = "Brighter Tides. All rights reserved.";
 
 // Consumed by components/sections/LogoMarquee, which the home and about pages
-// use for the "experience shaped across leading organizations" strip. These
-// are the template's placeholder logos - swap for the real organizations.
+// use for the "experience shaped across leading organizations" strip.
+//
+// Each file is the organization's own mark, in its own colours - a third
+// party's logo is not ours to recolour, so the strip gives them a light tile
+// to sit on instead of knocking them all to one grey. They are exported to a
+// common 3:1 box with the logo scaled inside it to even out visual weight,
+// so the marquee only has to letterbox them.
+//
+// `name` is the alt text. "Brand" on six identical images told a screen
+// reader nothing; the point of this strip is *which* organizations.
 export const brands = [
-  "/assets/images/brand/brand-thumb-1.png",
-  "/assets/images/brand/brand-thumb-2.png",
-  "/assets/images/brand/brand-thumb-3.png",
-  "/assets/images/brand/brand-thumb-4.png",
-  "/assets/images/brand/brand-thumb-5.png",
-  "/assets/images/brand/brand-thumb-6.png",
+  { name: "Citrix", src: "/assets/images/bt/logos/citrix.webp" },
+  { name: "Norwegian Cruise Line", src: "/assets/images/bt/logos/norwegian-cruise-line.webp" },
+  { name: "Southern Glazer's Wine and Spirits", src: "/assets/images/bt/logos/southern-glazers.webp" },
+  { name: "University of Central Florida", src: "/assets/images/bt/logos/university-of-central-florida.webp" },
 ];

@@ -10,7 +10,7 @@ import { brand } from "../../data/navigation";
  * rather than the stacked mark: at the ~46px a header row allows, the
  * stacked version's script and tagline would be illegible.
  *
- * Sized by height in theme.css (`.brand-logo img`), so the intrinsic
+ * Sized by height in theme.css (`.bt-logo img`), so the intrinsic
  * dimensions here only reserve the right aspect ratio while the file loads.
  */
 export default function BrandLogo({ className = "logo", variant = "light" }) {
@@ -20,7 +20,7 @@ export default function BrandLogo({ className = "logo", variant = "light" }) {
       : "/assets/images/logos/brighter-tides-lockup.png";
 
   return (
-    <Link to="/" className={`${className} brand-logo`} aria-label={`${brand.first} ${brand.second} - home`}>
+    <Link to="/" className={`${className} bt-logo`} aria-label={`${brand.first} ${brand.second} - home`}>
       <img src={src} alt={`${brand.first} ${brand.second}`} width="875" height="172" />
     </Link>
   );

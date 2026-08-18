@@ -8,20 +8,28 @@ import { brands } from "../../data/footer";
  * - "light" - `tj-brand-section-two` + `brand-slider-2`, the version on
  *             about.html, whose label sits in a pill on a ruled line.
  *
- * The slide list is doubled so the continuous-autoplay loop has enough
- * slides to wrap without a visible gap on wide screens.
+ * The slide list is repeated so the continuous-autoplay loop has enough
+ * slides to wrap without a visible gap on wide screens. Four organizations
+ * at a 195px tile is 780px of track, so it takes three passes rather than
+ * the two the template's six logos needed.
  */
+const TRACK_REPEATS = 3;
+
 export default function LogoMarquee({ content, variant = "dark" }) {
   const isLight = variant === "light";
   const sliderClass = isLight ? "brand-slider-2" : "brand-slider-1";
 
-  const slides = [...brands, ...brands].map((brand, i) => (
-    <div className="swiper-slide" key={`${brand}-${i}`}>
-      <div className="brand-logo">
-        <img src={brand} alt="Brand" />
+  const slides = Array.from({ length: TRACK_REPEATS }, () => brands)
+    .flat()
+    .map((brand, i) => (
+      <div className="swiper-slide" key={`${brand.src}-${i}`}>
+        <div className="brand-logo">
+          {/* Only the first pass is announced; the repeats are the same
+              logos again purely to fill the track. */}
+          <img src={brand.src} alt={i < brands.length ? brand.name : ""} loading="lazy" />
+        </div>
       </div>
-    </div>
-  ));
+    ));
 
   if (isLight) {
     return (

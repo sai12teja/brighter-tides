@@ -213,35 +213,38 @@ html {
 
 /* The vendor rule caps `.site-logo .logo` at 150px, drawn for the template's
    bitmap wordmark. The Brighter Tides lockup is sized by height instead, so
-   it holds the same optical weight in both header rows. */
-.site-logo .logo.brand-logo,
-.hamburger_logo .mobile_logo.brand-logo {
+   it holds the same optical weight in both header rows.
+
+   The class is `bt-logo`, not `brand-logo`: the template already uses
+   `.brand-logo` for the tile behind each logo in the experience marquee. */
+.site-logo .logo.bt-logo,
+.hamburger_logo .mobile_logo.bt-logo {
   display: inline-block;
   max-width: none;
   width: auto;
   line-height: 0;
 }
 
-.site-logo .logo.brand-logo img {
+.site-logo .logo.bt-logo img {
   display: block;
   width: auto;
   height: 46px;
 }
 
-.hamburger_logo .mobile_logo.brand-logo img {
+.hamburger_logo .mobile_logo.bt-logo img {
   display: block;
   width: auto;
   height: 38px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  .site-logo .logo.brand-logo img {
+  .site-logo .logo.bt-logo img {
     height: 42px;
   }
 }
 
 @media (max-width: 767px) {
-  .site-logo .logo.brand-logo img {
+  .site-logo .logo.bt-logo img {
     height: 36px;
   }
 }
@@ -533,6 +536,45 @@ html {
   color: var(--primary);
   background-color: var(--aqua);
   border-color: var(--aqua);
+}
+
+/* ---- Experience logo strip ----
+ *
+ * The template's marquee was drawn for its own placeholder logos: white
+ * artwork, shown on a 10%-white tile on the navy band, and inverted to black
+ * for the light band. The real organizations' marks are full colour with
+ * dark ink - a third party's logo is not ours to recolour - so both bands
+ * give them a light tile to sit on and the invert filter comes off.
+ *
+ * The exported files are a common 3:1 box with the logo already scaled and
+ * padded inside it, so the tile only has to letterbox them. */
+.brand-slider-1 .brand-logo,
+.brand-slider-2 .brand-logo {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background-color: var(--bg-primary);
+  -webkit-transition: -webkit-box-shadow 0.35s ease;
+  transition: box-shadow 0.35s ease;
+}
+
+/* On the light band the tile needs an edge of its own, or it disappears into
+   the section behind it. */
+.brand-slider-2 .brand-logo {
+  background-color: var(--bg-light);
+  -webkit-box-shadow: inset 0 0 0 1px var(--border);
+          box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.brand-slider-1 .brand-logo img,
+.brand-slider-2 .brand-logo img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -webkit-filter: none;
+          filter: none;
 }
 
 /* ---- Icons ----
