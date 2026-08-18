@@ -65,7 +65,7 @@ export default function About() {
           <img src="/assets/images/about/h2-shape-2.webp" alt="Shapes" />
         </div>
         <div className="about-shape-3 zoominout">
-          <img src="/assets/images/icons/star.svg" alt="Shapes" />
+          <img src="/assets/images/bt/star.svg" alt="Shapes" />
         </div>
       </div>
     </section>

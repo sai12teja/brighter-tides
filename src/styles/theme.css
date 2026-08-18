@@ -1,0 +1,584 @@
+/*
+ * Brighter Tides - design tokens.
+ *
+ * The site is built on a purchased template whose stylesheets (main.css et
+ * al) are loaded via <link> in index.html and are deliberately left
+ * untouched so they stay upgradeable. That template is almost entirely
+ * token-driven: it declares one `:root` colour set and then composes every
+ * component from it. This file redeclares that same set in the brand's
+ * colours, so a single block re-skins the whole site rather than hundreds of
+ * component overrides.
+ *
+ * Load order matters and is guaranteed: index.html links main.css, then
+ * main.jsx imports this file, so these `:root` declarations come later in
+ * the cascade at equal specificity and win.
+ *
+ * The layers below the token block exist only where the template hard-coded
+ * a colour instead of using its own tokens, or where a component needs a
+ * different treatment on this palette than it had on the template's.
+ */
+
+/* ---------------------------------------------------------------------------
+ * 1. Brand palette
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --primary: #0a2a4b;
+  --teal: #10a0a9;
+  --teal-dark: #087f88;
+  --aqua: #42babe;
+  --aqua-light: #77cbce;
+
+  --gold: #eeae50;
+  --coral: #ee707b;
+
+  --bg-primary: #ffffff;
+  --bg-light: #f2fafa;
+  --bg-section: #eaf6f7;
+
+  --text-primary: #0a2a4b;
+  --text-secondary: #536779;
+
+  --border: #d5e9ea;
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Derived tokens
+ *
+ * Everything here is pulled from the palette above rather than introduced
+ * alongside it: darker and lighter steps of the navy for depth, the on-dark
+ * text colours, and one shadow ramp tinted with the navy so shadows read as
+ * part of the palette instead of as neutral grey.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --primary-deep: #061b32;
+  --primary-raised: #123c69;
+  --teal-deep: #06666e;
+
+  /* Body copy at #536779 is 5.8:1 on white; the muted step is held at 4.6:1
+     so secondary text still clears WCAG AA rather than fading out. */
+  --text-muted: #647889;
+
+  --on-dark: #ffffff;
+  --on-dark-muted: #a9c6d2;
+  --border-on-dark: rgba(119, 203, 206, 0.22);
+
+  /* Errors need a red that carries the coral's hue but clears 4.5:1 on
+     white, which the coral itself (2.9:1) does not. */
+  --danger: #c4444f;
+
+  --shadow-sm: 0 4px 16px rgba(10, 42, 75, 0.06);
+  --shadow-md: 0 14px 34px rgba(10, 42, 75, 0.1);
+  --shadow-lg: 0 26px 60px rgba(10, 42, 75, 0.14);
+  --shadow-teal: 0 16px 34px rgba(16, 160, 169, 0.28);
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Template token remap
+ *
+ * One-for-one against main.css's own `:root` colour block. Nothing is
+ * dropped: a token left undeclared here would keep the template's stock blue
+ * and leak it back into the page.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --tj-color-common-white: var(--bg-primary);
+  --tj-color-common-white-2: var(--on-dark-muted);
+  --tj-color-common-black: #041423;
+  --tj-color-common-black-2: #5e7182;
+  --tj-color-common-black-3: #8ca0ae;
+
+  --tj-color-heading-primary: var(--text-primary);
+  --tj-color-text-body: var(--text-secondary);
+  --tj-color-text-body-2: var(--text-muted);
+
+  --tj-color-theme-primary: var(--teal);
+  --tj-color-theme-dark: var(--primary);
+  --tj-color-theme-bg: var(--bg-section);
+  --tj-color-theme-bg-2: var(--bg-light);
+
+  --tj-color-border-1: var(--border-on-dark);
+  --tj-color-border-2: var(--border);
+  --tj-color-border-3: var(--border);
+
+  --tj-color-red-1: var(--danger);
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Base
+ * ------------------------------------------------------------------------- */
+
+body {
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-moz-selection {
+  background-color: var(--aqua);
+  color: var(--primary);
+}
+
+::selection {
+  background-color: var(--aqua);
+  color: var(--primary);
+}
+
+/* The template sets `outline: none` on most interactive elements. Keyboard
+   users still need a visible focus state, so it comes back as a brand ring -
+   on `:focus-visible` only, so it never fires on a mouse click. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Scrollbars in the palette rather than the OS grey. Firefox and Chrome read
+   different properties, so both are declared. */
+html {
+  scrollbar-color: var(--aqua-light) var(--bg-section);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-section);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--aqua-light);
+  border: 3px solid var(--bg-section);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--teal);
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Accent text on light surfaces
+ *
+ * `--teal` is the brand accent and is used for fills, icons and rules, where
+ * its 3.2:1 against white clears the 3:1 WCAG asks of non-text UI. As *text*
+ * at 14-16px it does not clear 4.5:1, so the small accent type on light
+ * surfaces steps to `--teal-dark` (4.8:1). The two are half a step apart on
+ * screen; the difference is measurable rather than visible.
+ * ------------------------------------------------------------------------- */
+
+.sec-heading .sub-title {
+  color: var(--teal-dark);
+}
+
+/* ---------------------------------------------------------------------------
+ * 6. Header
+ * ------------------------------------------------------------------------- */
+
+/* White on `--teal` is 3.2:1 - too little for the 14px topbar copy. The bar
+   takes the darker teal, where the same white clears 4.8:1. */
+.header-topbar {
+  background-color: var(--teal-dark);
+}
+
+.tj-header-area.header-absolute {
+  border-bottom-color: var(--border-on-dark);
+}
+
+/* The template's sticky bar casts a white glow, drawn for a dark page. This
+   one slides over white sections, so its shadow is navy. */
+.tj-header-area.header-duplicate {
+  -webkit-box-shadow: 0 12px 30px rgba(6, 27, 50, 0.22);
+          box-shadow: 0 12px 30px rgba(6, 27, 50, 0.22);
+}
+
+/* Both headers sit on the navy, where aqua reads at 6.1:1 against the teal's
+   4.5:1 - brighter, and unmistakably the live state at a glance. */
+.mainmenu ul > li.current-menu-ancestor > a,
+.mainmenu ul > li.current-menu-item > a,
+.mainmenu ul > li:hover > a,
+.header_search:hover {
+  color: var(--aqua);
+}
+
+/* ---- Logo ---- */
+
+/* The vendor rule caps `.site-logo .logo` at 150px, drawn for the template's
+   bitmap wordmark. The Brighter Tides lockup is sized by height instead, so
+   it holds the same optical weight in both header rows. */
+.site-logo .logo.brand-logo,
+.hamburger_logo .mobile_logo.brand-logo {
+  display: inline-block;
+  max-width: none;
+  width: auto;
+  line-height: 0;
+}
+
+.site-logo .logo.brand-logo img {
+  display: block;
+  width: auto;
+  height: 46px;
+}
+
+.hamburger_logo .mobile_logo.brand-logo img {
+  display: block;
+  width: auto;
+  height: 38px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .site-logo .logo.brand-logo img {
+    height: 42px;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-logo .logo.brand-logo img {
+    height: 36px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 7. Hero
+ *
+ * The template painted the hero one flat navy. That navy stays as the base
+ * colour - it is what the section's mask shape and the header border are
+ * drawn against - with two soft washes of the palette's aqua and teal laid
+ * over it, so the band has depth and picks up the wave in the logo instead
+ * of reading as a solid rectangle.
+ * ------------------------------------------------------------------------- */
+
+.tj-hero-section {
+  background-color: var(--primary);
+  background-image:
+    radial-gradient(115% 80% at 82% 6%, rgba(66, 186, 190, 0.24) 0%, rgba(66, 186, 190, 0) 55%),
+    radial-gradient(85% 65% at 4% 96%, rgba(16, 160, 169, 0.2) 0%, rgba(16, 160, 169, 0) 62%),
+    linear-gradient(168deg, var(--primary-raised) 0%, var(--primary) 45%, var(--primary-deep) 100%);
+}
+
+/* The accent word in the hero headline. Aqua at display size on the navy
+   carries the wave in the logo; the eyebrow and secondary link that pick it
+   up are in brand.css with the rest of their component. */
+.hero-content .hero-title .active-color {
+  color: var(--aqua);
+}
+
+/* ---------------------------------------------------------------------------
+ * 8. Buttons
+ *
+ * The component is the template's, unchanged: a navy pill with a teal icon
+ * disc that wipes across on hover. What is added is the weight a primary
+ * action wants - a navy shadow at rest that lifts and turns teal under the
+ * cursor.
+ * ------------------------------------------------------------------------- */
+
+.tj-primary-btn {
+  -webkit-box-shadow: 0 10px 24px rgba(6, 27, 50, 0.16);
+          box-shadow: 0 10px 24px rgba(6, 27, 50, 0.16);
+  -webkit-transition: -webkit-transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    -webkit-box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tj-primary-btn:hover {
+  -webkit-transform: translateY(-2px);
+      -ms-transform: translateY(-2px);
+          transform: translateY(-2px);
+  -webkit-box-shadow: var(--shadow-teal);
+          box-shadow: var(--shadow-teal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tj-primary-btn:hover {
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 9. Closing CTA band
+ *
+ * A flat `--teal` band put its white body copy at 3.2:1. The band becomes a
+ * navy-to-deep-teal sweep instead: the copy clears 6.7:1 at the lightest
+ * stop, and the section reads as the page's closing note rather than as one
+ * more block of accent colour.
+ * ------------------------------------------------------------------------- */
+
+.tj-cta-section {
+  background-color: var(--primary);
+  background-image: linear-gradient(105deg,
+    var(--primary-deep) 0%, var(--primary-raised) 48%, var(--teal-deep) 100%);
+}
+
+/* ---------------------------------------------------------------------------
+ * 10. Template hard-coded colours
+ *
+ * main.css resolves almost every colour through its tokens; this is the one
+ * exception the site actually renders, so it is restated in the palette.
+ * (The template's other colour literals all belong to home-4/7/9/10 layouts
+ * this site does not use.)
+ * ------------------------------------------------------------------------- */
+
+/* Service-detail sidebar card - was navy-to-electric-blue. */
+.tj-sidebar-cta::before {
+  background: linear-gradient(153.92deg,
+    var(--primary-deep) 20%, var(--primary) 55%, var(--teal) 130%);
+}
+
+/* The inner pages' banner scrim, and the scrim on the services page's card
+   thumbnails, were both mixed from the template's navy. Restated in the
+   brand's, and the banner picks up the hero's aqua wash so the two dark
+   bands at the top of a page read as the same surface. */
+.tj-page-header::before {
+  background-color: rgba(6, 27, 50, 0.82);
+  background-image:
+    radial-gradient(95% 120% at 85% 0%, rgba(66, 186, 190, 0.2) 0%, rgba(66, 186, 190, 0) 60%),
+    linear-gradient(168deg, rgba(18, 60, 105, 0.5) 0%, rgba(6, 27, 50, 0.4) 100%);
+}
+
+.service-style-2 .thumb::before {
+  background: rgba(10, 42, 75, 0.65);
+}
+
+/* ---------------------------------------------------------------------------
+ * 11. Components in the brand's colours
+ *
+ * The template dressed every component in one blue. These rules spend the
+ * rest of the palette on them, with a rule for where each colour goes:
+ * teal is the action colour, aqua is the on-navy accent, gold marks value
+ * (the logo's sun - ratings, the primary button's disc), and coral marks a
+ * problem. Nothing decorative gets a colour it does not earn.
+ * ------------------------------------------------------------------------- */
+
+/* ---- Buttons ----
+ *
+ * Primary, on light surfaces: a deep-teal pill with the logo's gold sun for
+ * the icon disc, which wipes across on hover. Both teal stops clear 4.8:1
+ * behind the white label, and the navy label on gold clears 7.4:1 once the
+ * wipe lands - the vivid `--teal` itself would only manage 3.2:1 there. */
+.tj-primary-btn {
+  background-image: linear-gradient(115deg, var(--teal-dark) 0%, var(--teal-deep) 100%);
+}
+
+.tj-primary-btn .btn_inner::before {
+  background-color: var(--gold);
+}
+
+.tj-primary-btn .btn_inner .btn_icon,
+.tj-primary-btn:hover .btn_inner .btn_text {
+  color: var(--primary);
+}
+
+/* The inverse variants already sit on navy, on the CTA gradient or on a
+   service card, where the white pill is what carries the contrast. They keep
+   the vivid teal disc; only the wipe deepens, so the white label still
+   clears 4.8:1 once the button is filled. */
+.tj-primary-btn.white-btn,
+.tj-primary-btn.header_btn,
+.hero-content .hero-button,
+.service-item .service-content .service-btn {
+  background-image: none;
+}
+
+.tj-primary-btn.white-btn .btn_inner::before,
+.tj-primary-btn.header_btn .btn_inner::before,
+.hero-content .hero-button .btn_inner::before,
+.service-item .service-content .service-btn .btn_inner::before {
+  background-color: var(--teal);
+}
+
+.tj-primary-btn.white-btn .btn_inner .btn_icon,
+.tj-primary-btn.header_btn .btn_inner .btn_icon,
+.hero-content .hero-button .btn_inner .btn_icon,
+.service-item .service-content .service-btn .btn_inner .btn_icon {
+  color: var(--on-dark);
+}
+
+.tj-primary-btn.white-btn:hover .btn_inner::before,
+.tj-primary-btn.header_btn:hover .btn_inner::before,
+.hero-content .hero-button:hover .btn_inner::before,
+.service-item .service-content .service-btn:hover .btn_inner::before {
+  background-color: var(--teal-dark);
+}
+
+.tj-primary-btn.white-btn:hover .btn_inner .btn_text,
+.tj-primary-btn.header_btn:hover .btn_inner .btn_text,
+.hero-content .hero-button:hover .btn_inner .btn_text,
+.service-item .service-content .service-btn:hover .btn_inner .btn_text {
+  color: var(--on-dark);
+}
+
+/* The secondary text link, wherever it sits on a light surface. */
+.text-btn:hover {
+  color: var(--teal-dark);
+}
+
+/* ---- Cards ----
+ *
+ * The template gave its cards a hairline border and nothing else. On hover
+ * they now lift, and the hairline turns aqua - the same cue on every card
+ * grid across the site. */
+.feature-item,
+.tj-feature,
+.tj-contact-area .contact-item.style-2,
+.tj-service-area .service-style-2 {
+  -webkit-transition: border-color 0.35s ease, -webkit-box-shadow 0.35s ease,
+    -webkit-transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.feature-item:hover,
+.tj-feature:hover,
+.tj-contact-area .contact-item.style-2:hover,
+.tj-service-area .service-style-2:hover {
+  border-color: var(--aqua-light);
+  -webkit-box-shadow: var(--shadow-md);
+          box-shadow: var(--shadow-md);
+  -webkit-transform: translateY(-4px);
+      -ms-transform: translateY(-4px);
+          transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-item:hover,
+  .tj-feature:hover,
+  .tj-contact-area .contact-item.style-2:hover,
+  .tj-service-area .service-style-2:hover {
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none;
+  }
+}
+
+/* The services page's cards invert to navy on hover, so the template set
+   their step number in an on-dark blue - which leaves it almost invisible
+   for the other 99% of the time. It takes the accent at rest and the on-dark
+   colour only once the card has actually inverted. */
+.service-style-2 .service-content .number {
+  color: var(--teal-dark);
+}
+
+.service-style-2:hover .service-content .number {
+  color: var(--aqua-light);
+}
+
+/* ---- Ratings ----
+ *
+ * Stars were white on white, legible only by their stroke. Gold is what a
+ * rating is drawn in, and it is the logo's own sun. */
+.star-ratings {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--gold);
+}
+
+.star-ratings .fill-ratings {
+  color: var(--gold);
+}
+
+.star-ratings .empty-ratings {
+  color: transparent;
+}
+
+/* ---- Tags ---- */
+.blog-meta ul li.category a {
+  background-color: var(--bg-light);
+  border-color: var(--border);
+  color: var(--teal-dark);
+}
+
+.blog-meta ul li.category a:hover {
+  background-color: var(--teal-dark);
+  border-color: var(--teal-dark);
+  color: var(--on-dark);
+}
+
+.blog-meta ul li a:hover {
+  color: var(--teal-dark);
+}
+
+/* ---- FAQ ----
+ *
+ * The open question is the one piece of state in the accordion, so it takes
+ * the accent rather than reading the same as the eleven closed ones. */
+.tj-faq-style .accordion-item .accordion-header .accordion-button:not(.collapsed),
+.tj-faq-style .accordion-item .accordion-header .accordion-button:not(.collapsed):before {
+  color: var(--teal-dark);
+}
+
+.tj-faq-style .accordion-item .accordion-header .accordion-button:hover:before {
+  color: var(--teal);
+}
+
+/* ---- Back to top ----
+ *
+ * It rides over the navy footer, where the template's navy-on-transparent
+ * rail was invisible. */
+.back-to-top-btn {
+  color: var(--on-dark);
+  border-color: var(--border-on-dark);
+}
+
+.back-to-top-btn:hover {
+  color: var(--primary);
+  background-color: var(--aqua);
+  border-color: var(--aqua);
+}
+
+/* ---- Icons ----
+ *
+ * The feature-grid icons are inline SVGs drawn in `currentColor`, so the
+ * template left them the same grey as the body copy they sit above. They are
+ * the only mark in those cards; the accent belongs on them. */
+.feature-item .feature-icon,
+.feature-item .feature-icon svg,
+.tj-feature .feature-icon,
+.tj-feature .feature-icon svg {
+  color: var(--teal);
+}
+
+/* ---- Footer ---- */
+.footer-widget .widget-menu ul li a:hover,
+.tj-footer-area .copyright-menu li a:hover,
+.tj-footer-area .footer-contact-infos a:hover {
+  color: var(--aqua);
+}
+
+.bt-footer-brand img {
+  display: block;
+  width: auto;
+  height: 42px;
+}
+
+/* The social pills read as grey discs on the navy bar - and the drawer's are
+   the same component. Aqua puts them in the palette at rest and fills on
+   hover, where the navy glyph clears 6.1:1. */
+.copyright-content-area .copyright-socails ul li a,
+.hamburger-socials ul li a {
+  background-color: rgba(119, 203, 206, 0.2);
+}
+
+.copyright-content-area .copyright-socails ul li a i,
+.hamburger-socials ul li a i {
+  color: var(--aqua-light);
+}
+
+.copyright-content-area .copyright-socails ul li a:hover,
+.hamburger-socials ul li a:hover {
+  background-color: var(--aqua);
+}
+
+.copyright-content-area .copyright-socails ul li a:hover i,
+.hamburger-socials ul li a:hover i {
+  color: var(--primary);
+}

@@ -14,7 +14,7 @@ const routeFor = (slug) => {
 export const services = [
   {
     number: 1,
-    icon: "/assets/images/icons/service-1.svg",
+    icon: "/assets/images/bt/service-1.svg",
     titleLines: ["ServiceNow Licensing &", "Contract Advisory"],
     lead: "Optimize your investment before you renew, expand, or true-up.",
     desc: "Understand what you're paying for, what you're using, and what your organization actually needs.",
@@ -24,7 +24,7 @@ export const services = [
   },
   {
     number: 2,
-    icon: "/assets/images/icons/service-2.svg",
+    icon: "/assets/images/bt/service-2.svg",
     titleLines: ["ServiceNow Strategic", "Advisory"],
     lead: "Solve complex ServiceNow challenges without creating unnecessary consulting work.",
     desc: "Get experienced guidance around platform value, health, roadmap, use cases, and operating model.",
@@ -34,7 +34,7 @@ export const services = [
   },
   {
     number: 3,
-    icon: "/assets/images/icons/service-3.svg",
+    icon: "/assets/images/bt/service-3.svg",
     titleLines: ["Fractional ServiceNow", "Platform Leadership"],
     lead: "Senior ServiceNow leadership without another full-time senior hire.",
     desc: "Bring experienced oversight to strategy, governance, vendors, licensing, priorities, and platform value.",

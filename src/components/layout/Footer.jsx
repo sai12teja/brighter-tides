@@ -36,8 +36,17 @@ export default function Footer() {
           <div className="row rg-50 line">
             <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6">
               <div className="footer-widget footer1-col-1">
-                <div className="footer-title">
-                  <h4 className="title">{footerBrand.name}</h4>
+                {/* The footer's brand column leads with the reversed lockup
+                    rather than a text heading - it is the one place on a page
+                    where the mark can be shown at rest, away from the header's
+                    height budget. */}
+                <div className="footer-title bt-footer-brand">
+                  <img
+                    src="/assets/images/logos/brighter-tides-lockup-light.png"
+                    alt={footerBrand.name}
+                    width="875"
+                    height="172"
+                  />
                 </div>
                 <p className="bt-footer-blurb">{footerBrand.desc}</p>
               </div>

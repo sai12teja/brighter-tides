@@ -2,14 +2,26 @@ import { Link } from "react-router-dom";
 import { brand } from "../../data/navigation";
 
 /**
- * Text wordmark standing in for a logo file. Swap the inner markup for an
- * <img> once a real Brighter Tides logo asset exists - the `className`
- * contract stays the same.
+ * The Brighter Tides logo.
+ *
+ * Two variants ship: the full-colour lockup for light surfaces, and a
+ * reversed one - navy script knocked out to white, wave and sun untouched -
+ * for the navy header, drawer and footer. Both are the horizontal lockup
+ * rather than the stacked mark: at the ~46px a header row allows, the
+ * stacked version's script and tagline would be illegible.
+ *
+ * Sized by height in theme.css (`.brand-logo img`), so the intrinsic
+ * dimensions here only reserve the right aspect ratio while the file loads.
  */
-export default function BrandLogo({ className = "logo" }) {
+export default function BrandLogo({ className = "logo", variant = "light" }) {
+  const src =
+    variant === "light"
+      ? "/assets/images/logos/brighter-tides-lockup-light.png"
+      : "/assets/images/logos/brighter-tides-lockup.png";
+
   return (
-    <Link to="/" className={`${className} brand-wordmark`} aria-label="Brighter Tides - home">
-      {brand.first} <span className="brand-accent">{brand.second}</span>
+    <Link to="/" className={`${className} brand-logo`} aria-label={`${brand.first} ${brand.second} - home`}>
+      <img src={src} alt={`${brand.first} ${brand.second}`} width="875" height="172" />
     </Link>
   );
 }

@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
+import "./styles/theme.css";
 import "./styles/brand.css";
 
 // NOTE: intentionally not wrapped in <StrictMode>. This app loads the

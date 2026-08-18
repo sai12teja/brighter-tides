@@ -1,71 +1,13 @@
 /*
- * Brighter Tides brand overrides.
+ * Brighter Tides component overrides.
  *
  * The template's vendor stylesheets (main.css et al) are loaded via <link>
- * in index.html and are left untouched so they stay upgradeable. Anything
- * brand-specific belongs here.
- *
- * The original theme used a bitmap wordmark (logos/primary-logo.png, which
- * reads "Solvior"). Until a real Brighter Tides logo file exists, the brand
- * is rendered as live text - which also keeps it crisp at any DPI. The
- * vendor rule `.site-logo .logo { max-width: 150px }` would wrap the two
- * words, so it is widened here.
+ * in index.html and are left untouched so they stay upgradeable. The brand's
+ * colour system lives in styles/theme.css; this file holds the per-component
+ * rules - layout, spacing and the sections the template had no equivalent
+ * for.
  */
 
-.site-logo .logo.brand-wordmark {
-  max-width: none;
-  width: auto;
-  white-space: nowrap;
-  font-family: var(--tj-ff-heading, inherit);
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--tj-color-common-white, #fff);
-  text-decoration: none;
-}
-
-.site-logo .logo.brand-wordmark .brand-accent {
-  color: var(--tj-color-theme-primary, #0075ff);
-}
-
-/*
- * Both headers - the transparent one over the hero and the sticky duplicate
- * that slides down on scroll - sit on the dark theme colour
- * (`.tj-header-area.header-duplicate` is `--tj-color-theme-dark`, #051229),
- * so the white wordmark above is correct for both and needs no override.
- * `--tj-color-heading-primary` is the *same* #051229, so colouring the
- * sticky wordmark with it renders it invisible against its own background.
- */
-
-/*
- * The mobile drawer's panel (`.hamburger_bg`) is the dark theme colour, the
- * same #051229 as `--tj-color-heading-primary` - so colouring the wordmark
- * with that token painted "Brighter" in the panel's own background colour and
- * left only the blue ".brand-accent" half visible. The drawer's title, menu
- * links and close button are all `--tj-color-common-white`; the wordmark
- * belongs on that same white, which is also what the template's light
- * `primary-logo.png` gives it here.
- */
-.hamburger_logo .mobile_logo.brand-wordmark {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--tj-color-common-white, #f7f7f7);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.hamburger_logo .mobile_logo.brand-wordmark .brand-accent {
-  color: var(--tj-color-theme-primary, #0075ff);
-}
-
-@media (max-width: 575px) {
-  .site-logo .logo.brand-wordmark {
-    font-size: 21px;
-  }
-}
 
 /*
  * Hero eyebrow.
@@ -83,7 +25,7 @@
   font-weight: var(--tj-fw-bold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tj-color-theme-primary);
+  color: var(--aqua);
   padding-inline-start: 16px;
   padding-inline-end: 16px;
   margin-bottom: 15px;
@@ -101,7 +43,7 @@
   top: 50%;
   inset-inline-start: 0;
   transform: translateY(-50%);
-  background-color: var(--tj-color-theme-primary);
+  background-color: var(--aqua);
 }
 
 .hero-content .sub-title::after {
@@ -142,7 +84,7 @@
  * colour to maintain.
  */
 .hero-buttons .text-btn.hero-text-btn {
-  color: var(--tj-color-common-white, #fff);
+  color: var(--on-dark);
 }
 
 .hero-buttons .text-btn.hero-text-btn::before {
@@ -150,7 +92,7 @@
 }
 
 .hero-buttons .text-btn.hero-text-btn:hover {
-  color: var(--tj-color-theme-primary, #0075ff);
+  color: var(--aqua);
 }
 
 /*
@@ -329,7 +271,7 @@ html.lenis body {
 }
 
 .bt-founder-identity .role {
-  color: var(--tj-color-theme-primary);
+  color: var(--teal-dark);
   font-weight: var(--tj-fw-sbold);
 }
 
@@ -447,7 +389,7 @@ html.lenis body {
   margin-top: 50px;
   padding: 25px 30px;
   background-color: var(--tj-color-common-white);
-  border-inline-start: 3px solid var(--tj-color-theme-primary);
+  border-inline-start: 3px solid var(--gold);
 }
 
 .bt-challenge-note p {
@@ -608,7 +550,7 @@ html.lenis body {
 .bt-field-error {
   margin: 8px 0 0;
   font-size: 14px;
-  color: #d92d20;
+  color: var(--danger);
 }
 
 /* The intro is a centred statement, so it is held to a readable measure
@@ -679,7 +621,7 @@ html.lenis body {
 }
 
 .bt-footer-connect .bt-footer-email:hover {
-  color: var(--tj-color-theme-primary);
+  color: var(--aqua);
 }
 
 /* `.text-btn` is styled for light backgrounds - its text and its wipe-in
@@ -696,7 +638,7 @@ html.lenis body {
 }
 
 .bt-footer-connect .text-btn.bt-footer-linkedin:hover {
-  color: var(--tj-color-theme-primary);
+  color: var(--aqua);
 }
 
 /* Legal links with no page yet: present, but plainly not clickable. They sit
@@ -764,7 +706,7 @@ html.lenis body {
   font-weight: var(--tj-fw-bold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tj-color-theme-primary);
+  color: var(--teal-dark);
 }
 
 .bt-outcome-box .title {
@@ -785,7 +727,7 @@ html.lenis body {
   font-weight: var(--tj-fw-bold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tj-color-theme-primary);
+  color: var(--teal-dark);
 }
 
 /* Advisory-area cards run to different copy lengths; each fills its column
@@ -871,7 +813,7 @@ html.lenis body {
   font-weight: var(--tj-fw-bold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tj-color-theme-primary);
+  color: var(--teal-dark);
 }
 
 /* The revision date is metadata, not part of the document - quiet, on the
