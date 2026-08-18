@@ -9,7 +9,7 @@ import { cta } from "../data/servicesPage";
 export default function Services() {
   return (
     <>
-      <PageHeader title="Services" />
+      <PageHeader title="Services" image="/assets/images/bt/photos/services-hero.webp" />
       <ServicesIntro />
       <ProblemFirst />
       <ServiceCards />

@@ -58,7 +58,15 @@ function EvoluteContent({ animate }) {
 function Portrait() {
   return (
     <div className="tj-evolute-image hover:shine">
-      <img src={founder.image} alt={founder.name} />
+      <img
+        src={founder.image}
+        srcSet={`${founder.imageSmall} 645w, ${founder.image} 1290w`}
+        sizes="(max-width: 991px) 100vw, 645px"
+        alt={`${founder.name}, ${founder.role}`}
+        width="1290"
+        height="1592"
+        loading="lazy"
+      />
     </div>
   );
 }

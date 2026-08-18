@@ -21,7 +21,7 @@ export const purpose = {
     "We help you step back from day-to-day complexity, understand what's working, identify what isn't, and make informed decisions about where to go next.",
   ],
   note: "Our goal is simple: help you get more value from the investment you've already made.",
-  image: "/assets/images/about/h4-about-1.webp",
+  image: "/assets/images/bt/photos/about-purpose.webp",
 };
 
 export const approach = {
@@ -57,6 +57,7 @@ export const founder = {
   name: homeFounder.name,
   role: homeFounder.role,
   image: homeFounder.image,
+  imageSmall: homeFounder.imageSmall,
   paragraphs: [
     "Shannon brings more than 18 years of enterprise technology and business transformation leadership to Brighter Tides.",
     "Her experience goes beyond the platform itself. She understands the decisions leaders face around technology investment, governance, vendors, organizational priorities, and demonstrating business value.",
@@ -83,7 +84,6 @@ export const beliefs = {
     "Sometimes the right answer is optimizing what you already own. Sometimes it's simplifying the platform, improving governance, making a better licensing decision, or bringing in the right implementation support.",
     "Our role is to help you understand which path actually makes sense.",
   ],
-  image: "/assets/images/about/h5-about-1.webp",
 };
 
 export const cta = {

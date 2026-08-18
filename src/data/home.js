@@ -28,9 +28,12 @@ export const founder = {
   title: "Executive Experience Behind Every Recommendation.",
   name: "Shannon Chapman",
   role: "Founder & Principal Consultant",
-  // Placeholder portrait from the template's asset library until a real
-  // photograph of Shannon is supplied.
-  image: "/assets/images/team/team-single.webp",
+  // Shannon's own portrait. The slot is a tall crop (645x796 on the about
+  // page), which is why this frame was chosen from the five supplied - it is
+  // the only full-length one, so it fills the panel without cropping to a
+  // headshot.
+  image: "/assets/images/bt/photos/shannon-portrait.webp",
+  imageSmall: "/assets/images/bt/photos/shannon-portrait-645.webp",
   paragraphs: [
     "Shannon brings 18+ years of enterprise technology and business transformation leadership, combining deep ServiceNow experience with an executive understanding of strategy, governance, technology investment, and business priorities.",
     "Her approach is practical: understand the challenge, challenge assumptions, and create a clear path forward.",

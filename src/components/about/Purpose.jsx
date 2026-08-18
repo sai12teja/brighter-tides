@@ -17,7 +17,13 @@ export default function Purpose() {
         <div className="row rg-50 align-items-center">
           <div className="col-lg-6">
             <div className="about-images-group-one hover:shine wow fadeInUp" data-wow-delay="0.1s">
-              <img src={purpose.image} alt="Images" />
+              <img
+                src={purpose.image}
+                alt="Two colleagues reviewing a ServiceNow platform board"
+                width="800"
+                height="1078"
+                loading="lazy"
+              />
             </div>
           </div>
           <div className="col-lg-6">

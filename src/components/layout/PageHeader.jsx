@@ -4,10 +4,17 @@ import { Link } from "react-router-dom";
  * Breadcrumb banner used at the top of every inner page.
  * `crumbs` is the trail between Home and the current page, e.g.
  * [{ label: "Services", to: "/services" }].
+ *
+ * `image` is the backdrop behind the 82% navy scrim. It defaults to the
+ * about page's office frame, which is the neutral one of the set - so a page
+ * that has no photograph of its own still gets a real one rather than the
+ * template's placeholder.
  */
-export default function PageHeader({ title, crumbs = [] }) {
+const DEFAULT_IMAGE = "/assets/images/bt/photos/about-hero.webp";
+
+export default function PageHeader({ title, crumbs = [], image = DEFAULT_IMAGE }) {
   return (
-    <section className="tj-page-header" data-bg-image="/assets/images/bg/pheader-bg.webp">
+    <section className="tj-page-header" data-bg-image={image}>
       <div className="container">
         <div className="row">
           <div className="col-lg-12">

@@ -30,10 +30,22 @@ export default function Beliefs() {
       </div>
       <div className="about-bg-images">
         <div className="about-shape-1 hover:shine">
-          <img src="/assets/images/about/h2-shape-1.webp" alt="Shapes" />
+          <img
+            src="/assets/images/bt/photos/about-believe-main.webp"
+            alt="Two advisors working through a document at a meeting table"
+            width="1490"
+            height="1352"
+            loading="lazy"
+          />
         </div>
         <div className="about-shape-2 hover:shine">
-          <img src="/assets/images/about/h2-shape-2.webp" alt="Shapes" />
+          <img
+            src="/assets/images/bt/photos/about-believe-small.webp"
+            alt="Hands comparing options on a printed matrix"
+            width="400"
+            height="396"
+            loading="lazy"
+          />
         </div>
         <div className="about-shape-3 zoominout">
           <img src="/assets/images/bt/star.svg" alt="Shapes" />

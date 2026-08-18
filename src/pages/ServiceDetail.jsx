@@ -16,7 +16,11 @@ export default function ServiceDetail() {
 
   return (
     <>
-      <PageHeader title={route.label} crumbs={[{ label: "Services", to: "/services" }]} />
+      <PageHeader
+        title={route.label}
+        crumbs={[{ label: "Services", to: "/services" }]}
+        image="/assets/images/bt/photos/services-hero.webp"
+      />
 
       <section className="tj-service-area section-space">
         <div className="container">

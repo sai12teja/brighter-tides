@@ -19,7 +19,7 @@ import { cta } from "../data/contact";
 export default function Contact() {
   return (
     <>
-      <PageHeader title="Contact" />
+      <PageHeader title="Contact" image="/assets/images/bt/photos/contact-hero.webp" />
       <ContactIntro />
       <DirectContact />
 
