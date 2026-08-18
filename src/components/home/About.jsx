@@ -59,10 +59,22 @@ export default function About() {
       </div>
       <div className="about-bg-images">
         <div className="about-shape-1 hover:shine">
-          <img src="/assets/images/about/h2-shape-1.webp" alt="Shapes" />
+          <img
+            src="/assets/images/bt/photos/about.webp"
+            alt="Three colleagues in discussion around a meeting table"
+            width="1200"
+            height="1089"
+            loading="lazy"
+          />
         </div>
         <div className="about-shape-2 hover:shine">
-          <img src="/assets/images/about/h2-shape-2.webp" alt="Shapes" />
+          <img
+            src="/assets/images/bt/photos/about-secondary.webp"
+            alt="Two people reviewing figures on a tablet"
+            width="480"
+            height="475"
+            loading="lazy"
+          />
         </div>
         <div className="about-shape-3 zoominout">
           <img src="/assets/images/bt/star.svg" alt="Shapes" />

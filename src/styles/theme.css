@@ -577,6 +577,23 @@ html {
           filter: none;
 }
 
+/* ---- Section photography ----
+ *
+ * The two about-section images sit inside organic mask shapes with a white
+ * plate behind them, and the template contained its artwork at 97% / 74%
+ * inside those - which reads as a picture floating in a blob rather than as
+ * a shaped picture. Real photography fills the shape instead, so the mask
+ * becomes the photo's edge. */
+.tj-about-section .about-bg-images .about-shape-1 img,
+.tj-about-section .about-bg-images .about-shape-2 img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  margin-top: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 /* ---- Icons ----
  *
  * The feature-grid icons are inline SVGs drawn in `currentColor`, so the

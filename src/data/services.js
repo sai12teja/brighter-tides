@@ -18,7 +18,7 @@ export const services = [
     titleLines: ["ServiceNow Licensing &", "Contract Advisory"],
     lead: "Optimize your investment before you renew, expand, or true-up.",
     desc: "Understand what you're paying for, what you're using, and what your organization actually needs.",
-    image: "/assets/images/service/h1-service-1.webp",
+    image: "/assets/images/bt/photos/service-01.webp",
     to: routeFor("servicenow-licensing-contract-advisory"),
     stacked: true,
   },

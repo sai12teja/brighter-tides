@@ -47,7 +47,15 @@ export default function Hero() {
               </div>
               <div className="hero-images-box">
                 <div className="hero-images">
-                  <img src="/assets/images/hero/h1-hero-1.webp" alt="Images" />
+                  {/* The LCP element on the home page: eager, high priority,
+                      and sized so the hero does not reflow around it. */}
+                  <img
+                    src="/assets/images/bt/photos/hero.webp"
+                    alt="Two advisors reviewing platform data on a tablet in an office"
+                    width="1220"
+                    height="1514"
+                    fetchPriority="high"
+                  />
                 </div>
                 <div className="images-shapes move-anim-2">
                   <img src="/assets/images/shapes/hero-2.png" alt="Shapes" />
