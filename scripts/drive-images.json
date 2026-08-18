@@ -1,0 +1,78 @@
+{
+  "_comment": [
+    "State for the hourly Drive image check. Each entry records the Google Drive",
+    "file id that produced the assets currently committed under",
+    "public/assets/images/bt/photos, so a re-upload is detectable: Drive gives a",
+    "replaced file a NEW id, and the listing also carries its size and upload",
+    "time. If the id for a name differs from the one here, the image was",
+    "replaced and needs reprocessing; a name absent here is a new image.",
+    "",
+    "Pipeline for every photograph: crop to the aspect its slot renders at,",
+    "resample in halving steps, export WebP at quality 0.90, at 1x and 2x of the",
+    "rendered CSS size. Never ship the Drive original - they are 2.5-3.8 MB JPEGs."
+  ],
+  "folder": "1pMbplG_MLJf78IyJFG-b6NMWMkoSvrFr",
+  "folderName": "Homepage",
+  "lastChecked": "2026-08-18T15:40:00+05:30",
+  "files": {
+    "Hero": {
+      "id": "1y9Q4kvGSufOKIFpdWiQE4vbIw4TPNoBx",
+      "slot": "Home hero, beside the headline (components/home/Hero)",
+      "aspect": "source (610px wide box, no crop)",
+      "outputs": ["hero.webp 1220x1514", "hero-610.webp 610x757"]
+    },
+    "About": {
+      "id": "10jHZuwU5TfWcCGWfsWRZ0eoI9G6X4YS1",
+      "slot": "Home about section, large organic mask (components/home/About)",
+      "aspect": "745:676, cropped from inside the circle the file arrives as",
+      "outputs": ["about.webp 1490x1352"]
+    },
+    "ABOUT small secondary image": {
+      "id": "1nvMa0OAY_vvjFzkgJTacSc_N3x5gpEFa",
+      "slot": "Home about section, small mask above it (components/home/About)",
+      "aspect": "187:185",
+      "outputs": ["about-secondary.webp 400x396"]
+    },
+    "Service 01": {
+      "id": "1Hgwp1NVpW5D-R0lIegiC_q0yVpQ8h49s",
+      "slot": "Licensing & Contract Advisory - home card, services page card thumb, detail banner",
+      "aspect": "645:670 for the cards, 3:2 for the detail banner",
+      "outputs": [
+        "service-01.webp 1290x1340",
+        "service-01-645.webp 645x670",
+        "service-01-banner.webp 1662x1108",
+        "service-01-banner-831.webp 831x554"
+      ]
+    },
+    "Service 02": {
+      "id": "1d4_QGTB4tIghsaUPsEPSTTuondAe09Tt",
+      "replacedId": "1C8NcsCo4iWuMz4nJWr7mDl-QPNmyadTD",
+      "slot": "Strategic Advisory - home card, services page card thumb, detail banner",
+      "aspect": "645:670 for the cards, 3:2 for the detail banner",
+      "outputs": [
+        "service-02.webp 1290x1340",
+        "service-02-645.webp 645x670",
+        "service-02-banner.webp 1662x1108",
+        "service-02-banner-831.webp 831x554"
+      ]
+    },
+    "Service 03": {
+      "id": "1ITnZNhCmOXVYZ8BFSySZBwvcgUBE7C_d",
+      "replacedId": "1RfmxCWhZMCl9r0lDIpR4eJVwGKI5DkS6",
+      "slot": "Fractional Platform Leadership - home card, services page card thumb, detail banner",
+      "aspect": "645:670 for the cards, 3:2 for the detail banner",
+      "outputs": [
+        "service-03.webp 1290x1340",
+        "service-03-645.webp 645x670",
+        "service-03-banner.webp 1662x1108",
+        "service-03-banner-831.webp 831x554"
+      ]
+    }
+  },
+  "unplacedSlots": [
+    "Blog thumbnails (data/blogPosts)",
+    "Testimonial portraits (data/testimonials)",
+    "Skills section image (components/home/Skills)",
+    "About page images (components/about/*)"
+  ]
+}
