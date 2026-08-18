@@ -1,6 +1,6 @@
 import { services } from "./navigation";
 import { legalRoutes } from "./legal";
-import { email, location } from "./site";
+import { email, linkedin, location } from "./site";
 
 export const footerBrand = {
   name: "Brighter Tides",
@@ -21,7 +21,7 @@ export const footerServices = services.map((service) => ({
 // the slot the template gives its newsletter form, so it carries the direct
 // ways to reach the practice rather than a plain link list.
 export const footerConnect = {
-  linkedin: { label: "Connect on LinkedIn", href: "https://www.linkedin.com/" },
+  linkedin,
   email,
   location: location.label,
 };
@@ -36,9 +36,11 @@ export const footerLegal = legalRoutes.map((route) => ({
   to: "/" + route.slug,
 }));
 
-// Icon links, used by the mobile drawer's "Follow us" row.
+// Icon links, used by the mobile drawer's "Follow us" row and the copyright
+// bar. One entry: LinkedIn is the practice's only social presence, so the row
+// is a row of one rather than a set of dead icons.
 export const socialLinks = [
-  { icon: "fa-linkedin-in", href: "https://www.linkedin.com/", label: "LinkedIn" },
+  { icon: "fa-linkedin-in", href: linkedin.href, label: "LinkedIn" },
 ];
 
 export const copyright = "Brighter Tides. All rights reserved.";

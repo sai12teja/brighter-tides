@@ -1,6 +1,6 @@
 // Brighter Tides - Contact page content.
 
-import { email, location } from "./site";
+import { email, linkedin, location } from "./site";
 
 export const hero = {
   eyebrow: "Contact Brighter Tides",
@@ -49,12 +49,7 @@ export const form = {
 export const direct = {
   title: "Prefer to reach out directly?",
   email,
-  linkedin: {
-    label: "Connect on LinkedIn",
-    // Shown as the card's value - swap for the real profile handle.
-    handle: "Shannon Chapman",
-    href: "https://www.linkedin.com/",
-  },
+  linkedin,
   // The practice advises remotely, so the card says where it is based rather
   // than implying a walk-in office.
   location: {
