@@ -102,6 +102,13 @@ export default function Footer() {
                 >
                   {footerConnect.linkedin.label} <i className="tji-arrow-right" aria-hidden="true"></i>
                 </a>
+                {/* Where the practice is based. `address` is the right element
+                    for it, and its browser-default italics are reset in
+                    theme.css rather than fought with a <span>. */}
+                <address className="bt-footer-location">
+                  <i className="tji-location" aria-hidden="true"></i>
+                  <span>{footerConnect.location}</span>
+                </address>
               </div>
             </div>
           </div>

@@ -1,5 +1,7 @@
 // Brighter Tides - Contact page content.
 
+import { email, location } from "./site";
+
 export const hero = {
   eyebrow: "Contact Brighter Tides",
   title: "Start With the Problem.",
@@ -43,27 +45,38 @@ export const form = {
   },
 };
 
-// Direct contact details, shown as a ruled list beneath the form/map row.
+// Direct contact details, shown as a card row above the form/map row.
 export const direct = {
   title: "Prefer to reach out directly?",
-  email: "hello@brightertides.com",
+  email,
   linkedin: {
     label: "Connect on LinkedIn",
     // Shown as the card's value - swap for the real profile handle.
     handle: "Shannon Chapman",
     href: "https://www.linkedin.com/",
   },
+  // The practice advises remotely, so the card says where it is based rather
+  // than implying a walk-in office.
+  location: {
+    title: "Where we're based",
+    value: location.label,
+    note: location.region,
+  },
   note: "Every inquiry is read by Shannon, not a shared inbox.",
 };
 
-// PLACEHOLDER LOCATION. This is the embed contact.html ships with. Brighter
-// Tides is a remote advisory practice with no public office, so replace this
-// with the real service area (or drop the map) before launch - a map pin on
-// somewhere the business is not is worse than no map at all.
+// The template shipped a New York pin; this one is built from the practice's
+// own base (data/site). The `maps?q=...&output=embed` form is used rather than
+// the `maps/embed?pb=` blob Google's share dialog produces: the `pb` string
+// encodes a specific viewport and place id that cannot be edited by hand, so
+// it would go stale silently the next time the location changes. This form
+// needs no API key and geocodes the query on load.
+//
+// Brighter Tides advises remotely and has no walk-in office, so the map is
+// deliberately zoomed to the city rather than a street address.
 export const map = {
-  title: "Brighter Tides service area",
-  embedUrl:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96840.74259815917!2d-74.21035326499913!3d40.66794886378488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1742025261462!5m2!1sen!2sbd",
+  title: `Brighter Tides is based in ${location.label}`,
+  embedUrl: `https://maps.google.com/maps?q=${encodeURIComponent(location.mapQuery)}&z=11&output=embed`,
 };
 
 export const cta = {

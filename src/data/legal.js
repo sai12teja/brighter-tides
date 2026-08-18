@@ -12,7 +12,8 @@
  * depend on facts only the business can supply:
  *
  *   1. "jurisdiction" below - the governing law and courts.
- *   2. "entity" below - the registered legal name and address of the practice.
+ *   2. "entity" below - the registered legal name of the practice. Its
+ *      address is now set from data/site.
  *   3. The cookies section, which is written for a site that runs no
  *      measurement at all. Add an analytics script and that section has to
  *      change with it.
@@ -24,16 +25,22 @@
  * people link to them.
  */
 
+import { email as contactEmail, location } from "./site";
+
 /** Shown in the meta line under the title on both documents. */
 export const lastUpdated = "18 August 2026";
 
-/** PLACEHOLDER - the registered legal name and address of the practice. */
+/**
+ * PARTIAL PLACEHOLDER - the registered legal name is still to be confirmed
+ * with counsel. Where the practice is based is a settled fact and comes from
+ * data/site, so both documents name it without a second place to update.
+ */
 export const entity = "Brighter Tides";
 
 /** PLACEHOLDER - governing law. Set once the operating jurisdiction is fixed. */
 export const jurisdiction = "the jurisdiction in which Brighter Tides is established";
 
-const EMAIL = "hello@brightertides.com";
+const EMAIL = contactEmail;
 
 export const legalDocuments = {
   "privacy-policy": {
@@ -142,6 +149,7 @@ export const legalDocuments = {
         title: "Contact",
         paragraphs: [
           "Questions about this policy, or about anything we hold, go to " + EMAIL + ". Inquiries are read by Shannon, not a shared inbox.",
+          entity + " is an independent ServiceNow advisory practice based in " + location.label + ", United States, and advises its clients remotely.",
         ],
       },
     ],

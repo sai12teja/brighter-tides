@@ -587,6 +587,14 @@ html.lenis body {
   word-break: break-word;
 }
 
+/* The location card's second line names the wider region - a note under the
+   value, not a second value, so it is set a step quieter. */
+.bt-direct .contact-list li.bt-contact-subvalue {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--tj-color-text-body-2);
+}
+
 /* The reassurance cards carry one short line each; an equal height stops the
    row from stepping. */
 .tj-contact-area .contact-item.style-2 {
@@ -638,6 +646,27 @@ html.lenis body {
 }
 
 .bt-footer-connect .text-btn.bt-footer-linkedin:hover {
+  color: var(--aqua);
+}
+
+/* Where the practice is based, under the two ways to reach it. `<address>`
+   is italic by default in every browser and the footer's other lines are
+   upright, so the italics are reset here rather than the element being
+   swapped for a <span> that would lose the semantics. */
+.bt-footer-connect .bt-footer-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 0;
+  font-size: 15px;
+  line-height: 1.4;
+  font-style: normal;
+  color: var(--tj-color-common-white-2);
+}
+
+.bt-footer-connect .bt-footer-location i {
+  flex: none;
+  font-size: 16px;
   color: var(--aqua);
 }
 

@@ -9,7 +9,6 @@ import WhyUs from "../components/home/WhyUs";
 import Process from "../components/home/Process";
 import Skills from "../components/home/Skills";
 import Testimonials from "../components/home/Testimonials";
-import Projects from "../components/home/Projects";
 import Blog from "../components/home/Blog";
 import Faq from "../components/home/Faq";
 import CtaBand from "../components/sections/CtaBand";
@@ -33,7 +32,10 @@ export default function Home() {
       {/* Template sections still carrying Solvior placeholder content. */}
       <Skills />
       <Testimonials />
-      <Projects />
+      {/* "Our projects" is off the home page: its four case studies are the
+          template's placeholders and there is no real project work to show
+          yet. components/home/Projects and data/projects are kept, so the
+          section is two lines away from returning once there is. */}
       <Blog />
       <Faq />
       <CtaBand content={finalCta} />

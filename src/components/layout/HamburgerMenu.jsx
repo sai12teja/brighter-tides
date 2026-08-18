@@ -1,5 +1,6 @@
 import BrandLogo from "./BrandLogo";
 import { socialLinks } from "../../data/footer";
+import { email, location } from "../../data/site";
 
 export default function HamburgerMenu() {
   return (
@@ -38,10 +39,14 @@ export default function HamburgerMenu() {
               <div className="contact_item">
                 <span className="subtitle">Email</span>
                 <div className="text">
-                  <a className="link" href="mailto:hello@brightertides.com">
-                    hello@brightertides.com
+                  <a className="link" href={`mailto:${email}`}>
+                    {email}
                   </a>
                 </div>
+              </div>
+              <div className="contact_item">
+                <span className="subtitle">Based in</span>
+                <div className="text">{location.label}</div>
               </div>
             </div>
           </div>

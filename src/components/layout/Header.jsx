@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import MainNav from "./MainNav";
 import BrandLogo from "./BrandLogo";
 import { headerCta } from "../../data/navigation";
+import { email, location } from "../../data/site";
 
 function HeaderRight() {
   return (
@@ -58,7 +59,16 @@ export default function Header() {
                   </div>
 
                   <div className="topbar_infos">
-                    <div className="info_item">
+                    {/* Below lg the topbar centres and wraps; the location and
+                        hours drop out there so the row stays one line and the
+                        one actionable item - the email - survives. */}
+                    <div className="info_item d-none d-lg-inline-flex">
+                      <span>
+                        <i className="tji-location"></i>
+                      </span>
+                      <span>{location.label}</span>
+                    </div>
+                    <div className="info_item d-none d-lg-inline-flex">
                       <span>
                         <i className="tji-clock"></i>
                       </span>
@@ -68,7 +78,7 @@ export default function Header() {
                       <span>
                         <i className="tji-email"></i>
                       </span>
-                      <a href="mailto:hello@brightertides.com">hello@brightertides.com</a>
+                      <a href={`mailto:${email}`}>{email}</a>
                     </div>
                   </div>
                 </div>

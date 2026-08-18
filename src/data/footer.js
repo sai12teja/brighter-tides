@@ -1,5 +1,6 @@
 import { services } from "./navigation";
 import { legalRoutes } from "./legal";
+import { email, location } from "./site";
 
 export const footerBrand = {
   name: "Brighter Tides",
@@ -21,7 +22,8 @@ export const footerServices = services.map((service) => ({
 // ways to reach the practice rather than a plain link list.
 export const footerConnect = {
   linkedin: { label: "Connect on LinkedIn", href: "https://www.linkedin.com/" },
-  email: "hello@brightertides.com",
+  email,
+  location: location.label,
 };
 
 // Rendered in the copyright bar, where the template puts its legal links.

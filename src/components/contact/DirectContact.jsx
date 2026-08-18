@@ -11,9 +11,10 @@ import { direct } from "../../data/contact";
  * though it came from a different site. This is the template's component,
  * unmodified.
  *
- * Two cards centred rather than the template's four across - there are two
- * real channels, and padding the row out with invented ones (a phone line,
- * an office) would be worse than a shorter row.
+ * Three cards rather than the template's four across - two ways to make
+ * contact and where the practice is based. The row is still short of the
+ * template's four because there is no phone line to add, and padding it out
+ * with an invented one would be worse than a shorter row.
  */
 export default function DirectContact() {
   return (
@@ -27,7 +28,7 @@ export default function DirectContact() {
           </div>
         </div>
         <div className="row rg-30 justify-content-center">
-          <div className="col-xl-4 col-lg-5 col-md-6 col-sm-6">
+          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
             <div className="contact-item style-2 wow fadeInUp" data-wow-delay="0.1s">
               <div className="contact-icon">
                 <i className="tji-email"></i>
@@ -40,7 +41,7 @@ export default function DirectContact() {
               </ul>
             </div>
           </div>
-          <div className="col-xl-4 col-lg-5 col-md-6 col-sm-6">
+          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
             <div className="contact-item style-2 wow fadeInUp" data-wow-delay="0.3s">
               <div className="contact-icon">
                 <i className="fa-brands fa-linkedin-in"></i>
@@ -55,10 +56,24 @@ export default function DirectContact() {
               </ul>
             </div>
           </div>
+          {/* The third card carries a place, not a channel, so its value is
+              plain text - a link here would suggest an office to visit. */}
+          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+            <div className="contact-item style-2 wow fadeInUp" data-wow-delay="0.5s">
+              <div className="contact-icon">
+                <i className="tji-location"></i>
+              </div>
+              <h3 className="contact-title">{direct.location.title}</h3>
+              <ul className="contact-list">
+                <li>{direct.location.value}</li>
+                <li className="bt-contact-subvalue">{direct.location.note}</li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div className="row">
           <div className="col-12">
-            <p className="bt-direct-note wow fadeInUp" data-wow-delay="0.5s">
+            <p className="bt-direct-note wow fadeInUp" data-wow-delay="0.7s">
               {direct.note}
             </p>
           </div>
