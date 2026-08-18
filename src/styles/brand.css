@@ -1,0 +1,1035 @@
+/*
+ * Brighter Tides brand overrides.
+ *
+ * The template's vendor stylesheets (main.css et al) are loaded via <link>
+ * in index.html and are left untouched so they stay upgradeable. Anything
+ * brand-specific belongs here.
+ *
+ * The original theme used a bitmap wordmark (logos/primary-logo.png, which
+ * reads "Solvior"). Until a real Brighter Tides logo file exists, the brand
+ * is rendered as live text - which also keeps it crisp at any DPI. The
+ * vendor rule `.site-logo .logo { max-width: 150px }` would wrap the two
+ * words, so it is widened here.
+ */
+
+.site-logo .logo.brand-wordmark {
+  max-width: none;
+  width: auto;
+  white-space: nowrap;
+  font-family: var(--tj-ff-heading, inherit);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--tj-color-common-white, #fff);
+  text-decoration: none;
+}
+
+.site-logo .logo.brand-wordmark .brand-accent {
+  color: var(--tj-color-theme-primary, #0075ff);
+}
+
+/*
+ * Both headers - the transparent one over the hero and the sticky duplicate
+ * that slides down on scroll - sit on the dark theme colour
+ * (`.tj-header-area.header-duplicate` is `--tj-color-theme-dark`, #051229),
+ * so the white wordmark above is correct for both and needs no override.
+ * `--tj-color-heading-primary` is the *same* #051229, so colouring the
+ * sticky wordmark with it renders it invisible against its own background.
+ */
+
+/*
+ * The mobile drawer's panel (`.hamburger_bg`) is the dark theme colour, the
+ * same #051229 as `--tj-color-heading-primary` - so colouring the wordmark
+ * with that token painted "Brighter" in the panel's own background colour and
+ * left only the blue ".brand-accent" half visible. The drawer's title, menu
+ * links and close button are all `--tj-color-common-white`; the wordmark
+ * belongs on that same white, which is also what the template's light
+ * `primary-logo.png` gives it here.
+ */
+.hamburger_logo .mobile_logo.brand-wordmark {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--tj-color-common-white, #f7f7f7);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hamburger_logo .mobile_logo.brand-wordmark .brand-accent {
+  color: var(--tj-color-theme-primary, #0075ff);
+}
+
+@media (max-width: 575px) {
+  .site-logo .logo.brand-wordmark {
+    font-size: 21px;
+  }
+}
+
+/*
+ * Hero eyebrow.
+ *
+ * The theme already has an eyebrow treatment - uppercase, letter-spaced,
+ * accent-coloured, with a small dot on each side - but it is scoped to
+ * `.sec-heading .sub-title`, and the Home 01 hero has no `.sec-heading`
+ * wrapper. These rules re-point that exact same treatment at the hero so
+ * the eyebrow is visually identical to every other section's, rather than
+ * introducing a second style. Values mirror `.sec-heading .sub-title`.
+ */
+.hero-content .sub-title {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: var(--tj-fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tj-color-theme-primary);
+  padding-inline-start: 16px;
+  padding-inline-end: 16px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content .sub-title::before,
+.hero-content .sub-title::after {
+  position: absolute;
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  top: 50%;
+  inset-inline-start: 0;
+  transform: translateY(-50%);
+  background-color: var(--tj-color-theme-primary);
+}
+
+.hero-content .sub-title::after {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/*
+ * Hero CTA row - lays the primary button and the secondary text link side
+ * by side without altering either component.
+ *
+ * The theme spaced its single hero button with
+ * `.hero-content .hero-button { margin-top: 40px }`. Once that button became
+ * a flex item, `align-items: center` started centring its *margin box*, which
+ * dropped the button's visual box 40px / 2 = 20px below the secondary link.
+ * The 40px is row-level spacing, so it moves to the row: both CTAs now share
+ * it and sit on one centre line, and the gap under the paragraph is
+ * unchanged.
+ */
+.hero-content .hero-buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  margin-top: 40px;
+}
+
+.hero-content .hero-buttons .hero-button {
+  margin-top: 0;
+}
+
+/*
+ * `.text-btn` is the theme's existing secondary link, styled for light
+ * backgrounds: both its text and its wipe-in underline (`::before`) use the
+ * dark heading colour, so on the dark hero the underline animates but is
+ * invisible. Driving the underline from `currentColor` keeps it in step with
+ * the text through the hover transition instead of hard-coding a second
+ * colour to maintain.
+ */
+.hero-buttons .text-btn.hero-text-btn {
+  color: var(--tj-color-common-white, #fff);
+}
+
+.hero-buttons .text-btn.hero-text-btn::before {
+  background-color: currentColor;
+}
+
+.hero-buttons .text-btn.hero-text-btn:hover {
+  color: var(--tj-color-theme-primary, #0075ff);
+}
+
+/*
+ * The decorative "Scroll" rail is absolutely positioned against the hero's
+ * bottom-left. The Brighter Tides copy is taller than the placeholder copy
+ * the theme was built around (eyebrow + four-line headline + four-line
+ * paragraph + a two-CTA row), so the CTA row grew down into the rail and
+ * the two overlapped. Extra space at the base of the hero moves the rail
+ * clear without touching the rail, the buttons, or the layout above.
+ * Desktop only - the rail is `d-none d-lg-block`.
+ */
+@media (min-width: 992px) {
+  .tj-hero-section {
+    padding-bottom: 140px;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Motion
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Lenis drives the page (see lib/smoothScroll.js). It sets these classes on
+ * <html> and needs the document to keep its natural height; the
+ * `scroll-behavior` reset stops the browser's own smooth-scroll from
+ * animating against Lenis on anchor jumps.
+ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/*
+ * animate.css reveals default to `ease`, which starts fast and lands hard.
+ * An ease-out curve carries the same 30px of travel but decelerates into
+ * place, so a section arriving as you scroll settles instead of snapping.
+ * Promoting the animating element to its own layer keeps the text crisp
+ * through the transform rather than resampling it every frame.
+ */
+.animated {
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wow,
+.animated {
+  backface-visibility: hidden;
+}
+
+/* Nothing here is load-bearing, so honour a reduced-motion preference by
+   showing the finished state immediately. Lenis stays off in that case too. */
+@media (prefers-reduced-motion: reduce) {
+  .animated {
+    animation: none !important;
+  }
+
+  .wow {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Home sections added for Brighter Tides
+ *
+ * Everything below composes the theme's own tokens and component classes -
+ * no new colours, fonts, or spacing scales are introduced. Rules exist only
+ * where the theme had no equivalent (a founder split, a process step) or
+ * where an existing component is being used on a background it was not
+ * originally paired with.
+ * ---------------------------------------------------------------------------
+ */
+
+/* A centred heading reads better when it is not the full container width. */
+.bt-narrow-heading .sec-title,
+.bt-narrow-heading .desc {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+/*
+ * The theme's `.feature-item` was built around the inline SVG icons, which
+ * carry their own size. These cards use the icon font instead, so it needs an
+ * explicit size - matched to the 80px SVG box the sibling cards use. Scoped
+ * to `.feature-icon i` so the SVG cards are untouched.
+ */
+.feature-item .feature-icon i {
+  font-size: 48px;
+  line-height: 1;
+  color: var(--tj-color-theme-primary);
+}
+
+/*
+ * The footer is `position: sticky; bottom: 0` and the page content scrolls
+ * over it, so every section has to paint an opaque background of its own or
+ * the footer shows through it. The theme alternates white / light-blue down
+ * the page; the new sections continue that alternation.
+ */
+.bt-founder-section,
+.bt-process-section {
+  background-color: var(--tj-color-common-white);
+}
+
+.bt-why-section {
+  background-color: var(--tj-color-theme-bg);
+}
+
+/*
+ * Card grids: every card fills its column, so a card whose title wraps to a
+ * second line (or whose copy runs long) no longer sits taller than the ones
+ * beside it. Bootstrap's row already stretches the columns to equal height;
+ * the card just has to take that height rather than shrink-wrap its text.
+ */
+.tj-feature-section .feature-item,
+.bt-challenge-section .feature-item,
+.bt-why-section .feature-item {
+  height: 100%;
+}
+
+/*
+ * In the home page's expertise grid one title wraps to two lines and the rest
+ * do not, which pushed that card's description a line lower than its
+ * neighbours'. Reserving two lines for every title puts all four descriptions
+ * on the same line. Opt-in, so grids whose titles all fit on one line (the
+ * about page's approach cards) keep their natural spacing.
+ */
+.bt-even-titles .feature-content .title {
+  min-height: 2.6em;
+}
+
+/*
+ * 07 - Each service now leads with a one-line promise before the detail
+ * paragraph; the heading face marks it as the headline of the two.
+ */
+.service-item .desc .service-lead {
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-common-white);
+}
+
+/* 03 - Meet the founder */
+.bt-founder-images img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.bt-founder-identity {
+  margin-bottom: 25px;
+}
+
+.bt-founder-identity .name {
+  margin-bottom: 5px;
+  font-size: var(--tj-fs-h4);
+  letter-spacing: -0.025em;
+}
+
+.bt-founder-identity .role {
+  color: var(--tj-color-theme-primary);
+  font-weight: var(--tj-fw-sbold);
+}
+
+/*
+ * Shannon's credentials.
+ *
+ * Two of the four are words rather than numbers, so these are set as plain
+ * text on a fixed two-column grid instead of going through the odometer
+ * counter: one type size for every value and one for every label means all
+ * four read off the same two baselines, however long the value is.
+ */
+.bt-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 40px;
+  margin: 40px 0 0;
+  padding: 30px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--tj-color-border-2);
+}
+
+.bt-stats-grid li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bt-stats-grid .value {
+  font-family: var(--tj-ff-heading);
+  font-size: 32px;
+  font-weight: var(--tj-fw-bold);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--tj-color-heading-primary);
+}
+
+/* Tabular figures, so a rolling count does not jitter as its digits change
+   width mid-animation. See hooks/useCountUp.js. */
+.bt-stats-grid .num {
+  font-variant-numeric: tabular-nums;
+}
+
+.bt-stats-grid .label {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--tj-color-text-body-2);
+}
+
+@media (min-width: 1200px) {
+  .bt-stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 30px;
+  }
+
+  .bt-stats-grid .value {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 575px) {
+  .bt-stats-grid .value {
+    font-size: 26px;
+  }
+}
+
+.bt-founder-content .bt-founder-button {
+  margin-top: 40px;
+}
+
+/* The founder heading has no description under it, so it needs less air. */
+.bt-founder-content .sec-heading {
+  margin-bottom: 30px;
+}
+
+
+/* 04 - Experience logos. `.tj-brand-section` is a dark band, so the label
+   and footnote are set on the theme's dark-surface colours. */
+.bt-experience-section .bt-experience-label {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.bt-experience-section .bt-experience-label .sub-title {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: var(--tj-fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tj-color-common-white);
+}
+
+.bt-experience-section .bt-experience-note {
+  margin-top: 35px;
+  text-align: center;
+}
+
+.bt-experience-section .bt-experience-note p {
+  margin-bottom: 0;
+  font-size: 14px;
+  color: var(--tj-color-common-white-2);
+}
+
+/* The about page uses the template's light strip (`tj-brand-section-two`),
+   where the same footnote sits on white. */
+.tj-brand-section-two.bt-experience-section .bt-experience-note p {
+  color: var(--tj-color-text-body-2);
+}
+
+/* 05 - The ServiceNow challenge */
+.bt-challenge-section {
+  background-color: var(--tj-color-theme-bg);
+}
+
+.bt-challenge-note {
+  margin-top: 50px;
+  padding: 25px 30px;
+  background-color: var(--tj-color-common-white);
+  border-inline-start: 3px solid var(--tj-color-theme-primary);
+}
+
+.bt-challenge-note p {
+  margin-bottom: 0;
+  font-family: var(--tj-ff-heading);
+  font-size: var(--tj-fs-h6);
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-heading-primary);
+}
+
+/* 09 - How we work */
+.bt-process-item {
+  height: 100%;
+  padding-top: 30px;
+  border-top: 2px solid var(--tj-color-border-2);
+  transition: border-color 0.3s ease-in-out;
+}
+
+.bt-process-item:hover {
+  border-top-color: var(--tj-color-theme-primary);
+}
+
+.bt-process-item .bt-process-index {
+  display: block;
+  margin-bottom: 20px;
+  font-family: var(--tj-ff-heading);
+  font-size: 48px;
+  font-weight: var(--tj-fw-bold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--tj-color-theme-primary);
+}
+
+.bt-process-item .title {
+  margin-bottom: 15px;
+  letter-spacing: -0.025em;
+}
+
+.bt-process-item .desc p:last-child {
+  margin-bottom: 0;
+}
+
+/* 10 - FAQ */
+.bt-faq-section {
+  background-color: var(--tj-color-common-white);
+}
+
+/* 11 - Final CTA. The band is accent-coloured, so the copy that sits on it
+   is set on the theme's on-dark colours. */
+.bt-final-cta {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.bt-final-cta .cta-title {
+  max-width: 760px;
+}
+
+.bt-final-cta .cta-title .sub-title {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: var(--tj-fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tj-color-common-white);
+  opacity: 0.8;
+}
+
+.bt-final-cta .cta-title .desc {
+  margin-top: 20px;
+}
+
+.bt-final-cta .cta-title .desc p {
+  color: var(--tj-color-common-white);
+}
+
+.bt-final-cta .cta-title .desc p:last-child {
+  margin-bottom: 0;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * About page
+ *
+ * Every section here is one of the template's own (`tj-about-info`,
+ * `tj-about-section-two`, `tj-feature-section`, `tj-evolute-area`,
+ * `tj-brand-section-two`, `tj-about-section`, `tj-cta-section`), so their
+ * type and spacing come from main.css untouched. Only these two rules are
+ * added, and both reuse existing tokens.
+ * ---------------------------------------------------------------------------
+ */
+
+/* "Our Purpose" closes on a statement rather than another paragraph - the
+   heading face marks it without a new colour or size. */
+.bt-lead-note {
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-heading-primary);
+}
+
+/* The credentials sit directly under the founder story, so they lead with
+   the section's own spacing rather than a second heading. */
+.bt-credentials-section {
+  padding-top: 60px;
+}
+
+/*
+ * The template's CTA title is a 72px display size, sized for a two-word
+ * slogan ("Get consultant now!"). A full sentence at that size runs to four
+ * uppercase lines, so this variant steps it down to the scale's own h2 -
+ * `--tj-fs-h2` - and keeps sentence case.
+ */
+.bt-cta-compact .cta-title .title {
+  font-size: var(--tj-fs-h2);
+  text-transform: none;
+  line-height: 1.15;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .bt-cta-compact .cta-title .title {
+    font-size: var(--tj-fs-h3);
+  }
+}
+
+@media (max-width: 767px) {
+  .bt-cta-compact .cta-title .title {
+    font-size: var(--tj-fs-h4);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Contact page
+   ------------------------------------------------------------------------- */
+
+/* Labels are present for screen readers and autofill; the visual design puts
+   the field name in the placeholder, as the template does. */
+.bt-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The opening line of the contact intro carries more weight than the
+   paragraph that follows it. */
+.bt-lead {
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-heading-primary);
+}
+
+.bt-field-error {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #d92d20;
+}
+
+/* The intro is a centred statement, so it is held to a readable measure
+   rather than running the full container width. */
+.bt-contact-intro .desc {
+  margin-inline: auto;
+  max-width: 62ch;
+}
+
+/* The form and the map are columns of one row; matching heights keep their
+   tops and bottoms aligned. `.google-map` already carries `height: 100%`
+   and a 585px floor from the template. */
+.tj-contact-area .contact-form-one.style-2 {
+  height: 100%;
+}
+
+/*
+ * Direct contact details, on the theme's own `contact-item style-2` cards.
+ * The component brings its own border, 88px circular icon badge and hover
+ * transition, so the only rules needed here are for the row's own spacing
+ * and the closing note.
+ */
+.bt-direct .sec-heading {
+  margin-bottom: 40px;
+}
+
+.bt-direct-note {
+  margin: 30px 0 0;
+  text-align: center;
+}
+
+/* The long email address must not force the card wider than its column. */
+.bt-direct .contact-list li a {
+  word-break: break-word;
+}
+
+/* The reassurance cards carry one short line each; an equal height stops the
+   row from stepping. */
+.tj-contact-area .contact-item.style-2 {
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------------------- */
+
+/* The footer sits on the dark theme colour, where the theme sets every body
+   line in `--tj-color-common-white-2` (its `.footer-contact-infos p`, its
+   widget links, its copyright). A bare `<p>` here inherits the light-surface
+   body colour instead and all but vanishes against the dark. */
+.bt-footer-blurb {
+  max-width: 38ch;
+  color: var(--tj-color-common-white-2);
+}
+
+/* The fourth column sits past the footer's vertical rule, in the slot the
+   template gives its newsletter form. `newsletter-title` is the template's
+   own heading for that slot, so the type scale matches; these rules only
+   lay out what sits under it. */
+.bt-footer-connect .bt-footer-email {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-family: var(--tj-ff-heading);
+  font-size: 20px;
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-common-white);
+  word-break: break-word;
+}
+
+.bt-footer-connect .bt-footer-email:hover {
+  color: var(--tj-color-theme-primary);
+}
+
+/* `.text-btn` is styled for light backgrounds - its text and its wipe-in
+   underline both use the dark heading colour, which is invisible on the
+   footer. Same fix as the hero's secondary link: drive both from
+   `currentColor`. */
+.bt-footer-connect .text-btn.bt-footer-linkedin {
+  display: flex;
+  color: var(--tj-color-common-white);
+}
+
+.bt-footer-connect .text-btn.bt-footer-linkedin::before {
+  background-color: currentColor;
+}
+
+.bt-footer-connect .text-btn.bt-footer-linkedin:hover {
+  color: var(--tj-color-theme-primary);
+}
+
+/* Legal links with no page yet: present, but plainly not clickable. They sit
+   in the row the theme styles through `.copyright-menu li a`, which a `<span>`
+   does not match - so the colour is taken from the same token that rule uses,
+   rather than inheriting the dark light-surface body colour. The earlier
+   `opacity: .65` on top of that made them all but invisible; the "not a link"
+   cue is the missing hover and pointer, not a dimmer colour. */
+.bt-footer-pending {
+  cursor: default;
+  color: var(--tj-color-common-white-2);
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Services page
+ *
+ * Every section is one of the template's own (`tj-about-info`,
+ * `tj-about-section`, `tj-service-area` / `service-style-2`,
+ * `check-list-one`, `tj-cta-section`), so type and spacing come from
+ * main.css untouched.
+ * ---------------------------------------------------------------------------
+ */
+
+/* Three cards of differing copy length: each fills its column so the row
+   reads as one band rather than a ragged edge. */
+.tj-service-area .service-style-2 {
+  height: 100%;
+}
+
+/* The tick list is the template's own; on this page it carries ten short
+   capability lines rather than three, so it gets a little more air. */
+.bt-expertise-section .check-list-one ul li:not(:last-child) {
+  margin-bottom: 18px;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Service detail pages
+ *
+ * Built on service-details.html's own blocks (`tj-post-wrapper`,
+ * `tj-check-list`, `service-check-list`, `tj-feature`, `tj-faq-style`,
+ * `tj-service-sidebar`). Only the highlight box below has no template
+ * equivalent, and it reuses the theme's tokens.
+ * ---------------------------------------------------------------------------
+ */
+
+.bt-service-hero-btn {
+  margin-bottom: 40px;
+}
+
+/* The outcome / advocacy statement: a quiet panel in the theme's light
+   surface colour, marked with the accent rule the challenge note uses. */
+.bt-outcome-box {
+  margin-bottom: 40px;
+  padding: 30px 35px;
+  background-color: var(--tj-color-theme-bg);
+  border-inline-start: 3px solid var(--tj-color-theme-primary);
+}
+
+.bt-outcome-box .sub-title {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: var(--tj-fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tj-color-theme-primary);
+}
+
+.bt-outcome-box .title {
+  margin-bottom: 12px;
+  letter-spacing: -0.025em;
+}
+
+.bt-outcome-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* The engagement block's eyebrow sits above its heading, same treatment as
+   every other section eyebrow on the site. */
+.tj-entry-content .check-list .sub-title {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: var(--tj-fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tj-color-theme-primary);
+}
+
+/* Advisory-area cards run to different copy lengths; each fills its column
+   so the rows read as bands rather than a ragged edge. */
+.tj-entry-content .tj-feature {
+  height: 100%;
+}
+
+/*
+ * The sidebar contact card is a dark gradient panel. The theme dresses it for
+ * the icon *image* service-details.html uses (`.icon img`); this card carries
+ * the icon font instead, which brings no size of its own and inherits the
+ * light-surface body colour - invisible on the gradient. Sized to the 55px
+ * artwork it replaces and set on the same white the card's heading uses.
+ */
+.tj-sidebar-cta .icon i {
+  font-size: 44px;
+  line-height: 1;
+  color: var(--tj-color-common-white);
+}
+
+
+/*
+ * Route transition.
+ *
+ * Client-side navigation swapped the whole page in on a single frame, which
+ * read as a jump rather than a change of view. A short fade on <main> (keyed
+ * per route in SiteLayout) gives the new page a moment to arrive. Opacity
+ * only: a transform on this element would make it the containing block for
+ * the sections GSAP pins with `position: fixed`.
+ */
+@keyframes bt-route-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.site-main {
+  animation: bt-route-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-main {
+    animation: none;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Legal pages - Privacy Policy, Terms & Conditions
+ *
+ * Both are service-details.html's article layout: `tj-post-wrapper` for the
+ * reading column, `tj-sidebar-widget` + `service-category` for the rail. The
+ * measure, type scale and paragraph rhythm come from main.css untouched, so
+ * the rules below only cover what a long text document needs and the theme
+ * had no equivalent for.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Document kicker: category and revision date on one line.
+ *
+ * The theme only dresses .sub-title inside a .sec-heading, so a bare one here
+ * renders as an ordinary grey sentence fragment. These declarations are the
+ * same eyebrow treatment the rest of the site uses (see .hero-content
+ * .sub-title above) - uppercase, letter-spaced, accent-coloured - re-pointed
+ * at this block rather than a second eyebrow style being invented.
+ */
+.bt-legal-kicker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-bottom: 28px;
+}
+
+.bt-legal-kicker .sub-title {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: var(--tj-fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tj-color-theme-primary);
+}
+
+/* The revision date is metadata, not part of the document - quiet, on the
+   theme's muted body colour, with the date itself carrying the weight. */
+.bt-legal-meta {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--tj-color-text-body-2);
+}
+
+.bt-legal-meta time {
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-heading-primary);
+}
+
+/*
+ * Section headings are `h2` so the document has a real outline under the page
+ * header's `h1`, but the theme's h2 is the 48px section-title size - a page
+ * title, not a clause heading. Stepped down to the scale's own h4, which is
+ * what the service detail pages use for the same job.
+ */
+.bt-legal-heading {
+  font-size: var(--tj-fs-h4);
+  letter-spacing: -0.025em;
+  margin-bottom: 18px;
+}
+
+/* `scroll-margin-top` clears the fixed header for anchor landings the smooth
+   scroller does not handle - a pasted deep link, or a browser restoring a
+   position. lib/smoothScroll applies its own offset for in-page clicks. */
+.bt-legal-section {
+  scroll-margin-top: 120px;
+}
+
+.bt-legal-section + .bt-legal-section {
+  margin-top: 48px;
+}
+
+.bt-legal-section > p:last-child,
+.bt-legal-section .tj-check-list:last-child ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* The lead-in above a list, in the theme's heading face so it reads as a
+   label rather than another body paragraph. */
+.bt-legal-list-title {
+  margin-bottom: 12px;
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-heading-primary);
+}
+
+/* ---- Contents rail ---- */
+
+/* Pinned while the column beside it scrolls. 110px clears the sticky header
+   plus a little air; below `lg` the rail stacks above the document and static
+   is correct. */
+@media (min-width: 992px) {
+  .bt-legal-sidebar {
+    position: sticky;
+    top: 110px;
+  }
+}
+
+/*
+ * `service-category` was drawn for a five-item service list at 17.5px/30px.
+ * Twelve clause titles at that size is a rail taller than the viewport, so it
+ * is stepped down here - same colours, same hover, same `.active` fill, less
+ * padding - and capped, scrolling internally past the cap.
+ *
+ * `data-lenis-prevent` (set in the component) is what makes that inner scroll
+ * work: without it Lenis takes the wheel event and scrolls the page instead.
+ */
+.bt-legal-toc .service-category ul {
+  /* Sized off the viewport minus the rail chrome above and below it, so on
+     a normal desktop window the whole list fits and nothing is cut; only a
+     short window puts it into scroll, and the lit entry is kept in view
+     there by the component. */
+  max-height: calc(100vh - 340px);
+  min-height: 180px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tj-color-border-2) transparent;
+}
+
+.bt-legal-toc .service-category ul li {
+  margin-bottom: 8px;
+}
+
+.bt-legal-toc .service-category ul li a {
+  gap: 12px;
+  padding: 11px 16px;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: var(--tj-fw-sbold);
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+}
+
+.bt-legal-toc .service-category ul li a i {
+  flex: none;
+  font-size: 12px;
+  transition: transform 0.25s ease-in-out;
+}
+
+.bt-legal-toc .service-category ul li a.active i {
+  transform: translateX(3px);
+}
+
+/* Reading progress. Sits directly under the widget title's accent rule and
+   extends it, so it reads as part of that rule rather than a new element. */
+.bt-legal-progress {
+  height: 3px;
+  margin: -18px 0 24px;
+  background-color: var(--tj-color-theme-bg);
+  overflow: hidden;
+}
+
+.bt-legal-progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background-color: var(--tj-color-theme-primary);
+  /* Short and linear: the bar is reporting scroll position, so it should
+     track the wheel rather than ease along behind it. */
+  transition: transform 0.12s linear;
+}
+
+.bt-legal-crosslink {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--tj-color-border-2);
+}
+
+.bt-legal-crosslink .text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt-legal-progress-bar {
+    transition: none;
+  }
+}
+
+/* Stacked above the document below `lg` (see pages/Legal), where it works as
+   a jump-to-section index rather than a rail. Held to a shorter box there so
+   it reads as an index and not as a screenful of buttons before the copy. */
+@media (max-width: 991px) {
+  .bt-legal-toc .service-category ul {
+    max-height: 45vh;
+  }
+
+  .bt-legal-sidebar {
+    margin-bottom: 10px;
+  }
+}

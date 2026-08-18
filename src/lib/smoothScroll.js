@@ -1,0 +1,137 @@
+/*
+ * Smooth scrolling, synced to GSAP.
+ *
+ * WHY THIS EXISTS
+ * ---------------
+ * The template shipped two scroll libraries and used the wrong one.
+ * `smooth-scroll.min.js` hijacks the wheel and animates `scrollTop` on its
+ * own 600ms timer, completely unaware of GSAP - so ScrollTrigger (which
+ * updates on the browser's native scroll event) was always reading a
+ * position the other library was still animating towards. Anything driven
+ * by scroll position - the pinned service cards, the scrubbed progress
+ * bars, every reveal - lagged a frame or more behind the scroll itself,
+ * which is what reads as "choppy".
+ *
+ * main.js already contains the correct setup, commented out at line ~1373:
+ * Lenis driving the page, ScrollTrigger updating from Lenis's own scroll
+ * event, and Lenis's RAF driven by GSAP's ticker so both run on a single
+ * clock. lenis.min.js is already vendored in public/assets/js - this is
+ * that commented block, live, with the extra wiring the template did not
+ * need but a React + client-routed app does.
+ */
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+let lenis = null;
+
+/** The header is fixed, so anchor targets need clearing by its height. */
+function anchorOffset() {
+  const header = document.querySelector(".header-area, .tj-header-area, header");
+  return header ? -header.getBoundingClientRect().height : 0;
+}
+
+/**
+ * main.js binds `#back_to_top` to `$("html, body").animate({scrollTop: 0})`
+ * and the theme's anchor links resolve natively. Both fight Lenis, which
+ * re-asserts its own target position on the next frame. Intercepting in the
+ * capture phase lets us stop those handlers before they run and hand the
+ * same intent to Lenis instead.
+ */
+function interceptScrollLinks() {
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (!lenis) return;
+
+      const backToTop = event.target.closest?.("#back_to_top");
+      if (backToTop) {
+        event.preventDefault();
+        event.stopPropagation();
+        lenis.scrollTo(0, { duration: 1.2 });
+        return;
+      }
+
+      const anchor = event.target.closest?.('a[href^="#"]:not([href="#"])');
+      if (!anchor) return;
+
+      const target = document.querySelector(anchor.getAttribute("href"));
+      if (!target) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      lenis.scrollTo(target, { offset: anchorOffset(), duration: 1.2 });
+    },
+    true
+  );
+}
+
+/**
+ * Starts Lenis and puts it on the same clock as GSAP. No-op when the vendor
+ * bundle is missing, when it has already run, or when the visitor asked for
+ * reduced motion - in which case the page keeps the browser's native scroll.
+ */
+export function initSmoothScroll() {
+  if (lenis) return lenis;
+
+  const { Lenis, gsap, ScrollTrigger } = window;
+  if (typeof Lenis !== "function" || !gsap) return null;
+  if (window.matchMedia(REDUCED_MOTION).matches) return null;
+
+  lenis = new Lenis({
+    // Lenis's own defaults - a ~1s expo-out glide. Slow enough to feel
+    // eased, short enough that the page still tracks the wheel.
+    duration: 1.1,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    // Touch devices keep their native momentum - syncing Lenis to the
+    // finger fights the platform's own scrolling. (This is Lenis's default;
+    // it is stated here because it is a deliberate choice, not an oversight.)
+    syncTouch: false,
+  });
+
+  lenis.on("scroll", () => ScrollTrigger?.update?.());
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  interceptScrollLinks();
+
+  return lenis;
+}
+
+/**
+ * Jump to the top for a client-side navigation.
+ *
+ * Three things fight a single `scrollTo(0)` here:
+ *
+ * 1. A plain `window.scrollTo(0, 0)` moves only the native position - Lenis
+ *    still holds the old one and eases the page back down on its next frame.
+ * 2. React swaps a tall page for a short one, so the browser clamps the old
+ *    offset to the new document's maximum and fires a native scroll event for
+ *    it. Lenis reads that as a user scroll and re-syncs its target to the
+ *    clamped value, discarding the reset - which is why navigating away from
+ *    the bottom of the home page landed part-way down the next one.
+ * 3. Lenis's cached `limit` still describes the previous page until its
+ *    resize observer catches up.
+ *
+ * So: refresh the limit, scroll both Lenis and the document, and do it again
+ * on the next two frames - after the clamp event and after ScrollTrigger's
+ * refresh, both of which can restore a stale offset.
+ */
+export function resetScroll() {
+  const toTop = () => {
+    if (lenis) {
+      lenis.resize();
+      // `force` scrolls even while Lenis is stopped or locked - the mobile
+      // drawer locks it, and a nav tap from inside the drawer is exactly when
+      // this runs.
+      lenis.scrollTo(0, { immediate: true, force: true });
+    }
+    window.scrollTo(0, 0);
+  };
+
+  toTop();
+  requestAnimationFrame(() => {
+    toTop();
+    requestAnimationFrame(toTop);
+  });
+}
