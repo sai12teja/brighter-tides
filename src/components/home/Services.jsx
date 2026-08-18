@@ -58,7 +58,21 @@ export default function Services() {
                     </div>
                   </div>
                   <div className="service-images hover:shine">
-                    <img src={service.image} alt="Images" />
+                    {/* The card's image half is 645px on desktop and full
+                        width below lg. Cards that have a photograph carry a
+                        second width for it; the ones still on the template's
+                        placeholder have only the one. */}
+                    <img
+                      src={service.image}
+                      srcSet={
+                        service.imageSmall
+                          ? `${service.imageSmall} 645w, ${service.image} 1290w`
+                          : undefined
+                      }
+                      sizes={service.imageSmall ? "(max-width: 991px) 100vw, 645px" : undefined}
+                      alt={service.imageAlt || ""}
+                      loading="lazy"
+                    />
                   </div>
                 </div>
               ))}

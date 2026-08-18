@@ -48,9 +48,14 @@ export default function Hero() {
               <div className="hero-images-box">
                 <div className="hero-images">
                   {/* The LCP element on the home page: eager, high priority,
-                      and sized so the hero does not reflow around it. */}
+                      and carrying its dimensions so the hero does not reflow
+                      around it. Two widths, because the box is 610px on
+                      desktop - a 1x screen has no use for the 2x file, and it
+                      is the largest image on the page. */}
                   <img
                     src="/assets/images/bt/photos/hero.webp"
+                    srcSet="/assets/images/bt/photos/hero-610.webp 610w, /assets/images/bt/photos/hero.webp 1220w"
+                    sizes="(max-width: 991px) 100vw, 610px"
                     alt="Two advisors reviewing platform data on a tablet in an office"
                     width="1220"
                     height="1514"

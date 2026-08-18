@@ -19,6 +19,9 @@ export const services = [
     lead: "Optimize your investment before you renew, expand, or true-up.",
     desc: "Understand what you're paying for, what you're using, and what your organization actually needs.",
     image: "/assets/images/bt/photos/service-01.webp",
+    // Second width for the card's srcset - see components/home/Services.
+    imageSmall: "/assets/images/bt/photos/service-01-645.webp",
+    imageAlt: "Two colleagues reviewing a licensing document at a desk",
     to: routeFor("servicenow-licensing-contract-advisory"),
     stacked: true,
   },

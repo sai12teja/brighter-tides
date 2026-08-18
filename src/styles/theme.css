@@ -579,11 +579,20 @@ html {
 
 /* ---- Section photography ----
  *
- * The two about-section images sit inside organic mask shapes with a white
- * plate behind them, and the template contained its artwork at 97% / 74%
- * inside those - which reads as a picture floating in a blob rather than as
- * a shaped picture. Real photography fills the shape instead, so the mask
- * becomes the photo's edge. */
+ * The hero photograph carries `width`/`height` so the layout is reserved
+ * before it loads. The template only sets `width: 100%` on it, which leaves
+ * the height attribute as the used height and squashes the photo to the
+ * box's width at its full pixel height - a 2:1 vertical stretch. `height:
+ * auto` is the other half of that pattern and has to come with it. */
+.hero-images-box img {
+  height: auto;
+}
+
+/* The two about-section images sit inside organic mask shapes with a white
+   plate behind them, and the template contained its artwork at 97% / 74%
+   inside those - which reads as a picture floating in a blob rather than as
+   a shaped picture. Real photography fills the shape instead, so the mask
+   becomes the photo's edge. */
 .tj-about-section .about-bg-images .about-shape-1 img,
 .tj-about-section .about-bg-images .about-shape-2 img {
   width: 100%;

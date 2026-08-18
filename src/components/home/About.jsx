@@ -62,8 +62,8 @@ export default function About() {
           <img
             src="/assets/images/bt/photos/about.webp"
             alt="Three colleagues in discussion around a meeting table"
-            width="1200"
-            height="1089"
+            width="1490"
+            height="1352"
             loading="lazy"
           />
         </div>
@@ -71,8 +71,8 @@ export default function About() {
           <img
             src="/assets/images/bt/photos/about-secondary.webp"
             alt="Two people reviewing figures on a tablet"
-            width="480"
-            height="475"
+            width="400"
+            height="396"
             loading="lazy"
           />
         </div>
