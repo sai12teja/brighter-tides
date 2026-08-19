@@ -1193,7 +1193,15 @@ html.lenis body {
   inset-inline-start: 0;
   bottom: 0;
   width: 100%;
-  height: 48px;
+  /*
+   * The depth of the arc, and it has to be a proportion of the width rather
+   * than a number of pixels. An arc is read as the ratio of its rise to its
+   * span: 48px across a 1440px laptop is a clear sweep, and the same 48px
+   * across a 2000px window is a straight line with a kink in it. 4vw holds
+   * one shape at every width - the clamp only stops it collapsing to nothing
+   * on a phone or turning into a dome on an ultrawide.
+   */
+  height: clamp(22px, 4vw, 110px);
   background-color: var(--bg-section);
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
           mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
@@ -1207,20 +1215,6 @@ html.lenis body {
      nothing that can be clicked - the CTA row sits far higher up. */
   z-index: 3;
   pointer-events: none;
-}
-
-/* The arc is a proportion of the screen, not a fixed depth: 48px reads as a
-   gentle sweep across 1440px and as a fairground tent across 390px. */
-@media (max-width: 991px) {
-  .tj-hero-section::after {
-    height: 30px;
-  }
-}
-
-@media (max-width: 575px) {
-  .tj-hero-section::after {
-    height: 20px;
-  }
 }
 
 /* ---------------------------------------------------------------------------
