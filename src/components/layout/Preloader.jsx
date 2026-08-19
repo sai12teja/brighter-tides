@@ -1,31 +1,23 @@
 /**
- * The loading screen.
+ * The template's own loading screen - a rotating ring around a centred mark
+ * on white - with the Brighter Tides wave in place of the theme's hexagon.
+ * The ring takes its colour from `--tj-color-theme-primary`, which is already
+ * the brand teal, so nothing else needs restyling.
  *
- * The class name `preloader` is a contract with the template's main.js, which
- * fades this element out on load (`$(".preloader").fadeOut(600)`) - everything
- * else here is ours.
- *
- * It is deliberately dark: the first thing behind it is the navy hero, so a
- * white panel would flash white, then dark, on every cold load. Holding the
- * brand's own navy means the preloader dissolves into the page rather than
- * cutting to it.
+ * The class names are a contract with the template's main.js and main.css:
+ * `.preloader` is what main.js fades out on load, and `.loading` /
+ * `#loading-icon` carry the ring and its centring.
  */
 export default function Preloader() {
   return (
-    <div className="preloader bt-preloader" role="status" aria-live="polite">
-      <div className="bt-preloader-inner">
-        <img
-          className="bt-preloader-logo"
-          src="/assets/images/logos/brighter-tides-lockup-light.png"
-          alt="Brighter Tides"
-          width="875"
-          height="172"
-        />
-        <div className="bt-preloader-rail" aria-hidden="true">
-          <span></span>
+    <div className="preloader" role="status" aria-live="polite">
+      <div className="loading-container">
+        <div className="loading"></div>
+        <div id="loading-icon">
+          <img src="/assets/images/logos/brighter-tides-mark.png" alt="" width="256" height="256" />
         </div>
-        <span className="visually-hidden">Loading Brighter Tides</span>
       </div>
+      <span className="visually-hidden">Loading Brighter Tides</span>
     </div>
   );
 }

@@ -23,7 +23,7 @@
  * ------------------------------------------------------------------------- */
 
 :root {
-  --primary: #0a2a4b;
+  --primary: #0a0f1e;
   --teal: #10a0a9;
   --teal-dark: #087f88;
   --aqua: #42babe;
@@ -36,7 +36,7 @@
   --bg-light: #f2fafa;
   --bg-section: #eaf6f7;
 
-  --text-primary: #0a2a4b;
+  --text-primary: #0a0f1e;
   --text-secondary: #536779;
 
   --border: #d5e9ea;
@@ -52,9 +52,18 @@
  * ------------------------------------------------------------------------- */
 
 :root {
-  --primary-deep: #061b32;
-  --primary-raised: #123c69;
-  --teal-deep: #06666e;
+  /* Both steps re-derived off the new #0a0f1e at the same hue and
+     saturation, so depth on the dark surfaces reads as one colour lit
+     differently rather than as two navies. */
+  --primary-deep: #05080f;
+  --primary-raised: #172245;
+
+  /* The gold ramp. `--gold` is the palette's existing sun and is now the
+     action colour, so it needs the steps a fill colour uses: a deeper
+     stop for gradients and hover, and an ink dark enough to carry white
+     copy (7.5:1) where the vivid gold manages only 2.0:1. */
+  --gold-deep: #d9952c;
+  --gold-ink: #7a4a0c;
 
   /* Body copy at #536779 is 5.8:1 on white; the muted step is held at 4.6:1
      so secondary text still clears WCAG AA rather than fading out. */
@@ -68,10 +77,13 @@
      white, which the coral itself (2.9:1) does not. */
   --danger: #c4444f;
 
-  --shadow-sm: 0 4px 16px rgba(10, 42, 75, 0.06);
-  --shadow-md: 0 14px 34px rgba(10, 42, 75, 0.1);
-  --shadow-lg: 0 26px 60px rgba(10, 42, 75, 0.14);
-  --shadow-teal: 0 16px 34px rgba(16, 160, 169, 0.28);
+  --shadow-sm: 0 4px 16px rgba(10, 15, 30, 0.06);
+  --shadow-md: 0 14px 34px rgba(10, 15, 30, 0.1);
+  --shadow-lg: 0 26px 60px rgba(10, 15, 30, 0.14);
+
+  /* The primary button's hover lift. It follows the button's own colour,
+     so it moved from teal to gold with it. */
+  --shadow-gold: 0 16px 34px rgba(217, 149, 44, 0.34);
 }
 
 /* ---------------------------------------------------------------------------
@@ -196,8 +208,8 @@ html {
 /* The template's sticky bar casts a white glow, drawn for a dark page. This
    one slides over white sections, so its shadow is navy. */
 .tj-header-area.header-duplicate {
-  -webkit-box-shadow: 0 12px 30px rgba(6, 27, 50, 0.22);
-          box-shadow: 0 12px 30px rgba(6, 27, 50, 0.22);
+  -webkit-box-shadow: 0 12px 30px rgba(10, 15, 30, 0.3);
+          box-shadow: 0 12px 30px rgba(10, 15, 30, 0.3);
 }
 
 /* Both headers sit on the navy, where aqua reads at 6.1:1 against the teal's
@@ -277,15 +289,15 @@ html {
 /* ---------------------------------------------------------------------------
  * 8. Buttons
  *
- * The component is the template's, unchanged: a navy pill with a teal icon
- * disc that wipes across on hover. What is added is the weight a primary
- * action wants - a navy shadow at rest that lifts and turns teal under the
- * cursor.
+ * The component is the template's, unchanged: a pill with an icon disc that
+ * wipes across it on hover. What is added is the weight a primary action
+ * wants - a navy shadow at rest that lifts and warms under the cursor,
+ * following the button's own gold.
  * ------------------------------------------------------------------------- */
 
 .tj-primary-btn {
-  -webkit-box-shadow: 0 10px 24px rgba(6, 27, 50, 0.16);
-          box-shadow: 0 10px 24px rgba(6, 27, 50, 0.16);
+  -webkit-box-shadow: 0 10px 24px rgba(10, 15, 30, 0.18);
+          box-shadow: 0 10px 24px rgba(10, 15, 30, 0.18);
   -webkit-transition: -webkit-transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     -webkit-box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -296,8 +308,8 @@ html {
   -webkit-transform: translateY(-2px);
       -ms-transform: translateY(-2px);
           transform: translateY(-2px);
-  -webkit-box-shadow: var(--shadow-teal);
-          box-shadow: var(--shadow-teal);
+  -webkit-box-shadow: var(--shadow-gold);
+          box-shadow: var(--shadow-gold);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -311,16 +323,21 @@ html {
 /* ---------------------------------------------------------------------------
  * 9. Closing CTA band
  *
- * A flat `--teal` band put its white body copy at 3.2:1. The band becomes a
- * navy-to-deep-teal sweep instead: the copy clears 6.7:1 at the lightest
- * stop, and the section reads as the page's closing note rather than as one
- * more block of accent colour.
+ * A flat accent band put its white body copy at 3.2:1. The band is a navy
+ * sweep that warms into the gold at its far end instead - the page's closing
+ * note, carrying the same colour as the button sitting on it.
+ *
+ * The warm stop is `--gold-ink`, not `--gold`: white copy clears 7.5:1 on the
+ * ink and only 2.0:1 on the vivid gold, so the band deepens towards the
+ * colour rather than reaching it - and the stop is placed past the right
+ * edge, so what lands on the band is the approach to it, not the colour
+ * itself. A band half filled with bronze competes with the button on it.
  * ------------------------------------------------------------------------- */
 
 .tj-cta-section {
   background-color: var(--primary);
   background-image: linear-gradient(105deg,
-    var(--primary-deep) 0%, var(--primary-raised) 48%, var(--teal-deep) 100%);
+    var(--primary-deep) 0%, var(--primary-raised) 52%, var(--gold-ink) 118%);
 }
 
 /* ---------------------------------------------------------------------------
@@ -332,10 +349,22 @@ html {
  * this site does not use.)
  * ------------------------------------------------------------------------- */
 
-/* Service-detail sidebar card - was navy-to-electric-blue. */
+/* Service-detail sidebar card. It now sits over a photograph rather than a
+   flat placeholder, so the scrim has to do two jobs at once: keep the room
+   readable at the top, where the mark sits, and carry white copy and a white
+   button at the bottom. A vertical navy ramp does that - light enough at the
+   top to leave the photograph visible, near-solid by the button - with a
+   teal wash across the top corner to tie the card to the rest of the site.
+   The previous navy-to-gold sweep was drawn for a flat card; over a
+   photograph its warm corner turned muddy. */
 .tj-sidebar-cta::before {
-  background: linear-gradient(153.92deg,
-    var(--primary-deep) 20%, var(--primary) 55%, var(--teal) 130%);
+  background:
+    linear-gradient(180deg,
+      rgba(6, 27, 50, 0.58) 0%,
+      rgba(6, 27, 50, 0.84) 52%,
+      rgba(6, 27, 50, 0.95) 100%),
+    linear-gradient(153.92deg, rgba(16, 160, 169, 0.34) 0%, rgba(6, 27, 50, 0) 58%);
+  opacity: 1;
 }
 
 /* The inner pages' banner scrim, and the scrim on the services page's card
@@ -343,10 +372,10 @@ html {
    brand's, and the banner picks up the hero's aqua wash so the two dark
    bands at the top of a page read as the same surface. */
 .tj-page-header::before {
-  background-color: rgba(6, 27, 50, 0.82);
+  background-color: rgba(5, 8, 15, 0.82);
   background-image:
     radial-gradient(95% 120% at 85% 0%, rgba(66, 186, 190, 0.2) 0%, rgba(66, 186, 190, 0) 60%),
-    linear-gradient(168deg, rgba(18, 60, 105, 0.5) 0%, rgba(6, 27, 50, 0.4) 100%);
+    linear-gradient(168deg, rgba(23, 34, 69, 0.5) 0%, rgba(5, 8, 15, 0.4) 100%);
 }
 
 /* The card inverts to this scrim over its photograph on hover. The
@@ -354,7 +383,7 @@ html {
    photograph - a lit office, a whiteboard full of diagram - the white copy
    on top of it drops below 4.5:1 in patches. 0.8 holds it. */
 .service-style-2 .thumb::before {
-  background: rgba(10, 42, 75, 0.8);
+  background: rgba(10, 15, 30, 0.82);
 }
 
 /* ---------------------------------------------------------------------------
@@ -369,27 +398,53 @@ html {
 
 /* ---- Buttons ----
  *
- * Primary, on light surfaces: a deep-teal pill with the logo's gold sun for
- * the icon disc, which wipes across on hover. Both teal stops clear 4.8:1
- * behind the white label, and the navy label on gold clears 7.4:1 once the
- * wipe lands - the vivid `--teal` itself would only manage 3.2:1 there. */
+ * Every filled call to action on the site is this one component, so gold is
+ * applied here once rather than per placement.
+ *
+ * Primary, on light surfaces: a gold pill carrying a navy label, with a navy
+ * icon disc that wipes across it on hover. The colours are the inverse of
+ * what they were - the pill was teal with a gold disc - which is what puts
+ * the gold on the button rather than only on its edge.
+ *
+ * The label has to be navy, not white: navy on `--gold` is 9.5:1 where white
+ * on the same gold is 2.0:1. Once the navy wipe lands the label turns white,
+ * which is 18.9:1 on it. Both states clear AA comfortably, which the
+ * template's white-on-accent never did.
+ */
 .tj-primary-btn {
-  background-image: linear-gradient(115deg, var(--teal-dark) 0%, var(--teal-deep) 100%);
+  /* The colour is declared twice on purpose. The template's own rule paints
+     this pill navy via `background-color`, and only the gradient above it
+     makes it gold - so a navy label would sit on a navy pill anywhere the
+     gradient does not paint. Restating the flat colour underneath means the
+     two layers can never disagree. */
+  background-color: var(--gold);
+  background-image: linear-gradient(115deg, var(--gold) 0%, var(--gold-deep) 100%);
 }
 
 .tj-primary-btn .btn_inner::before {
-  background-color: var(--gold);
+  background-color: var(--primary);
 }
 
-.tj-primary-btn .btn_inner .btn_icon,
-.tj-primary-btn:hover .btn_inner .btn_text {
+/* Gold arrow on the navy disc, navy label on the gold pill. */
+.tj-primary-btn .btn_inner .btn_icon {
+  color: var(--gold);
+}
+
+.tj-primary-btn .btn_inner .btn_text {
   color: var(--primary);
 }
 
-/* The inverse variants already sit on navy, on the CTA gradient or on a
-   service card, where the white pill is what carries the contrast. They keep
-   the vivid teal disc; only the wipe deepens, so the white label still
-   clears 4.8:1 once the button is filled. */
+/* ...and the label inverts with the pill once the wipe has filled it. */
+.tj-primary-btn:hover .btn_inner .btn_text {
+  color: var(--on-dark);
+}
+
+/* The inverse variants sit on navy, on the closing CTA band or on a service
+   card, where the white pill is what carries the contrast. They take the
+   vivid gold on the disc and deepen it as the wipe fills, so the same warm
+   cue reads on the dark sections as on the light ones. Their label is navy
+   throughout - on the white pill at rest and on the gold once filled - which
+   is the only value that clears AA on both. */
 .tj-primary-btn.white-btn,
 .tj-primary-btn.header_btn,
 .hero-content .hero-button,
@@ -401,28 +456,28 @@ html {
 .tj-primary-btn.header_btn .btn_inner::before,
 .hero-content .hero-button .btn_inner::before,
 .service-item .service-content .service-btn .btn_inner::before {
-  background-color: var(--teal);
+  background-color: var(--gold);
 }
 
 .tj-primary-btn.white-btn .btn_inner .btn_icon,
 .tj-primary-btn.header_btn .btn_inner .btn_icon,
 .hero-content .hero-button .btn_inner .btn_icon,
 .service-item .service-content .service-btn .btn_inner .btn_icon {
-  color: var(--on-dark);
+  color: var(--primary);
 }
 
 .tj-primary-btn.white-btn:hover .btn_inner::before,
 .tj-primary-btn.header_btn:hover .btn_inner::before,
 .hero-content .hero-button:hover .btn_inner::before,
 .service-item .service-content .service-btn:hover .btn_inner::before {
-  background-color: var(--teal-dark);
+  background-color: var(--gold-deep);
 }
 
 .tj-primary-btn.white-btn:hover .btn_inner .btn_text,
 .tj-primary-btn.header_btn:hover .btn_inner .btn_text,
 .hero-content .hero-button:hover .btn_inner .btn_text,
 .service-item .service-content .service-btn:hover .btn_inner .btn_text {
-  color: var(--on-dark);
+  color: var(--primary);
 }
 
 /* The secondary text link, wherever it sits on a light surface. */

@@ -93,6 +93,21 @@ function loadScripts(entries) {
   });
 }
 
+/**
+ * How long the loading screen stays up, measured from the start of the
+ * navigation rather than from when this effect runs, so the splash lasts the
+ * same length whatever the connection does. The bundle itself takes well
+ * under a second, so on any decent connection this is the number that
+ * decides how long the visitor waits.
+ *
+ * Worth knowing what it costs: this is time on a screen nobody can act on,
+ * and it counts against Largest Contentful Paint. Set it to 0 to hand the
+ * page over the moment it is ready.
+ */
+const MINIMUM_SPLASH_MS = 5000;
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 let initStarted = false;
 // Survives remounts so a second consumer does not re-load the bundle.
 let bundleReady = false;
@@ -140,6 +155,14 @@ export default function useSiteScripts() {
       await loadScripts(SCRIPTS);
       if (cancelled) return;
 
+      // `performance.now()` is milliseconds since the navigation started, so
+      // this holds the splash for the remainder of its minimum - nothing at
+      // all once the bundle is the slower of the two.
+      await wait(Math.max(0, MINIMUM_SPLASH_MS - performance.now()));
+      if (cancelled) return;
+
+      // main.js fades the preloader out from its own `load` handler, so this
+      // is the moment the page is handed over.
       window.dispatchEvent(new Event("load"));
 
       // main.js has now initialised every animation on this first page. This

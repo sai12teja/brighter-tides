@@ -8,7 +8,6 @@
  * for.
  */
 
-
 /*
  * Hero eyebrow.
  *
@@ -349,7 +348,6 @@ html.lenis body {
 .bt-founder-content .sec-heading {
   margin-bottom: 30px;
 }
-
 
 /* 04 - Experience logos. `.tj-brand-section` is a dark band, so the label
    and footnote are set on the theme's dark-surface colours. */
@@ -832,6 +830,401 @@ html.lenis body {
   color: var(--tj-color-common-white);
 }
 
+/*
+ * Route transition.
+ *
+ * Client-side navigation swapped the whole page in on a single frame, which
+ * read as a jump rather than a change of view. A short fade on <main> (keyed
+ * per route in SiteLayout) gives the new page a moment to arrive. Opacity
+ * only: a transform on this element would make it the containing block for
+ * the sections GSAP pins with `position: fixed`.
+ */
+@keyframes bt-route-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.site-main {
+  animation: bt-route-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-main {
+    animation: none;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Legal pages - Privacy Policy, Terms & Conditions
+ *
+ * Both are service-details.html's article layout: `tj-post-wrapper` for the
+ * reading column, `tj-sidebar-widget` + `service-category` for the rail. The
+ * measure, type scale and paragraph rhythm come from main.css untouched, so
+ * the rules below only cover what a long text document needs and the theme
+ * had no equivalent for.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Document kicker: category and revision date on one line.
+ *
+ * The theme only dresses .sub-title inside a .sec-heading, so a bare one here
+ * renders as an ordinary grey sentence fragment. These declarations are the
+ * same eyebrow treatment the rest of the site uses (see .hero-content
+ * .sub-title above) - uppercase, letter-spaced, accent-coloured - re-pointed
+ * at this block rather than a second eyebrow style being invented.
+ */
+.bt-legal-kicker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-bottom: 28px;
+}
+
+.bt-legal-kicker .sub-title {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: var(--tj-fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-dark);
+}
+
+/* The revision date is metadata, not part of the document - quiet, on the
+   theme's muted body colour, with the date itself carrying the weight. */
+.bt-legal-meta {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--tj-color-text-body-2);
+}
+
+.bt-legal-meta time {
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-heading-primary);
+}
+
+/*
+ * Section headings are `h2` so the document has a real outline under the page
+ * header's `h1`, but the theme's h2 is the 48px section-title size - a page
+ * title, not a clause heading. Stepped down to the scale's own h4, which is
+ * what the service detail pages use for the same job.
+ */
+.bt-legal-heading {
+  font-size: var(--tj-fs-h4);
+  letter-spacing: -0.025em;
+  margin-bottom: 18px;
+}
+
+/* `scroll-margin-top` clears the fixed header for anchor landings the smooth
+   scroller does not handle - a pasted deep link, or a browser restoring a
+   position. lib/smoothScroll applies its own offset for in-page clicks. */
+.bt-legal-section {
+  scroll-margin-top: 120px;
+}
+
+.bt-legal-section + .bt-legal-section {
+  margin-top: 48px;
+}
+
+.bt-legal-section > p:last-child,
+.bt-legal-section .tj-check-list:last-child ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* The lead-in above a list, in the theme's heading face so it reads as a
+   label rather than another body paragraph. */
+.bt-legal-list-title {
+  margin-bottom: 12px;
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  color: var(--tj-color-heading-primary);
+}
+
+/* ---- Contents rail ---- */
+
+/* Pinned while the column beside it scrolls. 110px clears the sticky header
+   plus a little air; below `lg` the rail stacks above the document and static
+   is correct. */
+@media (min-width: 992px) {
+  .bt-legal-sidebar {
+    position: sticky;
+    top: 110px;
+  }
+}
+
+/*
+ * `service-category` was drawn for a five-item service list at 17.5px/30px.
+ * Twelve clause titles at that size is a rail taller than the viewport, so it
+ * is stepped down here - same colours, same hover, same `.active` fill, less
+ * padding - and capped, scrolling internally past the cap.
+ *
+ * `data-lenis-prevent` (set in the component) is what makes that inner scroll
+ * work: without it Lenis takes the wheel event and scrolls the page instead.
+ */
+.bt-legal-toc .service-category ul {
+  /* Sized off the viewport minus the rail chrome above and below it, so on
+     a normal desktop window the whole list fits and nothing is cut; only a
+     short window puts it into scroll, and the lit entry is kept in view
+     there by the component. */
+  max-height: calc(100vh - 340px);
+  min-height: 180px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tj-color-border-2) transparent;
+}
+
+.bt-legal-toc .service-category ul li {
+  margin-bottom: 8px;
+}
+
+.bt-legal-toc .service-category ul li a {
+  gap: 12px;
+  padding: 11px 16px;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: var(--tj-fw-sbold);
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+}
+
+.bt-legal-toc .service-category ul li a i {
+  flex: none;
+  font-size: 12px;
+  transition: transform 0.25s ease-in-out;
+}
+
+.bt-legal-toc .service-category ul li a.active i {
+  transform: translateX(3px);
+}
+
+/* Reading progress. Sits directly under the widget title's accent rule and
+   extends it, so it reads as part of that rule rather than a new element. */
+.bt-legal-progress {
+  height: 3px;
+  margin: -18px 0 24px;
+  background-color: var(--tj-color-theme-bg);
+  overflow: hidden;
+}
+
+.bt-legal-progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background-color: var(--tj-color-theme-primary);
+  /* Short and linear: the bar is reporting scroll position, so it should
+     track the wheel rather than ease along behind it. */
+  transition: transform 0.12s linear;
+}
+
+.bt-legal-crosslink {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--tj-color-border-2);
+}
+
+.bt-legal-crosslink .text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt-legal-progress-bar {
+    transition: none;
+  }
+}
+
+/* Stacked above the document below `lg` (see pages/Legal), where it works as
+   a jump-to-section index rather than a rail. Held to a shorter box there so
+   it reads as an index and not as a screenful of buttons before the copy. */
+@media (max-width: 991px) {
+  .bt-legal-toc .service-category ul {
+    max-height: 45vh;
+  }
+
+  .bt-legal-sidebar {
+    margin-bottom: 10px;
+  }
+}
+
+/* ===========================================================================
+   Hero curves
+ *
+ * The hero used to end on a hard horizontal line against the white section
+ * below it, and the photograph was a plain rectangle. Both now carry the same
+ * shallow arc, which is the shape the template already ships for this -
+ * images/shapes/h1-hero-shapes.svg, a 1920x37 path that rises to nothing at
+ * the centre and falls to 36px at either edge.
+ *
+ * Two separate curves, because our hero is taller than the one the template
+ * was drawn for: brand.css gives it 140px of padding at the bottom to clear
+ * the "Scroll" rail, so the photograph stops well short of the section edge
+ * and one curve cannot cut both. The section gets the arc as a masked strip;
+ * the photograph gets its own mask.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   1. The section's bottom edge
+ *
+ * A strip of the *next* section's colour, masked to the arc and laid over the
+ * bottom of the hero. Painting it here rather than on the section below - as
+ * the template does with `.with-shape` - keeps the whole hero treatment in
+ * one place, at the cost of one coupling: the colour has to match whatever
+ * follows the hero. Today that is .tj-about-section - whose own background is
+ * white, but which paints `--bg-section` over itself with a `::before` that
+ * stops 3% short of the right edge. It is that panel the curve has to meet,
+ * so the curve is `--bg-section`. The sliver of white beyond the panel is
+ * ~43px wide and meets the arc where it is at its shallowest, a pixel or two
+ * tall, so it does not read. Reorder the home page and this must move with it.
+ *
+ * The arc is the template's own path, inlined rather than linked. The file
+ * (images/shapes/h1-hero-shapes.svg) carries no `preserveAspectRatio`, so a
+ * mask that stretches it to a 1440x48 box letterboxes the path inside its
+ * 1920:37 ratio instead of following the box - which renders as nothing at
+ * all. Inline, with `preserveAspectRatio='none'`, it stretches properly, and
+ * `mask-size: 100% 100%` makes `height` below the literal depth of the curve.
+   ------------------------------------------------------------------------- */
+.tj-hero-section::after {
+  position: absolute;
+  content: "";
+  inset-inline-start: 0;
+  bottom: 0;
+  width: 100%;
+  /*
+   * The depth of the arc, and it has to be a proportion of the width rather
+   * than a number of pixels. An arc is read as the ratio of its rise to its
+   * span: 48px across a 1440px laptop is a clear sweep, and the same 48px
+   * across a 2000px window is a straight line with a kink in it. 4vw holds
+   * one shape at every width - the clamp only stops it collapsing to nothing
+   * on a phone or turning into a dome on an ultrawide.
+   */
+  height: clamp(22px, 4vw, 110px);
+  background-color: var(--bg-section);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center bottom;
+          mask-position: center bottom;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  /* Above the hero's background washes and the decorative shapes, below
+     nothing that can be clicked - the CTA row sits far higher up. */
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   2. The photograph
+ *
+ * Two things, and they work together.
+ *
+ * The top edge dips towards the middle, so the picture is a curved plate
+ * rather than a rectangle. The mask is an inline SVG rather than a file
+ * because it is one quadratic and belongs with the rule that uses it;
+ * `preserveAspectRatio='none'` over a 0-100 viewBox makes it a percentage
+ * shape, so it scales with the image at every breakpoint rather than needing
+ * a size per breakpoint.
+ *
+ * Its bottom edge is left square, because from 992px up the picture now runs
+ * all the way down to the section's bottom edge and the curve in 1 above cuts
+ * it there. That is the whole point of the treatment and it was the piece we
+ * were missing: the hero's 140px of foot-room held the photograph clear of
+ * the curve, so the arc swept through empty navy and the picture sat above it
+ * looking untouched. Reaching past that foot-room on this box alone drops the
+ * picture into the curve without moving the section's bottom edge, so the
+ * "Scroll" rail keeps the clearance it was given. Below 992px there is no
+ * foot-room to reach past and the picture already met the curve.
+   ------------------------------------------------------------------------- */
+.hero-images {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 L0 100 Z' fill='%23000'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 L0 100 Z' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+
+@media (min-width: 992px) {
+  /*
+   * The picture is taken out of flow and its box stretched 140px past the
+   * bottom of the row, which lands it exactly on the section's bottom edge.
+   *
+   * Out of flow, and not simply given a negative bottom margin, because a
+   * margin would shorten the flex item and with it the row: the hero would
+   * lose the same 140px it was given, and the "Scroll" rail - which is
+   * anchored to the section's bottom-left - would ride back up into the CTA
+   * row, which is the collision that foot-room exists to prevent.
+   *
+   * `aspect-ratio` then holds the row open to the height the picture used to
+   * contribute in flow. It is the source file's own ratio, so the row is the
+   * height it always was rather than a number copied from a screenshot.
+   */
+  .hero-images-box {
+    aspect-ratio: 1220 / 1514;
+  }
+
+  .hero-images-box .hero-images {
+    position: absolute;
+    inset: 0 0 calc(var(--bt-hero-foot, 0px) * -1) 0;
+  }
+
+  /* The box is now taller than the photograph's own ratio, so the picture
+     fills it and crops rather than stretching. The subjects are centred, so
+     what cover trims is window and floor. */
+  .hero-images-box .hero-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Preloader icon
+
+   The template's hexagon filled its 55px canvas edge to edge, so the theme's
+   66px box suited it. The Brighter Tides mark sits inside a square with
+   generous transparent padding, which left the wave rendering at about 35px
+   inside the ring - small enough to lose the sun's rays. A wider box gives
+   the art the optical size the hexagon had. Everything else about the loader
+   is the template's own: white field, rotating teal ring.
+   ------------------------------------------------------------------------ */
+#loading-icon {
+  /* An explicit width, so the box is no longer shrink-to-fit. */
+  width: 80px;
+  max-width: none;
+}
+
+/* Sized on the image, not the box: #loading-icon is absolutely positioned,
+   so it shrink-wraps its content - and a percentage width on a child of a
+   shrink-to-fit box resolves against a width that is itself waiting on the
+   child. That circularity is what left the mark at 50px whatever the box's
+   max-width said. */
+#loading-icon img {
+  width: 100%;
+  /* The theme gives every image max-width: 100%, which resolved against the
+     shrink-wrapped box and pinned the mark at 50px. */
+  max-width: none;
+  height: auto;
+}/*
+ * The sidebar card leads with the Brighter Tides mark. Width is set on the
+ * image itself: the mark's square canvas carries transparent padding, so it
+ * needs to run larger than the 55px artwork the template put here for the
+ * wave to read at the same size.
+ */
+.tj-sidebar-cta .icon img {
+  width: 68px;
+  height: auto;
+}
 
 /*
  * Route transition.
@@ -1059,229 +1452,31 @@ html.lenis body {
   }
 }
 
-/*
- * ---------------------------------------------------------------------------
- * Preloader
- *
- * The template's loader was its own hexagon mark inside a rotating ring on a
- * white field. This replaces it with the Brighter Tides lockup on the brand's
- * navy: the hero behind it is navy too, so the panel now dissolves into the
- * page instead of flashing white and cutting to dark.
- *
- * `.preloader` itself keeps the template's fixed full-screen positioning -
- * main.js fades that element out by class name on load.
- * ---------------------------------------------------------------------------
- */
-.preloader.bt-preloader {
-  background-color: var(--primary-deep);
-  /* A soft aqua bloom behind the mark, echoing the sun in the logo. */
-  background-image: radial-gradient(
-    118% 78% at 50% 44%,
-    rgba(66, 186, 190, 0.18) 0%,
-    rgba(6, 27, 50, 0) 62%
-  );
-}
-
-.bt-preloader-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  padding-inline: 24px;
-  animation: bt-preloader-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.bt-preloader-logo {
-  width: min(280px, 64vw);
-  height: auto;
-}
-
-/*
- * An indeterminate rail rather than a spinner: the load is short and its
- * length is unknown, and a horizon line sits better with the mark than a
- * second rotating circle would.
- */
-.bt-preloader-rail {
-  position: relative;
-  width: min(200px, 46vw);
-  height: 2px;
-  border-radius: 2px;
-  overflow: hidden;
-  background-color: var(--border-on-dark);
-}
-
-.bt-preloader-rail span {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 40%;
-  border-radius: inherit;
-  background-image: linear-gradient(90deg, transparent, var(--aqua), transparent);
-  /* 250% of its own 40% width carries it exactly one rail-length across. */
-  animation: bt-preloader-sweep 1.15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes bt-preloader-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes bt-preloader-sweep {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(250%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bt-preloader-inner {
-    animation: none;
-  }
-
-  .bt-preloader-rail span {
-    width: 100%;
-    background-image: none;
-    background-color: var(--aqua);
-    opacity: 0.55;
-    animation: none;
-  }
-}
-
 /* ===========================================================================
-   Hero curves
- *
- * The hero used to end on a hard horizontal line against the white section
- * below it, and the photograph was a plain rectangle. Both now carry the same
- * shallow arc, which is the shape the template already ships for this -
- * images/shapes/h1-hero-shapes.svg, a 1920x37 path that rises to nothing at
- * the centre and falls to 36px at either edge.
- *
- * Two separate curves, because our hero is taller than the one the template
- * was drawn for: brand.css gives it 140px of padding at the bottom to clear
- * the "Scroll" rail, so the photograph stops well short of the section edge
- * and one curve cannot cut both. The section gets the arc as a masked strip;
- * the photograph gets its own mask.
-   ========================================================================= */
+   Preloader icon
 
-/* ---------------------------------------------------------------------------
-   1. The section's bottom edge
- *
- * A strip of the *next* section's colour, masked to the arc and laid over the
- * bottom of the hero. Painting it here rather than on the section below - as
- * the template does with `.with-shape` - keeps the whole hero treatment in
- * one place, at the cost of one coupling: the colour has to match whatever
- * follows the hero. Today that is .tj-about-section - whose own background is
- * white, but which paints `--bg-section` over itself with a `::before` that
- * stops 3% short of the right edge. It is that panel the curve has to meet,
- * so the curve is `--bg-section`. The sliver of white beyond the panel is
- * ~43px wide and meets the arc where it is at its shallowest, a pixel or two
- * tall, so it does not read. Reorder the home page and this must move with it.
- *
- * The arc is the template's own path, inlined rather than linked. The file
- * (images/shapes/h1-hero-shapes.svg) carries no `preserveAspectRatio`, so a
- * mask that stretches it to a 1440x48 box letterboxes the path inside its
- * 1920:37 ratio instead of following the box - which renders as nothing at
- * all. Inline, with `preserveAspectRatio='none'`, it stretches properly, and
- * `mask-size: 100% 100%` makes `height` below the literal depth of the curve.
-   ------------------------------------------------------------------------- */
-.tj-hero-section::after {
-  position: absolute;
-  content: "";
-  inset-inline-start: 0;
-  bottom: 0;
+   The template's hexagon filled its 55px canvas edge to edge, so the theme's
+   66px box suited it. The Brighter Tides mark sits inside a square with
+   generous transparent padding, which left the wave rendering at about 35px
+   inside the ring - small enough to lose the sun's rays. A wider box gives
+   the art the optical size the hexagon had. Everything else about the loader
+   is the template's own: white field, rotating teal ring.
+   ------------------------------------------------------------------------ */
+#loading-icon {
+  /* An explicit width, so the box is no longer shrink-to-fit. */
+  width: 80px;
+  max-width: none;
+}
+
+/* Sized on the image, not the box: #loading-icon is absolutely positioned,
+   so it shrink-wraps its content - and a percentage width on a child of a
+   shrink-to-fit box resolves against a width that is itself waiting on the
+   child. That circularity is what left the mark at 50px whatever the box's
+   max-width said. */
+#loading-icon img {
   width: 100%;
-  /*
-   * The depth of the arc, and it has to be a proportion of the width rather
-   * than a number of pixels. An arc is read as the ratio of its rise to its
-   * span: 48px across a 1440px laptop is a clear sweep, and the same 48px
-   * across a 2000px window is a straight line with a kink in it. 4vw holds
-   * one shape at every width - the clamp only stops it collapsing to nothing
-   * on a phone or turning into a dome on an ultrawide.
-   */
-  height: clamp(22px, 4vw, 110px);
-  background-color: var(--bg-section);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
-          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-position: center bottom;
-          mask-position: center bottom;
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-  /* Above the hero's background washes and the decorative shapes, below
-     nothing that can be clicked - the CTA row sits far higher up. */
-  z-index: 3;
-  pointer-events: none;
-}
-
-/* ---------------------------------------------------------------------------
-   2. The photograph
- *
- * Two things, and they work together.
- *
- * The top edge dips towards the middle, so the picture is a curved plate
- * rather than a rectangle. The mask is an inline SVG rather than a file
- * because it is one quadratic and belongs with the rule that uses it;
- * `preserveAspectRatio='none'` over a 0-100 viewBox makes it a percentage
- * shape, so it scales with the image at every breakpoint rather than needing
- * a size per breakpoint.
- *
- * Its bottom edge is left square, because from 992px up the picture now runs
- * all the way down to the section's bottom edge and the curve in 1 above cuts
- * it there. That is the whole point of the treatment and it was the piece we
- * were missing: the hero's 140px of foot-room held the photograph clear of
- * the curve, so the arc swept through empty navy and the picture sat above it
- * looking untouched. Reaching past that foot-room on this box alone drops the
- * picture into the curve without moving the section's bottom edge, so the
- * "Scroll" rail keeps the clearance it was given. Below 992px there is no
- * foot-room to reach past and the picture already met the curve.
-   ------------------------------------------------------------------------- */
-.hero-images {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 L0 100 Z' fill='%23000'/%3E%3C/svg%3E");
-          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 L0 100 Z' fill='%23000'/%3E%3C/svg%3E");
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-}
-
-@media (min-width: 992px) {
-  /*
-   * The picture is taken out of flow and its box stretched 140px past the
-   * bottom of the row, which lands it exactly on the section's bottom edge.
-   *
-   * Out of flow, and not simply given a negative bottom margin, because a
-   * margin would shorten the flex item and with it the row: the hero would
-   * lose the same 140px it was given, and the "Scroll" rail - which is
-   * anchored to the section's bottom-left - would ride back up into the CTA
-   * row, which is the collision that foot-room exists to prevent.
-   *
-   * `aspect-ratio` then holds the row open to the height the picture used to
-   * contribute in flow. It is the source file's own ratio, so the row is the
-   * height it always was rather than a number copied from a screenshot.
-   */
-  .hero-images-box {
-    aspect-ratio: 1220 / 1514;
-  }
-
-  .hero-images-box .hero-images {
-    position: absolute;
-    inset: 0 0 calc(var(--bt-hero-foot, 0px) * -1) 0;
-  }
-
-  /* The box is now taller than the photograph's own ratio, so the picture
-     fills it and crops rather than stretching. The subjects are centred, so
-     what cover trims is window and floor. */
-  .hero-images-box .hero-images img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  /* The theme gives every image max-width: 100%, which resolved against the
+     shrink-wrapped box and pinned the mark at 50px. */
+  max-width: none;
+  height: auto;
 }
