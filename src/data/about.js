@@ -56,8 +56,10 @@ export const founder = {
   title: "Technology Leadership From the Executive Side of the Table.",
   name: homeFounder.name,
   role: homeFounder.role,
-  image: homeFounder.image,
-  imageSmall: homeFounder.imageSmall,
+  // The about page gets the studio headshot rather than the home page's
+  // frame - the two sit on the same site and should not repeat.
+  image: "/assets/images/bt/photos/shannon-about.webp",
+  imageSmall: "/assets/images/bt/photos/shannon-about-645.webp",
   paragraphs: [
     "Shannon brings more than 18 years of enterprise technology and business transformation leadership to Brighter Tides.",
     "Her experience goes beyond the platform itself. She understands the decisions leaders face around technology investment, governance, vendors, organizational priorities, and demonstrating business value.",

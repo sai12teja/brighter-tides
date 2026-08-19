@@ -24,7 +24,7 @@
     "name": "Brighter Tides - Web Images",
     "note": "One subfolder per page. Check each of them, not just the root."
   },
-  "lastChecked": "2026-08-19T02:05:00+05:30",
+  "lastChecked": "2026-08-19T09:20:00+05:30",
   "folders": {
     "Homepage": {
       "id": "1pMbplG_MLJf78IyJFG-b6NMWMkoSvrFr",
@@ -33,41 +33,63 @@
           "id": "1y9Q4kvGSufOKIFpdWiQE4vbIw4TPNoBx",
           "slot": "Home hero, beside the headline (components/home/Hero)",
           "aspect": "source, 610px box",
-          "outputs": ["hero.webp 1220x1514", "hero-610.webp 610x757"]
+          "outputs": [
+            "hero.webp 1220x1514",
+            "hero-610.webp 610x757"
+          ]
         },
         "About": {
           "id": "10jHZuwU5TfWcCGWfsWRZ0eoI9G6X4YS1",
           "slot": "Home about section, large organic mask (components/home/About)",
           "aspect": "745:676, cropped from inside the circle the file arrives as",
-          "outputs": ["about.webp 1490x1352"]
+          "outputs": [
+            "about.webp 1490x1352"
+          ]
         },
         "ABOUT small secondary image": {
           "id": "1nvMa0OAY_vvjFzkgJTacSc_N3x5gpEFa",
           "slot": "Home about section, small mask above it",
           "aspect": "187:185",
-          "outputs": ["about-secondary.webp 400x396"]
+          "outputs": [
+            "about-secondary.webp 400x396"
+          ]
         },
         "Service 01": {
           "id": "1Hgwp1NVpW5D-R0lIegiC_q0yVpQ8h49s",
           "slot": "Licensing & Contract Advisory - home card + services page card thumb",
           "aspect": "645:670",
-          "outputs": ["service-01.webp 1290x1340", "service-01-645.webp 645x670"]
+          "outputs": [
+            "service-01.webp 1290x1340",
+            "service-01-645.webp 645x670"
+          ]
         },
         "Service 02": {
           "id": "1LjLJiKDz2d6FlXb1G3YDhNgKqTOxkE8b",
           "driveName": "service02",
-          "previousIds": ["1C8NcsCo4iWuMz4nJWr7mDl-QPNmyadTD", "1d4_QGTB4tIghsaUPsEPSTTuondAe09Tt"],
+          "previousIds": [
+            "1C8NcsCo4iWuMz4nJWr7mDl-QPNmyadTD",
+            "1d4_QGTB4tIghsaUPsEPSTTuondAe09Tt"
+          ],
           "slot": "Strategic Advisory - home card + services page card thumb",
           "aspect": "645:670",
-          "outputs": ["service-02.webp 1290x1340", "service-02-645.webp 645x670"]
+          "outputs": [
+            "service-02.webp 1290x1340",
+            "service-02-645.webp 645x670"
+          ]
         },
         "Service 03": {
           "id": "1Ybk6mEgaeODrHb3dlFNv5OiiduQNR60g",
           "driveName": "service 03",
-          "previousIds": ["1RfmxCWhZMCl9r0lDIpR4eJVwGKI5DkS6", "1ITnZNhCmOXVYZ8BFSySZBwvcgUBE7C_d"],
+          "previousIds": [
+            "1RfmxCWhZMCl9r0lDIpR4eJVwGKI5DkS6",
+            "1ITnZNhCmOXVYZ8BFSySZBwvcgUBE7C_d"
+          ],
           "slot": "Fractional Platform Leadership - home card + services page card thumb",
           "aspect": "645:670",
-          "outputs": ["service-03.webp 1290x1340", "service-03-645.webp 645x670"]
+          "outputs": [
+            "service-03.webp 1290x1340",
+            "service-03-645.webp 645x670"
+          ]
         }
       }
     },
@@ -78,25 +100,33 @@
           "id": "1jZeU5p-S2zMvrdyl4ZNWYjqI8HJuEXcs",
           "slot": "About page header backdrop, and PageHeader's default for every page without one of its own",
           "aspect": "2000:700",
-          "outputs": ["about-hero.webp 1769x619"]
+          "outputs": [
+            "about-hero.webp 1769x619"
+          ]
         },
         "02-02-about-our-purpose": {
           "id": "1ozwvdazw8sQl_wqVZQSRy8uwWwblNx8a",
           "slot": "About page, Our Purpose (data/about purpose.image)",
           "aspect": "400:539",
-          "outputs": ["about-purpose.webp 800x1078"]
+          "outputs": [
+            "about-purpose.webp 800x1078"
+          ]
         },
         "About → What We Believe — Main Image": {
           "id": "1xg-Qd8XBByX_-nQh0sOdD2AAg-Oa-t87",
           "slot": "About page, What We Believe - large organic mask",
           "aspect": "745:676",
-          "outputs": ["about-believe-main.webp 1490x1352"]
+          "outputs": [
+            "about-believe-main.webp 1490x1352"
+          ]
         },
         "About Page → What We Believe → Small Supporting Image": {
           "id": "1s_37iWTMU5WQd2GimKbfnfaW-JCZD6qz",
           "slot": "About page, What We Believe - small mask",
           "aspect": "187:185",
-          "outputs": ["about-believe-small.webp 400x396"]
+          "outputs": [
+            "about-believe-small.webp 400x396"
+          ]
         }
       }
     },
@@ -107,19 +137,25 @@
           "id": "18XlI2i7yx4n2JOyawu-33Cgqfys00EKo",
           "slot": "Services page header backdrop, and the service detail pages'",
           "aspect": "2000:700",
-          "outputs": ["services-hero.webp 2200x770"]
+          "outputs": [
+            "services-hero.webp 2200x770"
+          ]
         },
         "Services Page — Start With the Problem (big image)": {
           "id": "1J8EehNstGlI1HPm4si11sDYZ8PI279AR",
           "slot": "Services page, Start With the Problem - large organic mask",
           "aspect": "745:676",
-          "outputs": ["services-problem-main.webp 1490x1352"]
+          "outputs": [
+            "services-problem-main.webp 1490x1352"
+          ]
         },
         "Services — Start With the Problem — Small Image": {
           "id": "1V8jR4LppYPOno6BvFTyPQMsoLoHd3HuP",
           "slot": "Services page, Start With the Problem - small mask",
           "aspect": "187:185",
-          "outputs": ["services-problem-small.webp 400x396"]
+          "outputs": [
+            "services-problem-small.webp 400x396"
+          ]
         }
       }
     },
@@ -130,7 +166,9 @@
           "id": "13YJII_9eH8fCg0tdctlsfKLJ2n-qDb4i",
           "slot": "Contact page header backdrop",
           "aspect": "2000:700",
-          "outputs": ["contact-hero.webp 2200x770"]
+          "outputs": [
+            "contact-hero.webp 2200x770"
+          ]
         }
       }
     },
@@ -141,7 +179,10 @@
           "id": "11YU4UHWP2MBSTccI_z0uGuUtUg435Xic",
           "slot": "Licensing detail page banner (data/serviceDetails)",
           "aspect": "3:2",
-          "outputs": ["service-01-banner.webp 1662x1108", "service-01-banner-831.webp 831x554"]
+          "outputs": [
+            "service-01-banner.webp 1662x1108",
+            "service-01-banner-831.webp 831x554"
+          ]
         }
       }
     },
@@ -152,7 +193,10 @@
           "id": "1niELqd7FQ7pZoEZ2Xv3nw8RaHxeAsvJS",
           "slot": "Strategic Advisory detail page banner",
           "aspect": "3:2",
-          "outputs": ["service-02-banner.webp 1662x1108", "service-02-banner-831.webp 831x554"]
+          "outputs": [
+            "service-02-banner.webp 1662x1108",
+            "service-02-banner-831.webp 831x554"
+          ]
         }
       }
     },
@@ -163,31 +207,58 @@
           "id": "1kyfEpO1_czYgDn9uTH1QnudBq0uIMUsT",
           "slot": "Fractional Platform Leadership detail page banner",
           "aspect": "3:2",
-          "outputs": ["service-03-banner.webp 1662x1108", "service-03-banner-831.webp 831x554"]
+          "outputs": [
+            "service-03-banner.webp 1662x1108",
+            "service-03-banner-831.webp 831x554"
+          ]
         }
       }
     },
     "Shannon": {
       "id": "1oh7SXnFWr-fmZvFs-qiNVv_JzsJBJi9U",
-      "note": "Five frames of Shannon. Only the full-length one is used - the founder panel is a 645x796 crop, which a headshot cannot fill without being blown up.",
+      "note": "Five frames of Shannon. The home page and the about page carry different ones so the same photograph does not appear twice on one site. Both are exported to 645:796, the aspect the founder panels are built around, so either can be swapped without resizing its panel.",
       "files": {
         "WhatsApp Image 2026-08-17 at 6.01.10 PM (1).jpeg": {
           "id": "1jIIaEFIPI3GCl8eIkycfYJhatgVLFcJV",
-          "slot": "unused - navy suit, white background, full length",
-          "outputs": ["shannon-portrait.webp 1290x1592", "shannon-portrait-645.webp 645x796"],
-          "usedFor": "Founder panel on the home page and the about page (data/home founder.image)"
+          "slot": "Home page founder panel (data/home founder.image)",
+          "aspect": "645:796",
+          "quality": "0.86 rather than the usual 0.90 - the mosaic backdrop is fine tile texture and inflates the file 4.5x against a plain background at the same setting",
+          "outputs": [
+            "shannon-home.webp 1290x1592",
+            "shannon-home-645.webp 645x796"
+          ]
         },
-        "WhatsApp Image 2026-08-17 at 6.01.10 PM.jpeg": { "id": "1micvNXsZ79H7hsplIEQJNrvaYEI0Krc3", "slot": "unused - dark-background headshot" },
-        "WhatsApp Image 2026-08-17 at 6.01.11 PM (1).jpeg": { "id": "1Aq14X9MnwQCCFR1YiejUwNUFU__85B8w", "slot": "unused - grey-background headshot" },
-        "WhatsApp Image 2026-08-17 at 6.01.11 PM (2).jpeg": { "id": "18rolx0jt9aUNT5VEYtLP43oZSm45ZZMA", "slot": "unused - mosaic-background lifestyle frame" },
-        "WhatsApp Image 2026-08-17 at 6.01.12 PM.jpeg": { "id": "1lQvWOvgmmWifiimiGGkxo1QVxpZ5Jdhn", "slot": "unused - sunset-background frame" }
+        "WhatsApp Image 2026-08-17 at 6.01.10 PM.jpeg": {
+          "id": "1micvNXsZ79H7hsplIEQJNrvaYEI0Krc3",
+          "slot": "About page founder panel (data/about founder.image)",
+          "aspect": "645:796, cropped in from a square source",
+          "outputs": [
+            "shannon-about.webp 1290x1592",
+            "shannon-about-645.webp 645x796"
+          ]
+        },
+        "WhatsApp Image 2026-08-17 at 6.01.11 PM (1).jpeg": {
+          "id": "1Aq14X9MnwQCCFR1YiejUwNUFU__85B8w",
+          "slot": "unused"
+        },
+        "WhatsApp Image 2026-08-17 at 6.01.11 PM (2).jpeg": {
+          "id": "18rolx0jt9aUNT5VEYtLP43oZSm45ZZMA",
+          "slot": "unused"
+        },
+        "WhatsApp Image 2026-08-17 at 6.01.12 PM.jpeg": {
+          "id": "1lQvWOvgmmWifiimiGGkxo1QVxpZ5Jdhn",
+          "slot": "unused"
+        }
       }
     },
     "Logo": {
       "id": "1l38cig_dnvL7loMyUqHJhuTOuSKkXuHR",
       "note": "Holds the same stacked logo already processed into images/logos - no action needed unless it changes.",
       "files": {
-        "WhatsApp Image 2026-08-17 at 6.01.11 PM.jpeg": { "id": "1djLPPMb7YCxfM_rM34jIseUdEw0d9ut3", "slot": "already covered by images/logos/brighter-tides*.png" }
+        "WhatsApp Image 2026-08-17 at 6.01.11 PM.jpeg": {
+          "id": "1djLPPMb7YCxfM_rM34jIseUdEw0d9ut3",
+          "slot": "already covered by images/logos/brighter-tides*.png"
+        }
       }
     }
   },
