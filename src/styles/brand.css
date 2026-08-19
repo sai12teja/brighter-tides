@@ -1054,3 +1054,98 @@ html.lenis body {
     margin-bottom: 10px;
   }
 }
+
+/*
+ * ---------------------------------------------------------------------------
+ * Preloader
+ *
+ * The template's loader was its own hexagon mark inside a rotating ring on a
+ * white field. This replaces it with the Brighter Tides lockup on the brand's
+ * navy: the hero behind it is navy too, so the panel now dissolves into the
+ * page instead of flashing white and cutting to dark.
+ *
+ * `.preloader` itself keeps the template's fixed full-screen positioning -
+ * main.js fades that element out by class name on load.
+ * ---------------------------------------------------------------------------
+ */
+.preloader.bt-preloader {
+  background-color: var(--primary-deep);
+  /* A soft aqua bloom behind the mark, echoing the sun in the logo. */
+  background-image: radial-gradient(
+    118% 78% at 50% 44%,
+    rgba(66, 186, 190, 0.18) 0%,
+    rgba(6, 27, 50, 0) 62%
+  );
+}
+
+.bt-preloader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding-inline: 24px;
+  animation: bt-preloader-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.bt-preloader-logo {
+  width: min(280px, 64vw);
+  height: auto;
+}
+
+/*
+ * An indeterminate rail rather than a spinner: the load is short and its
+ * length is unknown, and a horizon line sits better with the mark than a
+ * second rotating circle would.
+ */
+.bt-preloader-rail {
+  position: relative;
+  width: min(200px, 46vw);
+  height: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: var(--border-on-dark);
+}
+
+.bt-preloader-rail span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  border-radius: inherit;
+  background-image: linear-gradient(90deg, transparent, var(--aqua), transparent);
+  /* 250% of its own 40% width carries it exactly one rail-length across. */
+  animation: bt-preloader-sweep 1.15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes bt-preloader-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bt-preloader-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt-preloader-inner {
+    animation: none;
+  }
+
+  .bt-preloader-rail span {
+    width: 100%;
+    background-image: none;
+    background-color: var(--aqua);
+    opacity: 0.55;
+    animation: none;
+  }
+}

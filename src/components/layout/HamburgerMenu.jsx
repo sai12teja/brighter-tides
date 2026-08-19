@@ -19,15 +19,6 @@ export default function HamburgerMenu() {
               </button>
             </div>
           </div>
-          <div className="hamburger_search">
-            <form method="get" action="#0" onSubmit={(e) => e.preventDefault()}>
-              <button type="submit">
-                <i className="fal fa-search"></i>
-              </button>
-              <input type="search" autoComplete="off" name="s" defaultValue="" placeholder="Search here" />
-            </form>
-          </div>
-
           {/* meanmenu.js clones #main-menu's markup into this container at runtime */}
           <div className="hamburger_menu">
             <div className="mobile_menu"></div>

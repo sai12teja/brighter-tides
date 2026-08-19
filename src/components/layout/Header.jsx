@@ -7,12 +7,11 @@ import { email, location } from "../../data/site";
 function HeaderRight() {
   return (
     <>
+      {/* The template's 'Explore' control opened a site search overlay. There
+          is no search to run - the site is five pages of editorial content -
+          so the trigger, its popup and the drawer's search field are all
+          gone rather than left as a dead end. */}
       <div className="header_right_info d-none d-md-inline-flex">
-        <button className="header_search d-none d-lg-inline-flex">
-          Explore
-          <i className="tji-search"></i>
-        </button>
-
         <Link to={headerCta.to} className="tj-primary-btn header_btn">
           <div className="btn_inner">
             <div className="btn_icon">

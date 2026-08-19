@@ -6,13 +6,12 @@ import { refreshTemplateAnimations } from "../../lib/templateAnimations";
 import { resetScroll } from "../../lib/smoothScroll";
 import Preloader from "./Preloader";
 import CustomCursor from "./CustomCursor";
-import SearchPopup from "./SearchPopup";
 import HamburgerMenu from "./HamburgerMenu";
 import Header from "./Header";
 import Footer from "./Footer";
 
 /**
- * Closes the mobile drawer / search overlay on navigation. The template's
+ * Closes the mobile drawer on navigation. The template's
  * main.js toggles these purely by adding classes to the DOM, and it has no
  * concept of client-side routing - without this the drawer would stay open
  * across a route change.
@@ -23,8 +22,6 @@ function useCloseOverlaysOnNavigate() {
   useEffect(() => {
     document.querySelector(".hamburger-area")?.classList.remove("opened");
     document.querySelector(".body-overlay")?.classList.remove("opened");
-    document.querySelector(".search_popup")?.classList.remove("search-opened");
-    document.querySelector(".search-popup-overlay")?.classList.remove("opened");
     // Not when the URL names a section - a link into the middle of a legal
     // document (/privacy-policy#liability) would otherwise be bounced
     // straight back to the top. pages/Legal takes it from here.
@@ -60,7 +57,6 @@ export default function SiteLayout() {
     <>
       <CustomCursor />
       <Preloader />
-      <SearchPopup />
       <HamburgerMenu />
       <Header />
 
