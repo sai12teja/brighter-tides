@@ -1149,3 +1149,99 @@ html.lenis body {
     animation: none;
   }
 }
+
+/* ===========================================================================
+   Hero curves
+ *
+ * The hero used to end on a hard horizontal line against the white section
+ * below it, and the photograph was a plain rectangle. Both now carry the same
+ * shallow arc, which is the shape the template already ships for this -
+ * images/shapes/h1-hero-shapes.svg, a 1920x37 path that rises to nothing at
+ * the centre and falls to 36px at either edge.
+ *
+ * Two separate curves, because our hero is taller than the one the template
+ * was drawn for: brand.css gives it 140px of padding at the bottom to clear
+ * the "Scroll" rail, so the photograph stops well short of the section edge
+ * and one curve cannot cut both. The section gets the arc as a masked strip;
+ * the photograph gets its own mask.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   1. The section's bottom edge
+ *
+ * A strip of the *next* section's colour, masked to the arc and laid over the
+ * bottom of the hero. Painting it here rather than on the section below - as
+ * the template does with `.with-shape` - keeps the whole hero treatment in
+ * one place, at the cost of one coupling: the colour has to match whatever
+ * follows the hero. Today that is .tj-about-section - whose own background is
+ * white, but which paints `--bg-section` over itself with a `::before` that
+ * stops 3% short of the right edge. It is that panel the curve has to meet,
+ * so the curve is `--bg-section`. The sliver of white beyond the panel is
+ * ~43px wide and meets the arc where it is at its shallowest, a pixel or two
+ * tall, so it does not read. Reorder the home page and this must move with it.
+ *
+ * The arc is the template's own path, inlined rather than linked. The file
+ * (images/shapes/h1-hero-shapes.svg) carries no `preserveAspectRatio`, so a
+ * mask that stretches it to a 1440x48 box letterboxes the path inside its
+ * 1920:37 ratio instead of following the box - which renders as nothing at
+ * all. Inline, with `preserveAspectRatio='none'`, it stretches properly, and
+ * `mask-size: 100% 100%` makes `height` below the literal depth of the curve.
+   ------------------------------------------------------------------------- */
+.tj-hero-section::after {
+  position: absolute;
+  content: "";
+  inset-inline-start: 0;
+  bottom: 0;
+  width: 100%;
+  height: 48px;
+  background-color: var(--bg-section);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center bottom;
+          mask-position: center bottom;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  /* Above the hero's background washes and the decorative shapes, below
+     nothing that can be clicked - the CTA row sits far higher up. */
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* The arc is a proportion of the screen, not a fixed depth: 48px reads as a
+   gentle sweep across 1440px and as a fairground tent across 390px. */
+@media (max-width: 991px) {
+  .tj-hero-section::after {
+    height: 30px;
+  }
+}
+
+@media (max-width: 575px) {
+  .tj-hero-section::after {
+    height: 20px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   2. The photograph
+ *
+ * The same idea one level down: the top edge dips towards the middle and the
+ * bottom edge lifts towards it, so the picture reads as a curved plate rather
+ * than as a rectangle sitting on a curved section.
+ *
+ * The mask is an inline SVG rather than a file because it is two quadratics
+ * and belongs with the rule that uses it. `preserveAspectRatio="none"` with
+ * a 0-100 viewBox makes it a percentage shape, so it scales with the image at
+ * every breakpoint instead of needing a size per breakpoint: 3 units of
+ * control-point offset resolve to a 1.5% dip - about 11px on the 757px
+ * desktop image, about 7px on the phone.
+   ------------------------------------------------------------------------- */
+.hero-images {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 Q50 97 0 100 Z' fill='%23000'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 Q50 97 0 100 Z' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}

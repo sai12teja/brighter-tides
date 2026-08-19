@@ -65,20 +65,14 @@ export default function Hero() {
                 <div className="images-shapes move-anim-2">
                   <img src="/assets/images/shapes/hero-2.png" alt="Shapes" />
                 </div>
-                <div className="hero-circle">
-                  <div className="circle-wrap">
-                    <img className="rotate-image" src="/assets/images/shapes/play-text.png" alt="image" />
-                    <a
-                      className="circle video-popup"
-                      data-autoplay="true"
-                      data-vbtype="video"
-                      data-maxwidth="1200px"
-                      href="https://www.youtube.com/watch?v=MLpWrANjFbI"
-                    >
-                      <i className="fa-sharp fa-solid fa-play"></i>
-                    </a>
-                  </div>
-                </div>
+                {/* The template's "PLAY OUR PROMOTIONAL VIDEO" badge is gone.
+                    It opened a Venobox lightbox on a hard-coded YouTube URL
+                    that came with the theme - someone else's video, on
+                    someone else's channel - and it sat across the faces in
+                    the photograph. There is no Brighter Tides video to put
+                    in its place yet; when there is, the markup is one commit
+                    back in this file's history and the vendor bundle still
+                    ships Venobox. */}
               </div>
             </div>
           </div>
