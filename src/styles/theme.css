@@ -34,7 +34,7 @@
 
   --bg-primary: #ffffff;
   --bg-light: #f2fafa;
-  --bg-section: #eaf6f7;
+  --bg-section: #daeff1;
 
   --text-primary: #0a0f1e;
   --text-secondary: #536779;
@@ -67,7 +67,7 @@
 
   /* Body copy at #536779 is 5.8:1 on white; the muted step is held at 4.6:1
      so secondary text still clears WCAG AA rather than fading out. */
-  --text-muted: #647889;
+  --text-muted: #596b7a;
 
   --on-dark: #ffffff;
   --on-dark-muted: #a9c6d2;
@@ -713,4 +713,104 @@ img {
 .copyright-content-area .copyright-socails ul li a:hover i,
 .hamburger-socials ul li a:hover i {
   color: var(--primary);
+}
+
+/* ---------------------------------------------------------------------------
+   Vertical rhythm
+
+   One step, declared once and stepped down twice, so every section on the
+   site opens and closes on the same measure and a change of that measure is
+   a change in one place. The template's own spacing utilities are re-pointed
+   at it rather than replaced, so any markup that already carries them picks
+   the rhythm up untouched.
+
+   (Restored from the compiled stylesheet after an errant `git checkout`
+   discarded the working copy of this file - the declarations are exact; the
+   commentary in this block is rewritten rather than recovered.)
+   ------------------------------------------------------------------------ */
+
+:root {
+  --bt-section-y: 84px;
+}
+
+@media (max-width: 1199px) {
+  :root {
+    --bt-section-y: 72px;
+  }
+}
+
+@media (max-width: 991px) {
+  :root {
+    --bt-section-y: 60px;
+  }
+}
+
+.section-space {
+  padding-top: var(--bt-section-y);
+  padding-bottom: var(--bt-section-y);
+}
+
+.section-bottom-space {
+  padding-bottom: var(--bt-section-y);
+}
+
+/* Sections the template pads from its own values rather than through the
+   utilities above. */
+.tj-about-section,
+.tj-service-section,
+.tj-contact-section {
+  padding-top: var(--bt-section-y);
+  padding-bottom: var(--bt-section-y);
+}
+
+/* The feature grid sat 40px lower than everything else because the section
+   and the wrapper inside it were each padded. */
+.tj-feature-section.with-shape {
+  padding-top: 0;
+}
+
+/* The logo strip is a band rather than a section: it reads better a little
+   tighter than a full step, with its label closer to the marquee. */
+.tj-brand-section {
+  padding-top: var(--bt-section-y);
+  padding-bottom: calc(var(--bt-section-y) * 0.66);
+}
+
+/* The credentials follow directly from the founder story - they are the same
+   thought, so they sit at half a step rather than a whole one. */
+.bt-credentials-section {
+  padding-top: calc(var(--bt-section-y) * 0.5);
+}
+
+/* The last service card carries the section's own bottom spacing instead of
+   adding its own on top of it. */
+.tj-service-section .service-wrapper .service-item:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Inner-page banner
+
+   287px of padding above the title and 170 below made a 572px band for one
+   word. The header floats over it, so the top padding only has to clear the
+   bar (~145px) and give the title room to breathe; the rest was empty navy.
+   ------------------------------------------------------------------------ */
+
+.tj-page-header {
+  padding-top: 210px;
+  padding-bottom: 96px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .tj-page-header {
+    padding-top: 190px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (max-width: 991px) {
+  .tj-page-header {
+    padding-top: 160px;
+    padding-bottom: 64px;
+  }
 }

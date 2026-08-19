@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { initSmoothScroll } from "../lib/smoothScroll";
-import { claimVendorInitialised } from "../lib/templateAnimations";
+import { claimVendorInitialised, protectVendorScrollTriggers } from "../lib/templateAnimations";
 
 /**
  * Odometer (the fun-facts digit roll) auto-initialises from a
@@ -154,6 +154,11 @@ export default function useSiteScripts() {
     (async () => {
       await loadScripts(SCRIPTS);
       if (cancelled) return;
+
+      // Before anything can resize the window: main.js binds a resize
+      // handler that kills every ScrollTrigger on the page. See
+      // lib/templateAnimations.
+      protectVendorScrollTriggers();
 
       // `performance.now()` is milliseconds since the navigation started, so
       // this holds the splash for the remainder of its minimum - nothing at

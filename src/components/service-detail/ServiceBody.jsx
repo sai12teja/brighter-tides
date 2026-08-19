@@ -135,7 +135,11 @@ export default function ServiceBody({ slug, service }) {
           <div className="check-list mb-40 mt-40">
             <h4 className="text-anim">Common questions</h4>
           </div>
-          <FaqAccordion id={`bt-faq-${slug}`} items={faq} />
+          {/* The card treatment the home page's accordion uses. Without the
+              numbering, which belongs to a section heading its own questions
+              lead - here they sit under one of several h4s in a reading
+              column. */}
+          <FaqAccordion id={`bt-faq-${slug}`} items={faq} variant="bt-faq-premium" />
         </div>
       </div>
     </div>

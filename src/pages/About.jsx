@@ -18,8 +18,10 @@ export default function About() {
       <Approach />
       <FounderStory />
       <Credentials />
-      {/* about.html's own logo strip is the light, ruled variant. */}
-      <LogoMarquee content={experience} variant="light" />
+      {/* about.html ships the light, ruled variant of this strip; both pages
+          run the home page's dark band instead, so the one set of logos reads
+          the same wherever it appears. */}
+      <LogoMarquee content={experience} variant="dark" />
       <Beliefs />
       {/* A full sentence, not a two-word slogan: the h2 step of the type
           scale rather than the 72px display size. */}

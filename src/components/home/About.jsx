@@ -67,15 +67,6 @@ export default function About() {
             loading="lazy"
           />
         </div>
-        <div className="about-shape-2 hover:shine">
-          <img
-            src="/assets/images/bt/photos/about-secondary.webp"
-            alt="Two people reviewing figures on a tablet"
-            width="400"
-            height="396"
-            loading="lazy"
-          />
-        </div>
         <div className="about-shape-3 zoominout">
           <img src="/assets/images/bt/star.svg" alt="Shapes" />
         </div>

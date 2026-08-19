@@ -22,11 +22,76 @@
 
 const isDesktop = () => window.innerWidth > 991;
 
+/** The selector the template's sticky sidebar is built on - the one thing
+ *  its resize handler is entitled to clear. See below. */
+const STICKY_SIDEBAR = ".tj-sticky";
+
+let unfilteredGetAll = null;
+
+/** The real trigger list, whatever `ScrollTrigger.getAll` has been narrowed
+ *  to for the template's benefit. */
+function allScrollTriggers() {
+  if (unfilteredGetAll) return unfilteredGetAll();
+  return window.ScrollTrigger?.getAll?.() ?? [];
+}
+
+/**
+ * Stops the template's sticky-sidebar setup from taking the whole page down
+ * with it on every resize.
+ *
+ * main.js, verbatim:
+ *
+ *     function initStickySidebar() {
+ *       if (window.innerWidth >= 992) {
+ *         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+ *         gsap.to(".tj-sticky", { scrollTrigger: { ... pin: true ... } });
+ *       }
+ *     }
+ *     initStickySidebar();
+ *     window.addEventListener("resize", () => initStickySidebar());
+ *
+ * That first line kills *every* ScrollTrigger on the page - not the
+ * sidebar's, everyone's - and then rebuilds only its own. On a desktop it
+ * never shows, because nobody resizes a window mid-read. Small screens fire
+ * `resize` constantly: hiding and re-showing the browser's address bar while
+ * scrolling changes the viewport height, and so do rotation, the on-screen
+ * keyboard and any change of zoom. Measured on this page at 1366x700, one
+ * such event takes it from 44 scroll animations to 1 - mid-scroll, the
+ * pinned service cards unpin and the content under the cursor jumps ~350px
+ * at a scroll position the visitor never moved, the stacking effect is gone,
+ * and nothing recovers until the next navigation. The 992px floor is why it
+ * is tablets and small laptops that suffer and phones do not.
+ *
+ * The kill loop only knows what `ScrollTrigger.getAll()` tells it, so this
+ * narrows that to the sidebar's own triggers. The template still cleans up
+ * after itself - its previous pin is in the list it gets, so repeated
+ * resizes cannot stack pins up - and every other animation on the page is
+ * simply invisible to it. ScrollTrigger re-measures the survivors on resize
+ * as it always has.
+ *
+ * Narrowing the static is safe: `getAll` returns a copy of an internal array
+ * that the library itself works off directly and never reads back through
+ * this method (checked against the bundled 3.11.4), and the one caller in
+ * the template is the loop above. Everything of ours reads the real list
+ * through `allScrollTriggers()`.
+ */
+export function protectVendorScrollTriggers() {
+  const ST = window.ScrollTrigger;
+  if (!ST || unfilteredGetAll) return;
+
+  unfilteredGetAll = ST.getAll.bind(ST);
+  ST.getAll = () => unfilteredGetAll().filter((trigger) => trigger.vars?.trigger === STICKY_SIDEBAR);
+  // `ScrollTrigger.getAll()` is the first thing anyone reaches for in the
+  // console when a scroll animation misbehaves, and from here on it answers
+  // with one trigger. This is the way back to the real list.
+  ST.getAllUnfiltered = unfilteredGetAll;
+}
+
 /** Elements React just replaced leave their ScrollTriggers pointing at
  *  detached nodes. Left alone these accumulate on every navigation and
  *  keep measuring nodes that are no longer laid out. */
 function killDetachedScrollTriggers() {
-  window.ScrollTrigger?.getAll?.().forEach((trigger) => {
+  allScrollTriggers().forEach((trigger) => {
     const el = trigger.trigger || trigger.vars?.trigger;
     if (el instanceof Element && !document.body.contains(el)) {
       trigger.kill();
@@ -297,6 +362,85 @@ function initHeroParallax() {
  */
 let wow = null;
 
+/**
+ * Scroll transitions: a slow rise as a block comes into view, and the same in
+ * reverse on the way back up.
+ *
+ * The template's own reveals (WOW.js) fire once and stay fired - scroll back
+ * up and nothing moves, which is what made the page feel one-directional.
+ * These are scrubbed instead: the tween is tied to scroll position rather
+ * than played on a trigger, so it runs forwards and backwards with the wheel
+ * and lands wherever the reader stops. Lenis drives ScrollTrigger from the
+ * same ticker, so the motion is as smooth as the scroll itself.
+ *
+ * Transform only, never opacity: WOW owns opacity on these same elements, and
+ * two owners of one property is a fight. Transform also stays on the
+ * compositor, so a long page does not pay layout for it.
+ */
+function initScrollTransitions() {
+  const { gsap, ScrollTrigger } = window;
+  if (!gsap || !ScrollTrigger) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  document.querySelectorAll("main > section > .container, main > div > .container").forEach((el) => {
+    if (el.dataset.btScrollTx === "true") return;
+
+    // The hero animates itself, and the services list is pinned - a second
+    // transform on either fights an existing one.
+    if (el.closest(".heroStack, .tj-service-section, .tj-evolute-area")) return;
+
+    el.dataset.btScrollTx = "true";
+
+    gsap.fromTo(
+      el,
+      { y: 44 },
+      {
+        y: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el,
+          // Starts as the block clears the fold and finishes well before it
+          // leaves, so the movement is over by the time anyone reads it.
+          start: "top bottom",
+          end: "top 62%",
+          scrub: 0.7,
+        },
+      }
+    );
+  });
+}
+
+/**
+ * main.js: the process rail.
+ *
+ * It binds `#tj-process` once, at load, against the DOM of a static page - so
+ * on a client-rendered route it finds nothing, and the rail's marker never
+ * moves off the first step. Same logic, re-run per page: hovering a step
+ * marks it active and slides the marker to its share of the rail.
+ */
+function initProcessRail() {
+  document.querySelectorAll("#tj-process, #tj-process-2").forEach((container) => {
+    if (container.dataset.btRail === "true") return;
+
+    const items = container.querySelectorAll(".process-item");
+    const marker = container.querySelector(".process-line-active");
+    if (!items.length || !marker) return;
+
+    container.dataset.btRail = "true";
+    const portion = 100 / items.length;
+    marker.style.insetInlineStart = "0";
+    marker.style.top = "0";
+
+    items.forEach((item, i) => {
+      item.addEventListener("mouseenter", () => {
+        items.forEach((other) => other.classList.remove("active"));
+        marker.style.top = `${portion * i}%`;
+        item.classList.add("active");
+      });
+    });
+  });
+}
+
 function initWow() {
   if (typeof window.WOW !== "function") return;
 
@@ -426,6 +570,9 @@ export function refreshTemplateAnimations() {
   } else {
     initWow();
   }
+
+  initProcessRail();
+  initScrollTransitions();
 
   // Positions shift as the new sections lay out (and as pinned cards add
   // spacing), so triggers must re-measure once everything is in place.

@@ -9,7 +9,11 @@ import { founder as homeFounder, experience } from "./home";
 export const hero = {
   eyebrow: "About Brighter Tides",
   title: "Independent ServiceNow Guidance, Grounded in Executive Experience.",
-  desc: "We help organizations make better ServiceNow decisions through experienced, independent advisory focused on business value—not more technology for technology's sake.",
+  paragraphs: [
+    "We help organizations make better ServiceNow decisions through experienced, independent advisory focused on business value—not more technology for technology's sake.",
+    "Our approach draws on real platform leadership experience, not just theoretical frameworks.",
+    "We work alongside your team to align technology decisions with actual business outcomes, so every recommendation is grounded in what will genuinely move the needle.",
+  ],
 };
 
 export const purpose = {

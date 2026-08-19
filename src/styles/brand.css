@@ -51,6 +51,99 @@
 }
 
 /*
+ * Hero headline - the typed accent line.
+ *
+ * The headline is two blocks, not one wrapping paragraph: the lead sits on
+ * its own lines and keeps the template's character-split reveal, and the
+ * accent phrase below it is typed out by components/sections/TypedText.
+ * Making the lead a block is what fixes the break after "Your" - otherwise
+ * the first word of the accent line would ride up onto it at some widths,
+ * and the typed line would start mid-sentence.
+ *
+ * The grid below is the no-reflow trick TypedText is built on. Every phrase
+ * in the rotation is rendered at zero opacity and every layer is assigned
+ * the same cell, so they stack: the row is as tall as the tallest word and
+ * the column is the headline's own width, whatever is being typed into it.
+ * The live text is laid in that same cell, and since it is only ever a
+ * prefix of one of the phrases it can never outgrow the space they have
+ * already reserved. Nothing under the headline moves while it types.
+ */
+.hero-content .hero-title .hero-title-lead {
+  display: block;
+}
+
+.bt-typed {
+  display: grid;
+  /* Not `auto`: an auto track sizes to the longest word's max-content, which
+     at narrow widths is wider than the headline and would push the hero into
+     a horizontal scroll rather than wrapping. */
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.bt-typed > span {
+  grid-area: 1 / 1;
+}
+
+/* Neither layer is the readable copy - the ghosts are duplicates and the
+   live one is a half-typed word. Without this, selecting the headline would
+   paste every phrase in the rotation plus whatever was on screen at the
+   time; with it, the selection falls through to the one settled line
+   TypedText renders for screen readers. */
+.bt-typed-ghost,
+.bt-typed-live {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.bt-typed-ghost {
+  opacity: 0;
+}
+
+.bt-typed-live {
+  pointer-events: none;
+}
+
+/*
+ * The caret. `currentColor` so it is the accent colour of whatever line it
+ * is typing, and sized in `em` so it scales with the headline through every
+ * breakpoint instead of shrinking against 45px type.
+ */
+.bt-typed-caret {
+  display: inline-block;
+  width: 0.05em;
+  min-width: 2px;
+  height: 0.8em;
+  margin-inline-start: 0.06em;
+  vertical-align: -0.06em;
+  background-color: currentColor;
+}
+
+/* Solid while the characters are moving - a caret that blinks mid-word
+   reads as a rendering fault - and blinking only once the line is resting. */
+.bt-typed-caret[data-resting="true"] {
+  animation: bt-caret-blink 1.05s steps(1, end) infinite;
+}
+
+@keyframes bt-caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The hook already settles on the whole phrase under reduced motion, so the
+   only thing left to still is the caret's blink. */
+@media (prefers-reduced-motion: reduce) {
+  .bt-typed-caret {
+    animation: none;
+  }
+}
+
+/*
  * Hero CTA row - lays the primary button and the secondary text link side
  * by side without altering either component.
  *
@@ -224,6 +317,32 @@ html.lenis body {
 }
 
 /*
+ * "How We Work" follows "Why Brighter Tides", and the template paints both
+ * of them in the same light surface (`--tj-color-theme-bg`). Back to back
+ * with no line between them they read as one 1,590px band: four cards, then
+ * a heading in the middle of it, then a rail - one section that changes its
+ * mind halfway down.
+ *
+ * The process takes the lighter of the two surfaces instead, so the page
+ * steps white -> tint -> lighter tint -> white and every join is a change of
+ * colour. Its heading is left-aligned against the rail, which is right for
+ * the layout, but that only works as the start of something once the surface
+ * says so.
+ */
+.h7-process {
+  background-color: var(--tj-color-theme-bg-2);
+}
+
+/* The template seats this section's eyebrow on a white chip, to lift it off
+   the tint it was drawn against. Here it reads as a stray white box beside
+   the heading - and the site already has one eyebrow, the dotted one every
+   other section opens with, which is what shows through once the chip is
+   off. */
+.h7-process .sec-heading .sub-title {
+  background: transparent;
+}
+
+/*
  * Card grids: every card fills its column, so a card whose title wraps to a
  * second line (or whose copy runs long) no longer sits taller than the ones
  * beside it. Bootstrap's row already stretches the columns to equal height;
@@ -257,12 +376,139 @@ html.lenis body {
 }
 
 /* 03 - Meet the founder */
+
+/*
+ * This is the only photograph of a person on the home page, so it is framed
+ * rather than dropped in flat: a rounded frame with a soft lift, a brand-tinted
+ * block offset behind it for depth, and Shannon's name set on the photograph
+ * itself under a scrim.
+ *
+ * The name lives here rather than above the copy because a portrait that
+ * introduces itself lets the column beside it open on what she does instead of
+ * repeating who she is.
+ *
+ * `isolation` gives the panel its own stacking context, so the block behind the
+ * frame can sit at a negative z-index without falling behind the section.
+ */
+.bt-founder-images {
+  position: relative;
+  margin: 0;
+  isolation: isolate;
+}
+
+.bt-founder-images::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  bottom: -22px;
+  width: 58%;
+  height: 52%;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--aqua) 100%);
+  opacity: 0.16;
+  z-index: -1;
+}
+
+.bt-founder-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 34px 70px -34px rgba(10, 15, 30, 0.45);
+}
+
+/*
+ * The scrim the caption sits on. Held to the lower two fifths and eased to
+ * nothing at its top edge, so it darkens the ground under the type without
+ * dimming the portrait.
+ */
+.bt-founder-frame::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* Above the shine wrapper, which the template gives `z-index: 1`; without
+     this the scrim paints under the photograph and does nothing. */
+  z-index: 2;
+  height: 54%;
+  background: linear-gradient(
+    to top,
+    rgba(10, 15, 30, 0.94) 0%,
+    rgba(10, 15, 30, 0.78) 26%,
+    rgba(10, 15, 30, 0.38) 58%,
+    rgba(10, 15, 30, 0) 100%
+  );
+  pointer-events: none;
+}
+
 .bt-founder-images img {
   width: 100%;
   height: auto;
   display: block;
 }
 
+.bt-founder-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  padding: 30px;
+}
+
+/* The same short accent rule the section eyebrows carry, at caption scale. */
+.bt-founder-caption::before {
+  content: "";
+  display: block;
+  width: 38px;
+  height: 2px;
+  margin-bottom: 14px;
+  background-color: var(--aqua);
+}
+
+.bt-founder-caption .name {
+  display: block;
+  font-family: var(--tj-ff-heading);
+  font-size: 26px;
+  font-weight: var(--tj-fw-bold);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--on-dark);
+  /* The scrim carries most of the contrast; this covers the light patches of
+     backdrop the name crosses on a narrow screen, where the frame is short and
+     the gradient has less room to build. */
+  text-shadow: 0 1px 18px rgba(10, 15, 30, 0.55);
+}
+
+.bt-founder-caption .role {
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: var(--tj-fw-medium);
+  color: var(--on-dark-muted);
+}
+
+@media (max-width: 575px) {
+  /* Pulled in, so the block behind the frame stays clear of the screen edge
+     where the container's own padding is at its narrowest. */
+  .bt-founder-images::before {
+    left: -12px;
+    bottom: -12px;
+  }
+
+  .bt-founder-caption {
+    padding: 22px;
+  }
+
+  .bt-founder-caption .name {
+    font-size: 22px;
+  }
+}
+
+/*
+ * The about page's founder story keeps the name and role in the copy, beside a
+ * portrait that is not framed for a caption.
+ */
 .bt-founder-identity {
   margin-bottom: 25px;
 }
@@ -349,20 +595,71 @@ html.lenis body {
   margin-bottom: 30px;
 }
 
-/* 04 - Experience logos. `.tj-brand-section` is a dark band, so the label
-   and footnote are set on the theme's dark-surface colours. */
-.bt-experience-section .bt-experience-label {
-  text-align: center;
+/*
+ * 04 - Experience logos.
+ *
+ * The band carries a full section heading rather than a lone label, so it
+ * announces itself the way every other section on the page does. Both pages
+ * take the same eyebrow and title from data/home; only the surface differs.
+ */
+.bt-experience-section .sec-heading {
   margin-bottom: 40px;
 }
 
-.bt-experience-section .bt-experience-label .sub-title {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: var(--tj-fw-bold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--tj-color-common-white);
+/* `.tj-brand-section` is the dark band on the home page, so its heading is set
+   on the theme's dark-surface colours. The light strip on the about page keeps
+   the default heading colours it inherits. */
+.tj-brand-section.bt-experience-section .sec-heading .sec-title {
+  color: var(--on-dark);
+}
+
+.tj-brand-section.bt-experience-section .sec-heading .sub-title {
+  color: var(--aqua);
+}
+
+/*
+ * The template sets the light strip's title as a body-size pill floating on a
+ * ruled line - a treatment for a two-word label, not for a section heading.
+ * This band now carries the same heading the dark one does, so the rules and
+ * the pill come off and the title goes back to the section type scale.
+ */
+.tj-brand-section-two.bt-experience-section .sec-heading::before,
+.tj-brand-section-two.bt-experience-section .sec-heading::after {
+  display: none;
+}
+
+.tj-brand-section-two.bt-experience-section .sec-heading .sec-title {
+  max-width: none;
+  padding: 0;
+  border-radius: 0;
+  outline: 0;
+  background: none;
+  font-family: var(--tj-ff-heading);
+  font-size: var(--tj-fs-h2);
+}
+
+/*
+ * The template's pill rule is specific enough to beat the theme's responsive
+ * `h2` steps, so cancelling it means restating them - otherwise this one
+ * heading holds 48px all the way down to a phone while every other section
+ * heading scales.
+ */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .tj-brand-section-two.bt-experience-section .sec-heading .sec-title {
+    font-size: 40px;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .tj-brand-section-two.bt-experience-section .sec-heading .sec-title {
+    font-size: 35px;
+  }
+}
+
+@media (max-width: 575px) {
+  .tj-brand-section-two.bt-experience-section .sec-heading .sec-title {
+    font-size: 30px;
+  }
 }
 
 .bt-experience-section .bt-experience-note {
@@ -380,6 +677,25 @@ html.lenis body {
    where the same footnote sits on white. */
 .tj-brand-section-two.bt-experience-section .bt-experience-note p {
   color: var(--tj-color-text-body-2);
+}
+
+/*
+ * The template fades both ends of the logo track out to the band colour -
+ * `.brand-slider-1::before/::after`, a 308px gradient over each end, and 40%
+ * of the width on the light strip. It is meant to soften logos entering and
+ * leaving the loop, but at those widths it is washing out whole tiles: the
+ * first and last organizations are never legible, and on the light strip
+ * four-fifths of the track is under a gradient.
+ *
+ * These are marks of real organizations. A logo that is only ever shown at
+ * half opacity is worse than one not shown at all, so the overlays go and
+ * every logo in the loop is readable for the whole of its pass.
+ */
+.brand-slider-1::before,
+.brand-slider-1::after,
+.brand-slider-2::before,
+.brand-slider-2::after {
+  content: none;
 }
 
 /* 05 - The ServiceNow challenge */
@@ -485,6 +801,361 @@ html.lenis body {
  * ---------------------------------------------------------------------------
  */
 
+/*
+ * The opening statement, shared by every inner page that uses the template's
+ * `tj-about-info` split - the about page and the services page both open on
+ * this, so the treatment is named for the job rather than for one page.
+ *
+ * The template's version of this section is a headline and one paragraph of
+ * body copy, and it shows what it was drawn for: paragraphs at one size, one
+ * colour and one weight, sitting in a column with nothing holding them to the
+ * headline beside them. The page's first impression was its least designed
+ * moment.
+ *
+ * Three marks fix that, all of them made from tokens the site already uses:
+ *
+ *  - a lead. The first paragraph is the claim, so it is set larger and in
+ *    the heading ink; the two under it are the detail and stay body-sized.
+ *    One step of hierarchy is what makes a block of copy read as written
+ *    rather than pasted.
+ *  - a rule under the headline, and a hairline down the inside edge of the
+ *    copy. Both fade out along their length in the palette's teal, which is
+ *    the wave in the logo and the same gradient the hero and the CTA band
+ *    are painted with. They give the two columns a shared edge to work
+ *    against.
+ *  - a wash in the top corner, the same aqua-over-white the light sections
+ *    use, so the block sits on a surface rather than on bare paper.
+ *
+ * Nothing here is decoration for its own sake: the rules are alignment, the
+ * lead is hierarchy, the wash is depth.
+ */
+.bt-page-intro {
+  position: relative;
+  isolation: isolate;
+}
+
+.bt-page-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    58% 68% at 92% 4%,
+    rgba(66, 186, 190, 0.11) 0%,
+    rgba(66, 186, 190, 0) 68%
+  );
+}
+
+/* Closes the headline. Long enough to read as a mark rather than as a stray
+   dash, and it keeps its colour for most of that length before it goes. */
+.bt-page-intro-rule {
+  display: block;
+  width: 96px;
+  height: 4px;
+  margin-top: 32px;
+  border-radius: 999px;
+  background-image: linear-gradient(
+    90deg,
+    var(--teal) 0%,
+    var(--aqua) 62%,
+    rgba(66, 186, 190, 0.15) 100%
+  );
+}
+
+.bt-page-intro-lead {
+  font-size: clamp(18px, 1.35vw, 21px);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 22px;
+}
+
+/*
+ * The copy sits in a panel rather than on bare paper: the site's light
+ * surface, a hairline, the 14px radius the FAQ cards already use, and the
+ * palette's softest shadow. It is the same card vocabulary the rest of the
+ * site is built from, which is what keeps an opening statement from reading
+ * as a notice.
+ *
+ * The accent runs down the inside of that edge - the wave colour again,
+ * strongest where the claim is and gone by the end of the detail under it.
+ */
+.bt-page-intro-copy {
+  position: relative;
+  /* A touch more on the stripe side than the other three, so the copy sits
+     square in the panel rather than pushed off the accent. */
+  padding: 26px 22px 26px 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background-color: var(--bg-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.bt-page-intro-copy::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 3px;
+  /* Follows the panel's own corners, so the stripe reads as the card's edge
+     and not as a bar laid over it. */
+  border-start-start-radius: 14px;
+  border-end-start-radius: 14px;
+  background-image: linear-gradient(
+    180deg,
+    var(--teal) 0%,
+    var(--aqua) 42%,
+    rgba(66, 186, 190, 0) 100%
+  );
+}
+
+.bt-page-intro-copy p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .bt-page-intro-copy {
+    padding: 32px 30px 32px 34px;
+  }
+}
+
+@media (min-width: 992px) {
+  .bt-page-intro-copy {
+    padding: 38px 40px;
+    /* The eyebrow (14px on a 15px margin) less the panel's own top padding:
+       the lead's first line then sits on the headline's, which is the whole
+       point of dropping the column. */
+    margin-top: -6px;
+  }
+}
+
+/*
+ * The services index inside that panel.
+ *
+ * Deliberately not a second set of cards - the page already has those two
+ * sections down. This is a contents list: a numeral, the name, a rule between
+ * each, and an arrow that only moves on hover. It reads as the answer to
+ * "what is on this page", which is what an opening statement should leave the
+ * visitor with.
+ */
+.bt-services-index {
+  margin: 28px 0 0;
+  padding: 22px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.bt-services-index li + li {
+  border-top: 1px solid var(--border);
+}
+
+.bt-services-index a {
+  display: flex;
+  /* Top-aligned, not centred: on a narrow screen two of the three names wrap,
+     and a numeral floating against the middle of a two-line title reads as a
+     mistake. Everything in the row now hangs off its first line. */
+  align-items: flex-start;
+  gap: 14px;
+  padding: 13px 0;
+  color: var(--tj-color-heading-primary);
+  transition: color 0.3s ease-in-out;
+}
+
+/* Tabular figures so the three numerals sit on one edge whatever they are. */
+.bt-services-index .index {
+  flex-shrink: 0;
+  /* Optical: the numeral is three points smaller than the name, so its own
+     line box would sit high against it. */
+  padding-top: 3px;
+  font-family: var(--tj-ff-heading);
+  font-size: 13px;
+  font-weight: var(--tj-fw-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--aqua);
+}
+
+.bt-services-index .title {
+  font-family: var(--tj-ff-heading);
+  font-size: 16px;
+  font-weight: var(--tj-fw-sbold);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+/*
+ * Parked at the row's end and held back until the row is hovered, so three
+ * arrows do not sit there competing with the copy above them.
+ */
+.bt-services-index .nav {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  padding-top: 4px;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--teal);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.bt-services-index a:hover {
+  color: var(--teal-dark);
+}
+
+.bt-services-index a:hover .nav,
+.bt-services-index a:focus-visible .nav {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt-services-index .nav {
+    transition: none;
+    transform: none;
+  }
+}
+
+/*
+ * "What We Believe" - the two-photograph collage.
+ *
+ * The template's collage is one artwork masked into an organic shape with a
+ * second, smaller shape resting against its top edge, and it was drawn for
+ * stock illustration where that small shape had empty space to sit in. Ours
+ * holds a photograph of two people, and the small shape landed across the
+ * head of one of them - at a glance the pair read as a single mangled
+ * picture, with a hand and a document apparently growing out of her hair.
+ *
+ * Three changes make it read as one photograph laid over another, which is
+ * all a collage has to do:
+ *
+ *  - a circle, instead of the template's tab-shaped mask. That mask's flat
+ *    top and notched foot exist to interlock with the big shape at the one
+ *    position the template put it in; anywhere else it just looks clipped.
+ *  - a ring and a shadow. The ring is the shape's own white plate showing
+ *    through its padding, so it follows the circle exactly. The gap is what
+ *    tells the eye it is looking at two photographs.
+ *  - a position tied to the big shape's edges rather than to percentages of
+ *    the section. That shape is a fixed size at each breakpoint, so the
+ *    template's `left: 35%` slid the disc across it as the window changed,
+ *    and its `top: -1px` came adrift whenever the copy made the section
+ *    taller than the shape. Anchored, the overlap is the same everywhere -
+ *    clear of the face below it and of the copy beside it.
+ */
+.tj-about-section {
+  /* `.about-shape-1`'s max-width at each of the template's breakpoints. */
+  --bt-collage-width: 745px;
+  --bt-collage-disc: 168px;
+  /* How far the disc sits back from the photograph's right edge. Two thirds
+     of it over the picture, a third clear. */
+  --bt-collage-overlap: 131px;
+}
+
+@media (max-width: 1599px) {
+  .tj-about-section {
+    --bt-collage-width: 660px;
+  }
+}
+
+@media (max-width: 1399px) {
+  .tj-about-section {
+    --bt-collage-width: 565px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .tj-about-section {
+    --bt-collage-width: 475px;
+    --bt-collage-disc: 140px;
+    /* Barely 20px separates the photograph from the copy here, so the disc
+       sits wholly inside the picture rather than hanging into the text. */
+    --bt-collage-overlap: 150px;
+  }
+}
+
+.tj-about-section .about-bg-images .about-shape-2 {
+  /*
+   * Anchored to the foot of the photograph, and to the picture's painted
+   * edge rather than to its box.
+   *
+   * The foot, because the photograph is cropped `cover` into a frame whose
+   * proportions change at every breakpoint: the two faces slide around
+   * inside it as the window changes, and a disc pinned near the top lands
+   * across one of them somewhere in the range. The table and the documents
+   * are in the bottom of the frame at every width, so a disc down there
+   * covers paper, never a face.
+   *
+   * The painted edge, because `.about-shape-1` is a 676px-tall box whose
+   * mask is sized `contain` from 780x676 artwork - wider than it is tall.
+   * At all of these breakpoints the mask is width-limited: it scales to the
+   * box's width and is letterboxed inside its height, leaving
+   * (676 - width x 676/780) / 2 of empty box above and below the picture -
+   * 132px of it at 475px wide. Halved and folded together that offset is
+   * `338 - width x 338/780`, and the `338` cancels the box's own
+   * `translateY(-50%)`: hence 0.4333 of the width off the centre line, and
+   * 34px of clearance inside that edge.
+   */
+  top: calc(50% + var(--bt-collage-width) * 0.4333 - var(--bt-collage-disc) - 34px);
+  inset-inline-start: calc(var(--bt-collage-width) - var(--bt-collage-overlap));
+  max-width: var(--bt-collage-disc);
+  height: var(--bt-collage-disc);
+  padding: 9px;
+  -webkit-mask-image: none;
+  mask-image: none;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+}
+
+.tj-about-section .about-bg-images .about-shape-2 img {
+  border-radius: 50%;
+}
+
+/*
+ * Room for the photograph inside the band.
+ *
+ * The collage is a fixed 676px-tall box centred on the section, while the
+ * section's own height comes from the copy beside it - two numbers with
+ * nothing holding them together. With three short paragraphs the copy came
+ * out shorter than the picture, and the picture ran 7px past the band at the
+ * top and 7px past it at the foot: it read as jammed between the sections
+ * above and below rather than sitting in one.
+ *
+ * The floor is the painted picture (`width x 676/780`, the same contain
+ * arithmetic as the disc above) plus a band of air, so there is always
+ * about 60px of section above and below it however short the copy is. The
+ * copy is centred rather than padded down from the top, so it stays on the
+ * picture's centre line as that floor takes effect.
+ */
+@media (min-width: 992px) {
+  .tj-about-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(var(--bt-collage-width) * 676 / 780 + 120px);
+  }
+}
+
+/*
+ * "Our Approach" - the four cards.
+ *
+ * Bootstrap's stock 24px gutter is drawn for columns of copy, not for four
+ * bordered cards side by side: at that spacing the hairlines read as one
+ * ruled table rather than as four separate things. A third more room
+ * separates them without costing the copy inside a line.
+ *
+ * From `md` up only. Bootstrap pays for a gutter with negative row margins,
+ * and below `md` the container runs full-bleed on 12px of padding - a 16px
+ * negative margin would then hang 4px past each edge of the page and give
+ * the document a horizontal scroll. The cards are stacked one-up there
+ * anyway, where a horizontal gutter does nothing.
+ */
+@media (min-width: 768px) {
+  .bt-approach-cards {
+    --bs-gutter-x: 32px;
+  }
+}
+
 /* "Our Purpose" closes on a statement rather than another paragraph - the
    heading face marks it without a new colour or size. */
 .bt-lead-note {
@@ -496,58 +1167,134 @@ html.lenis body {
 /*
  * "Meet Shannon" - the founder panel and the portrait beside it.
  *
- * Above 1400px the section uses its full-bleed grid (`container-xxl-fluid`,
- * `d-none d-xxl-block`), where the copy panel and the portrait are meant to
- * read as one band. The template offsets the portrait 58px above its row and
- * then lets it end wherever its own aspect puts it - drawn for artwork that
- * happened to match the copy's height. A portrait does not: it overhung the
- * panel by 58px at the top and stopped 107px short of it at the bottom, so
- * neither edge lined up with anything.
+ * The template's own layout for this section is drawn for a page with no
+ * container. Above 1400px it uses a full-bleed grid in which the copy panel
+ * is pushed to the right-hand end of a seven-column with
+ * `margin-inline-start: auto` and a 905px cap, and the portrait bleeds off
+ * the right of the window at whatever height its own aspect gives it. On a
+ * wide screen that opened the copy some 500px to the right of where every
+ * other section on the page begins, with dead white beside it, and left the
+ * photograph running past the fold. Below 1400px a second copy of the whole
+ * section - the same words again, in the markup twice - laid the two out
+ * inside a container instead.
  *
- * The offset comes off and the portrait takes the row's height instead, which
- * the column already has from the row's default stretch. `cover` absorbs the
- * difference between the file's aspect and the panel's, so the copy stays the
- * thing that sets the height.
+ * Both are replaced by one contained layout at every width (see
+ * components/about/FounderStory), which needs the >=1400px offsets that
+ * belong to the full-bleed version taken back off:
  *
- * Scoped to that grid: below 1400px the second copy lays the two out centred
- * against each other, which is a different arrangement and already correct.
+ *  - the panel's `margin-inline-end: -100px` and 905px cap, which pushed it
+ *    across its column and out over the photograph;
+ *  - the photograph's `bottom: 65px` lift and `calc(100% - 80px)` cap, drawn
+ *    to overlap a panel that is no longer overlapping it.
+ *
+ * What is left is a pair of equal-height cards in the page's own grid. The
+ * two diagonal clips go with the offsets - facing each other across a gutter
+ * they read as damage rather than as a cut - and the radius the rest of the
+ * site's cards use takes their place.
  */
-.tj-evolute-area .container-xxl-fluid .col-lg-5 {
-  display: flex;
+.bt-founder-story {
+  /* The template pads this section 66px from the top above 1400px and not at
+     all below. The section above already closes on a full step of the
+     vertical rhythm, so neither is wanted. */
+  padding-top: 0;
 }
 
-.tj-evolute-area .container-xxl-fluid .tj-evolute-image {
+/* One block of the page, not the whole width of it. A bio panel and a
+   headshot do not need the 1320px the wide sections run to - held in a
+   little, the pair reads as a card the page is carrying rather than as a
+   band, and the copy keeps a sensible measure.
+
+   Only where it is actually a reduction: Bootstrap's container is already
+   1140px and narrower below 1400, and a flat cap here would have made this
+   section *wider* than every other one at those sizes. */
+@media (min-width: 1400px) {
+  .bt-founder-story .container {
+    max-width: 1160px;
+  }
+}
+
+.bt-founder-story .tj-evolute {
+  max-width: 100%;
+  height: 100%;
+  margin-inline: 0;
+  padding: 40px 36px;
+  border-radius: 14px;
+  -webkit-clip-path: none;
+          clip-path: none;
+}
+
+/* The template sets this panel's heading at the full section size and its
+   copy at 20px, both drawn for the 905px-wide full-bleed panel it ships. In
+   half a container that is a display headline and three paragraphs of
+   oversized type, and between them they were setting the height of the whole
+   section - and with it the crop on the portrait beside it. A step down on
+   each takes ~140px off the block and leaves the panel still speaking above
+   the site's body copy, which a bio can carry. */
+.bt-founder-story .tj-evolute .sec-title {
+  font-size: clamp(28px, 2.6vw, 38px);
+}
+
+.bt-founder-story .tj-evolute .desc {
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.bt-founder-story .tj-evolute-image {
+  max-width: 100%;
+  /* Fills the panel beside it above lg; below that the columns stack and the
+     height comes from the floor instead. */
+  height: 100%;
+  min-height: 420px;
   bottom: 0;
-  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  -webkit-clip-path: none;
+          clip-path: none;
 }
 
-.tj-evolute-area .container-xxl-fluid .tj-evolute-image img {
+.bt-founder-story .tj-evolute-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
+  /* A studio headshot: the crop has to keep the face, which sits in the
+     upper third of the frame, whatever shape the column ends up. */
+  -o-object-position: 50% 20%;
+     object-position: 50% 20%;
 }
 
-/*
- * The template also clips the portrait's top-left corner away at a 10%
- * diagonal. With the two now flush that cut is the only thing left breaking
- * the line: it takes 58px off the top of the photograph's left side, so the
- * photograph still reads as starting lower than the panel it sits beside -
- * the same complaint the offset caused, from a different cause.
- *
- * It goes, leaving the panel's own cut corner as the single diagonal in the
- * composition rather than two at different angles facing each other. The
- * panel keeps overhanging the photograph by 20px, which is what tucks the two
- * together.
- */
-.tj-evolute-area .container-xxl-fluid .tj-evolute-image {
-  clip-path: none;
+/* Stacked below xl: the portrait has no panel to match, so it takes a band
+   of its own rather than the full height of a 1290x1592 file. */
+@media (max-width: 1199px) {
+  .bt-founder-story .tj-evolute-image {
+    height: 460px;
+  }
+}
+
+@media (max-width: 991px) {
+  .bt-founder-story .tj-evolute {
+    padding: 40px 32px;
+  }
+
+  .bt-founder-story .tj-evolute-image {
+    height: 420px;
+  }
+}
+
+@media (max-width: 575px) {
+  .bt-founder-story .tj-evolute {
+    padding: 32px 24px;
+  }
+
+  .bt-founder-story .tj-evolute-image {
+    height: 360px;
+    min-height: 0;
+  }
 }
 
 /* The credentials sit directly under the founder story, so they lead with
-   the section's own spacing rather than a second heading. */
-.bt-credentials-section {
-  padding-top: 60px;
-}
+   the section's own spacing rather than a second heading. Their half-step of
+   padding is in theme.css with the rest of the vertical rhythm. */
 
 /*
  * The template's CTA title is a 72px display size, sized for a two-word
@@ -612,11 +1359,30 @@ html.lenis body {
   max-width: 62ch;
 }
 
-/* The form and the map are columns of one row; matching heights keep their
-   tops and bottoms aligned. `.google-map` already carries `height: 100%`
-   and a 585px floor from the template. */
+/*
+ * The opening statement and "prefer to reach out directly?" are one movement -
+ * a claim, then the ways to act on it - so a full section's rhythm between
+ * them read as a gap rather than as a break.
+ */
+.bt-contact-intro {
+  padding-bottom: clamp(40px, 4vw, 56px);
+}
+
+/*
+ * The form and the map are columns of one row; matching heights keep their
+ * tops and bottoms aligned. `.google-map` already carries `height: 100%` and a
+ * 585px floor from the template.
+ *
+ * The panel itself takes the card vocabulary the rest of the site now uses, so
+ * the row reads as two cards rather than as a bordered box beside a picture.
+ */
 .tj-contact-area .contact-form-one.style-2 {
   height: 100%;
+  padding: clamp(30px, 2.6vw, 44px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 /*
@@ -647,10 +1413,140 @@ html.lenis body {
   color: var(--tj-color-text-body-2);
 }
 
-/* The reassurance cards carry one short line each; an equal height stops the
-   row from stepping. */
+/*
+ * Both card rows - the ways to make contact, and what happens next.
+ *
+ * An equal height stops a row from stepping when one card's copy runs longer.
+ * The rest is the card vocabulary: this page was the last place still on the
+ * template's square, hairline-on-white boxes while the FAQ, the check lists
+ * and the opening panels had all moved to 14px corners on the light surface.
+ */
 .tj-contact-area .contact-item.style-2 {
   height: 100%;
+  padding: 34px 30px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background-color: var(--bg-light);
+  transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
+}
+
+.tj-contact-area .contact-item.style-2:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--teal) 34%, transparent);
+  box-shadow: var(--shadow-md);
+}
+
+/*
+ * The template's 88px icon badge is filled with the same pale tint the card now
+ * takes, so on the light surface the circle disappeared and left the glyph
+ * floating. White puts the badge back.
+ *
+ * The hover state has to be restated with it. The template flips the badge to
+ * solid accent and the glyph to white, but its two rules do not carry equal
+ * weight against the one above:
+ *
+ *   .tj-contact-area .contact-item.style-2 .contact-icon    (0,4,0)  <- ours
+ *   .contact-item.style-2:hover .contact-icon               (0,4,0)  <- badge
+ *   .contact-item.style-2:hover .contact-icon i             (0,5,0)  <- glyph
+ *
+ * The badge rule ties with ours and loses on source order, so the badge stayed
+ * white while the glyph rule - a step heavier - still turned the glyph white.
+ * A white glyph on a white badge: the icon vanished on hover. Restating the
+ * flip here at (0,5,0) puts the intended inversion back and keeps both halves
+ * of it in one place, so they cannot drift apart again.
+ */
+.tj-contact-area .contact-item.style-2 .contact-icon {
+  background-color: var(--bg-primary);
+}
+
+.tj-contact-area .contact-item.style-2:hover .contact-icon {
+  background-color: var(--teal);
+}
+
+/* Stated rather than inherited: the glyph is what the badge is for, so the
+   pair reads as one switch. White on `--teal` is 3.2:1, which clears the 3:1
+   WCAG asks of a graphical element at this size. */
+.tj-contact-area .contact-item.style-2:hover .contact-icon i {
+  color: var(--on-dark);
+}
+
+/*
+ * The template holds this copy to 224px, which is drawn for a one-line
+ * "Email us" value. "What happens next" runs to a sentence and was breaking
+ * over four narrow lines inside a card twice that wide.
+ */
+.tj-contact-area .contact-item.style-2 p {
+  max-width: 34ch;
+}
+
+/*
+ * The map.
+ *
+ * The template ships it at `grayscale(1)`, which is why it arrived black and
+ * white. This is the keyless `maps?q=&output=embed` embed, so there is no
+ * styling key to pass - the tint has to be done in CSS over the top.
+ *
+ * Not with a `sepia`/`hue-rotate` filter chain, which is the usual recipe:
+ * sepia compresses the tonal range on its way to a single hue, and a map is
+ * nothing but tonal range - paper, park, water and road fill all collapsed
+ * into one pale wash, which is a tinted rectangle rather than a map.
+ *
+ * A `color` blend takes hue and saturation from the layer above and leaves the
+ * greyscale luminance underneath exactly as it is, so every one of those
+ * surfaces keeps its separation. `opacity` is then the one dial on how far the
+ * tint goes. `isolation` keeps the blend to the map rather than the page.
+ *
+ * If a browser will not blend over a cross-origin frame it falls back to the
+ * greyscale the template already shipped, which is no worse than today.
+ *
+ * Both layers clear on hover. A tinted map is a graphic; the moment someone
+ * reaches for it they want the real one, legible.
+ */
+.google-map {
+  isolation: isolate;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.google-map iframe {
+  filter: grayscale(1) contrast(1.04);
+  transition: filter 0.45s ease-in-out;
+}
+
+.google-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* The map stays draggable and clickable under the tint. */
+  pointer-events: none;
+  background-color: var(--teal);
+  mix-blend-mode: color;
+  opacity: 0.5;
+  transition: opacity 0.45s ease-in-out;
+}
+
+.google-map:hover iframe,
+.google-map:focus-within iframe {
+  filter: none;
+}
+
+.google-map:hover::after,
+.google-map:focus-within::after {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tj-contact-area .contact-item.style-2,
+  .google-map iframe {
+    transition: none;
+  }
+
+  .tj-contact-area .contact-item.style-2:hover {
+    transform: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -750,10 +1646,120 @@ html.lenis body {
   height: 100%;
 }
 
-/* The tick list is the template's own; on this page it carries ten short
-   capability lines rather than three, so it gets a little more air. */
-.bt-expertise-section .check-list-one ul li:not(:last-child) {
-  margin-bottom: 18px;
+/*
+ * "Where We Help" - the capability tiles.
+ *
+ * These ten phrases are the page's index of what the practice does, and the
+ * template's tick list read them as a shopping list: body-weight text in two
+ * columns with a lot of white either side and nothing to say any one of them
+ * carried weight. Each is a tile now - a marked disc, a label in the heading
+ * face, a hairline and the palette's lightest shadow - built from the same
+ * card vocabulary as the FAQ and the About panel.
+ *
+ * Flex rather than a grid, and a fixed basis rather than `1fr`: ten items
+ * over five columns is tidy, but at the widths where five will not fit, a
+ * grid leaves the last row hanging off the left edge while everything above
+ * it is centred. Wrapped flex rows centre themselves, so 5-5 becomes 3-3-3-1
+ * or 2-2-2-2-2 as the window narrows and every row still sits under the
+ * middle of the heading. The basis is what the rows are counted from, and
+ * `flex-shrink` takes over below two tiles' worth of room.
+ */
+.bt-expertise-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bt-expertise-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* 248px is what the longest label ("Roadmap Development") needs to hold
+     one line next to its mark, and it is the width the rows are counted
+     from. Tiles then grow to share out whatever the row has left, so a row
+     of five and a row of three both come out flush - and the cap stops the
+     one tile left over at the end of a three-up row from stretching across
+     the page on its own. */
+  flex: 1 1 248px;
+  max-width: min(320px, 100%);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg-primary);
+  -webkit-box-shadow: var(--shadow-sm);
+          box-shadow: var(--shadow-sm);
+  -webkit-transition: -webkit-transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease, -webkit-box-shadow 0.25s ease;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.bt-expertise-item:hover {
+  -webkit-transform: translateY(-3px);
+      -ms-transform: translateY(-3px);
+          transform: translateY(-3px);
+  border-color: var(--aqua);
+  -webkit-box-shadow: var(--shadow-md);
+          box-shadow: var(--shadow-md);
+}
+
+/* The template's own double-tick, seated in a well so it reads as a mark
+   rather than as punctuation in front of the words. */
+.bt-expertise-mark {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex: 0 0 30px;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--bg-light);
+  color: var(--teal);
+  font-size: 14px;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.bt-expertise-item:hover .bt-expertise-mark {
+  background-color: var(--teal);
+  color: var(--on-dark);
+}
+
+.bt-expertise-label {
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--tj-color-heading-primary);
+}
+
+/* One per row on a phone, where a 320px cap would leave a tile floating
+   inside the column instead of filling it. */
+@media (max-width: 575px) {
+  .bt-expertise-item {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt-expertise-item,
+  .bt-expertise-mark {
+    transition: none;
+  }
+
+  .bt-expertise-item:hover {
+    transform: none;
+  }
 }
 
 /*
@@ -1093,22 +2099,53 @@ html.lenis body {
  * all. Inline, with `preserveAspectRatio='none'`, it stretches properly, and
  * `mask-size: 100% 100%` makes `height` below the literal depth of the curve.
    ------------------------------------------------------------------------- */
-.tj-hero-section::after {
+/* ---------------------------------------------------------------------------
+   Section curve
+
+   The template's own treatment - its shape file, masked at "contain" - as one
+   rule any section can opt into with "bt-curve-foot". The arc is painted in
+   the colour of whatever comes next, so it reads as the section below rising
+   into the one above.
+
+   "contain" is the part that matters: it keeps the path's own 1920:37
+   proportion instead of stretching it to the box, so the sweep stays shallow
+   (about 28px across a 1440px window, the depth the reference site uses) and
+   holds that proportion at every width without a clamp.
+
+   It lives on the section above rather than on the section below, because the
+   sections that would carry it below - the feature grid especially - are
+   "overflow: hidden" for their own decoration, which clips anything hung
+   above their top edge.
+   ------------------------------------------------------------------------ */
+.bt-curve-foot {
+  position: relative;
+}
+
+.bt-curve-foot::after {
   position: absolute;
   content: "";
   inset-inline-start: 0;
   bottom: 0;
   width: 100%;
   /*
-   * The depth of the arc, and it has to be a proportion of the width rather
-   * than a number of pixels. An arc is read as the ratio of its rise to its
-   * span: 48px across a 1440px laptop is a clear sweep, and the same 48px
-   * across a 2000px window is a straight line with a kink in it. 4vw holds
-   * one shape at every width - the clamp only stops it collapsing to nothing
-   * on a phone or turning into a dome on an ultrawide.
+   * Depth as a proportion of the width, not a fixed number: an arc is read as
+   * the ratio of its rise to its span, so 28px across a 1440px laptop is a
+   * clear sweep while the same 28px across an ultrawide is a straight line
+   * with a kink in it. The clamp only stops it collapsing on a phone or
+   * doming on a very wide screen. 1.9vw puts it at ~28px on a laptop, which
+   * is the depth the reference site uses.
    */
-  height: clamp(22px, 4vw, 110px);
-  background-color: var(--bg-section);
+  height: clamp(16px, 1.9vw, 46px);
+  background-color: var(--bt-curve-colour, var(--bg-section));
+  /*
+   * The template's arc, inlined rather than linked to its file. Linking it is
+   * what the template does, but the file carries no `preserveAspectRatio`, so
+   * the mask keeps the path's 1920:37 ratio instead of following the box -
+   * which renders as an unmasked rectangle here, a hard line across the page.
+   * Inline, with `preserveAspectRatio='none'` and `mask-size: 100% 100%`, the
+   * path stretches to whatever box it is given and `height` above is the
+   * literal depth of the sweep.
+   */
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
           mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 37' preserveAspectRatio='none'%3E%3Cpath d='M0 36.16C315.5 12.2 634.3 0 956 0c324.4 0 645.9 12.4 964 36.77V37H0v-0.84Z' fill='%23fff'/%3E%3C/svg%3E");
   -webkit-mask-repeat: no-repeat;
@@ -1117,10 +2154,23 @@ html.lenis body {
           mask-position: center bottom;
   -webkit-mask-size: 100% 100%;
           mask-size: 100% 100%;
-  /* Above the hero's background washes and the decorative shapes, below
-     nothing that can be clicked - the CTA row sits far higher up. */
+  /* Above the hero's washes, its photograph and the decorative shapes, so the
+     one arc cuts all of them. */
   z-index: 3;
   pointer-events: none;
+}
+
+/* The challenge section is mint and the expertise grid below it is white, so
+   its arc is white. */
+.bt-challenge-section.bt-curve-foot {
+  --bt-curve-colour: var(--tj-color-common-white);
+}
+
+/* The template puts the same arc on the feature section's own top edge, but
+   painted white inside a white section - invisible. The curve above supplies
+   that edge now. */
+.tj-feature-section.with-shape::before {
+  display: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1479,4 +2529,589 @@ html.lenis body {
      shrink-wrapped box and pinned the mark at 50px. */
   max-width: none;
   height: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Hero: content sits higher
+
+   The template opened the hero with 170px above the eyebrow, drawn for a
+   two-line headline. Ours runs to four lines plus a typed accent line, so
+   that head-room pushed the CTA row towards the fold and left the copy
+   sitting low in its own section. Taking it back to 130px lifts the whole
+   block without touching the foot-room the curve depends on.
+   ------------------------------------------------------------------------ */
+@media (min-width: 992px) {
+  .tj-hero-section {
+    padding-top: 130px;
+  }
+}
+
+@media (max-width: 991px) {
+  .tj-hero-section {
+    padding-top: 120px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Split headings cannot widen the page
+
+   GSAP SplitText rebuilds a `.text-anim` heading as inline-block word
+   wrappers, and their rounded widths can land a pixel or two past the
+   container. On a phone that was enough to give the whole document a
+   horizontal scroll - traced to the Challenge heading, 2px past 390.
+   `clip` contains it without creating a scroll container the way `hidden`
+   would, so nothing inside these sections can be scrolled out of reach.
+   ------------------------------------------------------------------------ */
+.bt-challenge-section,
+.bt-why-section,
+.bt-process-section,
+.bt-faq-section,
+.bt-expertise-section,
+.bt-credentials-section,
+/* The logo band, whose own heading was landing 7px past the viewport at
+   390 - the whole page could be dragged sideways by those 7px. */
+.bt-experience-section {
+  overflow-x: clip;
+}
+
+/* The template pulls this section 40px up over the one above it to make room
+   for the arc it draws at its own top edge - but its wrapper paints white
+   across that whole band, so the arc never shows and the join reads as a hard
+   line. The curve above (`bt-curve-foot` on the challenge section) draws that
+   edge now, so the overlap is cancelled and the two sections simply meet. */
+.tj-feature-section.with-shape {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+
+
+/* ---------------------------------------------------------------------------
+   Wave divider
+
+   Sits at the foot of a dark section and is filled with the colour of the one
+   below it, so the next section appears to rise into this one.
+
+   `bottom: -1px` is deliberate: at fractional device pixel ratios a wave sat
+   exactly on the edge leaves a hairline of the section showing beneath it.
+   `line-height: 0` on the wrapper kills the inline-element gap under the SVG,
+   which would do the same thing from the other side.
+
+   Height is a clamp rather than breakpoints - the shape stretches, so only
+   its depth needs to change between a phone and a desktop.
+   ------------------------------------------------------------------------ */
+.bt-wave-divider {
+  position: absolute;
+  bottom: -1px;
+  inset-inline-start: 0;
+  width: 100%;
+  line-height: 0;
+  /* Above the hero's washes, its photograph and the decorative shapes, so the
+     one wave cuts all of them. */
+  z-index: 3;
+  pointer-events: none;
+}
+
+.bt-wave-divider svg {
+  display: block;
+  width: 100%;
+  height: clamp(52px, 6.5vw, 116px);
+}
+
+.bt-wave-divider path {
+  fill: var(--bt-wave-fill, var(--bg-section));
+}
+
+/*
+ * The section the wave hands over to.
+ *
+ * The template paints that section's tint as a panel at `width: 97%` with a
+ * large rounded bottom-right corner - deliberate, and it reads as deliberate
+ * where the corner is. At the top edge it does not: a full-width wave met a
+ * 97% band and left a white notch down the right of the seam.
+ *
+ * Only the section under the hero is squared off, by the id the hero's own
+ * scroll-down anchor already puts there. The about page's copy of this section
+ * has no wave above it and keeps the template's inset.
+ */
+#scroll-hero.tj-about-section::before {
+  width: 100%;
+}
+
+
+
+/* The number and the question are separate elements, and the whitespace
+   between them collapses - so the gap is set here rather than relying on a
+   text node surviving JSX. */
+.h7-faq-style .accordion-button > span {
+  margin-inline-end: 7px;
+}
+
+/* ---------------------------------------------------------------------------
+   FAQ - premium treatment
+
+   The template renders questions as flat rows separated by hairlines, which
+   reads as a table. These are cards: each question sits on its own surface
+   with a border, and the open one lifts, takes an accent rule down its edge
+   and a soft shadow. That is the whole difference - a reader can see at a
+   glance which one is open without reading the toggle.
+
+   Everything below is scoped to `.bt-faq-premium`. The home page and the
+   service detail pages both opt in; the numbering is separate, and only the
+   home page's takes it.
+   ------------------------------------------------------------------------ */
+.bt-faq-premium .accordion-item {
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.bt-faq-premium .accordion-item:last-child {
+  margin-bottom: 0;
+}
+
+.bt-faq-premium .accordion-item:hover {
+  border-color: var(--aqua-light);
+}
+
+/* The open card: lifted, with the accent rule down its leading edge. A left
+   border would shift the copy, so it is drawn as an inset shadow instead. */
+.bt-faq-premium .accordion-item:has(.accordion-button:not(.collapsed)) {
+  border-color: var(--aqua-light);
+  box-shadow: var(--shadow-md), inset 3px 0 0 0 var(--teal);
+}
+
+.bt-faq-premium .accordion-item .accordion-header .accordion-button {
+  padding: 26px 84px 26px 28px;
+  background-color: transparent;
+  font-size: clamp(16px, 1.15vw, 18px);
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.bt-faq-premium .accordion-item .accordion-header .accordion-button:not(.collapsed) {
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+/* The number: an aqua counter rather than part of the sentence, so the eye
+   can run down the column and count. */
+.bt-faq-premium .accordion-item .accordion-header .accordion-button > span {
+  color: var(--teal);
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  font-variant-numeric: tabular-nums;
+  margin-inline-end: 12px;
+}
+
+/* The toggle. The template draws a glyph in a bordered circle; this keeps the
+   circle but fills it on open and turns the plus a quarter turn into a cross,
+   so the state change is a movement rather than a swapped character. */
+.bt-faq-premium .accordion-item .accordion-header .accordion-button::before {
+  inset-inline-end: 24px;
+  height: 38px;
+  width: 38px;
+  border-color: var(--border);
+  color: var(--teal);
+  background-color: var(--bg-light);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease,
+    border-color 0.25s ease, color 0.25s ease;
+}
+
+.bt-faq-premium .accordion-item .accordion-header .accordion-button:not(.collapsed)::before {
+  transform: translateY(-50%) rotate(135deg);
+  background-color: var(--teal);
+  border-color: var(--teal);
+  color: var(--on-dark);
+}
+
+/*
+ * The rule that separates a question from its answer belongs to the card, not
+ * to the copy: on the paragraph it stopped at the 60ch measure, which is the
+ * full width in the home page's column and well short of it in the wider
+ * reading column on a service page. It also drew itself again above every
+ * paragraph after the first.
+ */
+.bt-faq-premium .accordion-body {
+  margin-inline: 28px;
+  padding-top: 18px;
+  padding-bottom: 26px;
+  border-top: 1px solid var(--border);
+}
+
+.bt-faq-premium .accordion-body p {
+  color: var(--text-secondary);
+  max-width: 60ch;
+}
+
+/* ---------------------------------------------------------------------------
+   FAQ panel
+
+   A photograph on its own is decoration; with a scrim, a line of copy and a
+   way to ask, it earns the third of the row it occupies. It sticks on desktop
+   so it stays beside whichever question is open.
+   ------------------------------------------------------------------------ */
+.h7-faq .faq-banner {
+  height: 100%;
+  min-height: clamp(300px, 34vw, 460px);
+  overflow: hidden;
+  border-radius: 14px;
+  isolation: isolate;
+}
+
+.h7-faq .faq-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* Deepest at the foot, where the copy and the button sit. */
+.h7-faq .faq-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(
+      180deg,
+      rgba(6, 27, 50, 0.32) 0%,
+      rgba(6, 27, 50, 0.84) 32%,
+      rgba(6, 27, 50, 0.95) 64%,
+      rgba(6, 27, 50, 0.97) 100%
+    ),
+    linear-gradient(153deg, rgba(16, 160, 169, 0.3) 0%, rgba(6, 27, 50, 0) 60%);
+}
+
+.h7-faq .faq-banner .sec-heading {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 32px 30px;
+  margin-bottom: 0;
+}
+
+.h7-faq .faq-banner .sec-heading .sub-title {
+  color: var(--aqua-light);
+}
+
+.h7-faq .faq-banner .sec-heading .sec-title {
+  font-size: clamp(24px, 2vw, 34px);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+
+/* Near-white, not the muted on-dark token: that tone is drawn for flat navy
+   panels and loses against a photograph however deep the scrim is. */
+.bt-faq-panel-note {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  max-width: 34ch;
+}
+
+@media (min-width: 992px) {
+  .h7-faq .faq-banner {
+    position: sticky;
+    top: 110px;
+  }
+}
+
+/* The toggle.
+ *
+ * In this project the template's own glyph is switched off (`content: none`),
+ * so what actually draws is Bootstrap's `::after` chevron - a 20px background
+ * image. Rather than fight that, it is given the circle: same chevron, seated
+ * in a 38px well that fills with teal when the question opens. Bootstrap
+ * already rotates it 180deg on open, so the mark and its well turn together.
+ */
+.bt-faq-premium .accordion-item .accordion-header .accordion-button::after {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background-color: var(--bg-light);
+  background-size: 13px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2310a0a9'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.bt-faq-premium .accordion-item .accordion-header .accordion-button:not(.collapsed)::after {
+  background-color: var(--teal);
+  border-color: var(--teal);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.bt-faq-premium .accordion-item:hover .accordion-button.collapsed::after {
+  border-color: var(--aqua-light);
+}
+
+/*
+ * Services dropdown.
+ *
+ * The template caps each item's title at 152px, which is sized for a two-word
+ * service name and breaks all three of ours over two or three lines. These
+ * names are the thing the visitor is choosing between, so each is set on one
+ * line and the panel is sized to whatever the longest one needs.
+ *
+ * Desktop only: the mobile menu opens the same list full-width, where wrapping
+ * is what should happen.
+ */
+.mainmenu ul > li > ul.mega-menu-service {
+  width: max-content;
+  min-width: 346px;
+  max-width: calc(100vw - 40px);
+}
+
+.mainmenu ul > li > a.mega-menu-service-single .mega-menu-service-title {
+  max-width: none;
+  white-space: nowrap;
+}
+
+/*
+ * With the titles no longer clipped to a common 152px, each row's hover arrow
+ * would follow its own title and land at a different place down the list. An
+ * auto start margin pushes all three to the panel's right edge instead, so the
+ * arrows read as one column.
+ *
+ * The template pairs the arrow's 45-degree tilt with a `translate(23px, 25px)`
+ * that nudges it clear of a title clamped to 152px. Against the panel edge that
+ * offset carries the arrow straight out through the right-hand side, so only
+ * the tilt is kept and the row's own padding does the spacing.
+ */
+.mainmenu ul > li > a.mega-menu-service-single .mega-menu-service-nav {
+  margin-inline-start: auto;
+  transform: rotate(-45deg);
+}
+
+/*
+ * A plain sub-menu item slides its label right on hover - `padding-inline-start:
+ * 36px; padding-inline-end: 5px`. The template puts the start padding back for
+ * the mega menu but leaves the end at 5px, which was invisible while the arrow
+ * followed the title and shows up now that it sits against the panel edge: the
+ * hovered row's arrow jumped 20px right of the other two. Restoring the end
+ * padding holds all three still.
+ */
+.mainmenu ul > li > .mega-menu-service li:hover a.mega-menu-service-single {
+  padding-inline-end: 25px;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Service detail - sidebar and check list
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * The reading column runs to roughly 3,000px; the sidebar's own content is a
+ * third of that, so the contact card scrolled away early and left two thirds
+ * of the column empty beside the copy. Pinning it keeps the way to get in
+ * touch on screen for the whole read.
+ *
+ * The aside is stretched to the column's height first. A sticky element can
+ * only travel inside its containing block, and the aside's natural height is
+ * its own content - without this the card would unpin almost immediately.
+ *
+ * Desktop only: below `lg` the sidebar stacks under the body, where there is
+ * nothing for it to stick alongside.
+ */
+@media (min-width: 992px) {
+  .tj-service-sidebar {
+    height: 100%;
+  }
+
+  .tj-service-sidebar .tj-sidebar-widget:last-child {
+    position: sticky;
+    /* Clears the 80px header that slides back in on an upward scroll. */
+    top: 100px;
+  }
+}
+
+/*
+ * "What we consider".
+ *
+ * The template sets this as one ruled table - eight cells at 30px of padding
+ * inside a single hairline box - which reads as a specification sheet rather
+ * than as a list of things someone thought about. The same items work far
+ * better as separate tiles: the rules come off, each item takes the card
+ * vocabulary the rest of the site uses, and the tick moves into a soft brand
+ * chip instead of floating loose against the text.
+ */
+.tj-post-wrapper .service-check-list ul {
+  gap: 14px;
+  border: 0;
+}
+
+.tj-post-wrapper .service-check-list ul li,
+.tj-post-wrapper .service-check-list ul li:not(:nth-child(even)) {
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg-light);
+  transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
+}
+
+.tj-post-wrapper .service-check-list ul li i {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-top: 0;
+  border-radius: 50%;
+  font-size: 14px;
+  background-color: color-mix(in srgb, var(--aqua) 16%, transparent);
+  color: var(--teal-dark);
+}
+
+.tj-post-wrapper .service-check-list ul li:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--teal) 34%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tj-post-wrapper .service-check-list ul li {
+    transition: none;
+  }
+
+  .tj-post-wrapper .service-check-list ul li:hover {
+    transform: none;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Handheld
+ *
+ * Measured across every route at 360, 390 and 768 - home, about, services, a
+ * service detail, contact and both legal pages. The layout itself holds up:
+ * nothing overflows the viewport at any of those widths and no copy falls
+ * below 13.5px. What it was missing is the handful of things a page only
+ * needs once it is being held rather than pointed at.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Gutters.
+ *
+ * Bootstrap's container carries 12px of padding a side and the template took
+ * it as shipped, so on a 360px phone the headline, the body copy and every
+ * card edge sat 12px from the glass - the page read as though it had been
+ * poured into the screen rather than laid out on it. 20px is the smallest
+ * gutter that still reads as a margin at this size, 24px once there is a
+ * little more room.
+ *
+ * `--bs-gutter-x` rather than `padding`, because that is the variable the
+ * container computes its padding from - and `.row` re-declares the same
+ * variable for itself, so the columns inside keep the 24px gutter they had.
+ */
+@media (max-width: 575.98px) {
+  .container,
+  .container-fluid {
+    --bs-gutter-x: 40px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .container,
+  .container-fluid {
+    --bs-gutter-x: 48px;
+  }
+}
+
+/*
+ * Touch targets.
+ *
+ * WCAG 2.2 puts the floor at 24x24 (AA) and 44x44 where it can be had (AAA).
+ * The secondary text links measured 20px tall - the hero's "Explore Our
+ * Services" and the footer's "Connect on LinkedIn" - which is under the
+ * floor on the two links a phone visitor is most likely to reach for.
+ *
+ * The area is grown with an overlay rather than with padding: `.text-btn`
+ * animates an underline from its own bottom edge, and padding would carry
+ * that line 12px away from the text it belongs to. A pseudo-element is part
+ * of its originating element for hit-testing, so the link answers to the
+ * whole 44px band while nothing on screen moves.
+ */
+@media (max-width: 991.98px) {
+  .text-btn,
+  .tj-page-link a {
+    position: relative;
+  }
+
+  .text-btn::after,
+  .tj-page-link a::after {
+    content: "";
+    position: absolute;
+    inset: -12px 0;
+  }
+}
+
+/*
+ * The footer's menus are 26px links on 15px of spacing - over the floor, but
+ * only just, and they are the densest tap targets on the site. Moving that
+ * spacing inside the link turns each one into a 42px target without moving a
+ * single word: the pitch from one link to the next is unchanged.
+ */
+@media (max-width: 991.98px) {
+  .footer-widget.widget_nav_menu .widget-menu ul li {
+    margin-bottom: 0;
+  }
+
+  .footer-widget.widget_nav_menu .widget-menu ul li a {
+    padding-block: 8px;
+  }
+}
+
+/*
+ * Form controls.
+ *
+ * The inputs came in at 41px, which is short of a comfortable thumb and
+ * short of the 44px the buttons beside them already meet. Their 16px type is
+ * left alone deliberately - it is what stops iOS zooming the page in when a
+ * field takes focus.
+ */
+@media (max-width: 991.98px) {
+  .contact-form-one .form-input input:not([type="checkbox"]):not([type="radio"]),
+  .contact-form-one .form-input select {
+    min-height: 48px;
+  }
+}
+
+/*
+ * Clearing the header.
+ *
+ * The header floats over the top of the page (`position: absolute`), so
+ * whatever comes first has to be padded clear of it. The template's numbers
+ * stop working in one band: between 768 and 991 the topbar's line of copy
+ * wraps onto two lines, which takes the bar from 94px tall to 154px - and
+ * the hero's top padding has already stepped down from 170px to 120px for
+ * mobile by then. Measured at 768: the hero eyebrow sat 32px *under* the
+ * header, and on the inner pages the page title cleared it by 6px.
+ *
+ * 200px covers the tallest the bar gets in that band with room to breathe.
+ * Outside it both are already clear - 48px at 630, 158px at 991.
+ */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .tj-hero-section,
+  .tj-page-header {
+    padding-top: 200px;
+  }
 }

@@ -7,8 +7,12 @@ import { approach } from "../../data/about";
  * and title use the same `sec-heading` block every other section uses.
  */
 export default function Approach() {
+  // `section-space`, not the template's `section-bottom-space`: with only
+  // bottom padding the eyebrow sat ~24px under the tinted band that ends the
+  // section above it, hard against the join. Every other section on the site
+  // opens on a full step of the vertical rhythm.
   return (
-    <section className="tj-feature-section section-bottom-space">
+    <section className="tj-feature-section section-space">
       <div className="container">
         <div className="row">
           <div className="col-12">
@@ -20,7 +24,7 @@ export default function Approach() {
             </div>
           </div>
         </div>
-        <div className="row rg-30">
+        <div className="row rg-30 bt-approach-cards">
           {approach.items.map((item, i) => (
             <div className="col-lg-3 col-md-6 col-sm-6" key={item.title}>
               <div className="feature-item hover-bg wow fadeInUp" data-wow-delay={`${0.1 + i * 0.15}s`}>

@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import WaveDivider from "../sections/WaveDivider";
+import TypedText from "../sections/TypedText";
 import { hero } from "../../data/home";
 
 export default function Hero() {
@@ -13,9 +15,20 @@ export default function Hero() {
                 <span className="sub-title wow fadeInUp" data-wow-delay="0.1s">
                   {hero.eyebrow}
                 </span>
-                <h1 className="hero-title text-anim">
-                  {hero.titleLead} <span className="active-color">{hero.titleAccent}</span>
-                  {hero.titleTail}
+                {/* `text-anim` is on the lead alone, not on the whole <h1>
+                    as the template had it. It is the hook main.js uses to run
+                    GSAP SplitText over an element - and SplitText rebuilds
+                    that element's DOM into one node per character, which is
+                    fine for text that never changes and fatal for text React
+                    re-renders sixteen times a second. The lead keeps the
+                    character reveal; the accent line types itself instead. */}
+                <h1 className="hero-title">
+                  <span className="text-anim hero-title-lead">{hero.titleLead}</span>
+                  <TypedText
+                    phrases={hero.titlePhrases}
+                    readAs={hero.titleReadAs}
+                    className="active-color"
+                  />
                 </h1>
                 <div className="desc wow fadeInUp" data-wow-delay="0.1s">
                   <p>{hero.desc}</p>
@@ -85,7 +98,18 @@ export default function Hero() {
             Scroll
           </a>
         </div>
+
       </section>
+
+      {/* Outside the section on purpose. The hero carries a scroll-scrubbed
+          parallax (`y: 30%` - see initHeroParallax), so anything inside it
+          travels down as the page scrolls; the wave rode past the section
+          boundary and the next section, which does not move, painted over it.
+          By the time the hero's foot was on screen the curve was gone.
+
+          As a child of the stack instead - which is not transformed - it stays
+          welded to the boundary and the hero recedes behind it. */}
+      <WaveDivider />
     </div>
   );
 }

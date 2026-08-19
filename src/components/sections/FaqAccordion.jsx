@@ -7,9 +7,9 @@
  * `id` must be unique per page - it is what `data-bs-parent` uses to close
  * the sibling panel when another opens.
  */
-export default function FaqAccordion({ id, items, openFirst = true }) {
+export default function FaqAccordion({ id, items, openFirst = true, numbered = false, variant = "" }) {
   return (
-    <div className="accordion tj-faq-style wow fadeInUp" data-wow-delay="0.2s" id={id}>
+    <div className={`accordion tj-faq-style ${variant} wow fadeInUp`.replace(/s+/g, " ").trim()} data-wow-delay="0.2s" id={id}>
       {items.map((item, i) => {
         const bodyId = `${id}-${item.id}`;
         const headingId = `${bodyId}-heading`;
@@ -26,7 +26,7 @@ export default function FaqAccordion({ id, items, openFirst = true }) {
                 aria-expanded={isOpen}
                 aria-controls={bodyId}
               >
-                {item.question}
+                {numbered && <span>{String(i + 1).padStart(2, "0")}.</span>}{numbered ? " " : null}{item.question}
               </button>
             </h3>
             <div

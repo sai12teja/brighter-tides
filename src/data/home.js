@@ -2,11 +2,21 @@
 
 export const hero = {
   eyebrow: "Independent ServiceNow Advisory",
-  // `titleAccent` renders in the theme accent colour, matching the
-  // template's original highlighted-phrase treatment.
   titleLead: "Get More Value From Your",
-  titleAccent: "ServiceNow Investment",
-  titleTail: ".",
+  // The accent line - theme accent colour, as the template's highlighted
+  // phrase always was - is typed out a character at a time behind a caret,
+  // held, cleared, and followed by the next word, on a loop. Each is a whole
+  // sentence with the lead: "Get More Value From Your ServiceNow." then
+  // "...From Your Investment."
+  //
+  // The full stop belongs to each phrase so it arrives with the word it
+  // punctuates instead of hanging in space while the line is empty. Add or
+  // reorder freely - the space the line reserves is sized to whichever
+  // phrase is tallest, so a longer one cannot make the headline jump.
+  titlePhrases: ["ServiceNow.", "Investment."],
+  // What the <h1> says to a screen reader, and what a visitor copying the
+  // headline gets: one settled line rather than a rotation.
+  titleReadAs: "ServiceNow Investment.",
   desc: "We provide independent, executive-level ServiceNow advisory to help organizations make smarter decisions around licensing, platform strategy, governance, and leadership—without the complexity of a large consulting engagement.",
   primaryCta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
   secondaryCta: { label: "Explore Our Services", to: "/services" },
@@ -50,7 +60,8 @@ export const founder = {
 };
 
 export const experience = {
-  label: "Experience Shaped Across Leading Organizations",
+  eyebrow: "Proven Track Record",
+  title: "Experience Shaped Across Leading Organizations.",
   note: "Organizations shown reflect Shannon Chapman's professional leadership experience.",
 };
 
@@ -62,22 +73,22 @@ export const challenge = {
     {
       icon: "tji-optimization",
       title: "Rising Licensing Costs",
-      desc: "Are you paying for capabilities you aren't fully using?",
+      desc: "Are you paying for capabilities your team isn't fully using, and could that spend be reduced?",
     },
     {
       icon: "tji-cube",
       title: "Platform Complexity",
-      desc: "Has customization made your environment harder to maintain?",
+      desc: "Has customization over time made your environment harder to maintain, update, and keep running smoothly?",
     },
     {
       icon: "tji-strategy",
       title: "Unclear Roadmap",
-      desc: "Are you unsure what ServiceNow should solve next?",
+      desc: "Are you unsure what ServiceNow should solve next, or how to prioritize what comes after this?",
     },
     {
       icon: "tji-leadership",
       title: "Limited Platform Leadership",
-      desc: "Who is protecting the investment and keeping priorities aligned?",
+      desc: "Who is protecting this investment, keeping priorities aligned, and making sure the platform delivers real value?",
     },
   ],
   note: "Sometimes you don't need another implementation. You need clarity on what to do next.",
@@ -123,21 +134,26 @@ export const whyUs = {
 export const process = {
   eyebrow: "How We Work",
   title: "From ServiceNow Challenge to Clear Direction.",
+  image: "/assets/images/bt/photos/services-problem-main.webp",
+  cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
   steps: [
     {
       number: "01",
       title: "Start With the Problem",
       desc: "Tell us what's happening or what decision you're facing.",
+      link: { label: "Start the conversation", to: "/contact" },
     },
     {
       number: "02",
       title: "Get an Independent Perspective",
       desc: "We assess the situation, challenge assumptions, and evaluate your options.",
+      link: { label: "See how we help", to: "/services" },
     },
     {
       number: "03",
       title: "Move Forward With Clarity",
       desc: "Get practical recommendations, clear priorities, and an actionable path forward.",
+      link: { label: "Meet Shannon", to: "/about" },
     },
   ],
 };
@@ -145,6 +161,12 @@ export const process = {
 export const faq = {
   eyebrow: "Common Questions",
   title: "ServiceNow Advisory, Explained.",
+  // The panel beside the accordion - a room rather than a face, so the
+  // heading laid over it has somewhere quiet to sit.
+  image: "/assets/images/bt/photos/contact-hero.webp",
+  panelTitle: "Questions and answers.",
+  panelNote: "Not covered here? Tell us the decision you are facing and we will point you at the right starting place.",
+  panelCta: { label: "Ask us directly", to: "/contact" },
   items: [
     {
       id: "advisory-consultant",

@@ -6,7 +6,7 @@ import { challenge } from "../../data/home";
  */
 export default function Challenge() {
   return (
-    <section className="bt-challenge-section section-space">
+    <section className="bt-challenge-section section-space bt-curve-foot">
       <div className="container">
         <div className="row">
           <div className="col-12">
@@ -23,7 +23,7 @@ export default function Challenge() {
         </div>
         <div className="row rg-30">
           {challenge.items.map((item, i) => (
-            <div className="col-lg-6 col-md-6" key={item.title}>
+            <div className="col-lg-3 col-md-6 col-sm-6" key={item.title}>
               <div className="feature-item hover-bg wow fadeInUp" data-wow-delay={`${0.1 + i * 0.15}s`}>
                 <div className="feature-icon">
                   <i className={item.icon}></i>

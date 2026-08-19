@@ -37,8 +37,11 @@ export default function LogoMarquee({ content, variant = "dark" }) {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className="sec-heading text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 className="sec-title">{content.label}</h6>
+              <div className="sec-heading text-center bt-narrow-heading">
+                <span className="sub-title wow fadeInUp" data-wow-delay="0.1s">
+                  {content.eyebrow}
+                </span>
+                <h2 className="sec-title text-anim">{content.title}</h2>
               </div>
             </div>
           </div>
@@ -64,8 +67,11 @@ export default function LogoMarquee({ content, variant = "dark" }) {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <div className="bt-experience-label wow fadeInUp" data-wow-delay="0.1s">
-              <span className="sub-title">{content.label}</span>
+            <div className="sec-heading text-center bt-narrow-heading">
+              <span className="sub-title wow fadeInUp" data-wow-delay="0.1s">
+                {content.eyebrow}
+              </span>
+              <h2 className="sec-title text-anim">{content.title}</h2>
             </div>
             <div className="tj-brand-slider">
               <div className={`swiper ${sliderClass} swiper-container`}>

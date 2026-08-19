@@ -13,19 +13,27 @@ export default function MeetFounder() {
       <div className="container">
         <div className="row align-items-center rg-50">
           <div className="col-lg-5">
-            <div className="bt-founder-images wow fadeInLeft" data-wow-delay="0.1s">
-              <div className="hover:shine">
-                <img
-                  src={founder.image}
-                  srcSet={`${founder.imageSmall} 645w, ${founder.image} 1290w`}
-                  sizes="(max-width: 991px) 100vw, 545px"
-                  alt={`${founder.name}, ${founder.role}`}
-                  width="1290"
-                  height="1592"
-                  loading="lazy"
-                />
+            <figure className="bt-founder-images wow fadeInLeft" data-wow-delay="0.1s">
+              <div className="bt-founder-frame">
+                <div className="hover:shine">
+                  <img
+                    src={founder.image}
+                    srcSet={`${founder.imageSmall} 645w, ${founder.image} 1290w`}
+                    sizes="(max-width: 991px) 100vw, 545px"
+                    alt={`${founder.name}, ${founder.role}`}
+                    width="1290"
+                    height="1592"
+                    loading="lazy"
+                  />
+                </div>
+                {/* The portrait carries the identity, so the copy column can go
+                    straight from the heading into what Shannon actually does. */}
+                <figcaption className="bt-founder-caption">
+                  <span className="name">{founder.name}</span>
+                  <span className="role">{founder.role}</span>
+                </figcaption>
               </div>
-            </div>
+            </figure>
           </div>
           <div className="col-lg-7">
             <div className="bt-founder-content">
@@ -34,10 +42,6 @@ export default function MeetFounder() {
                   {founder.eyebrow}
                 </span>
                 <h2 className="sec-title text-anim">{founder.title}</h2>
-              </div>
-              <div className="bt-founder-identity wow fadeInUp" data-wow-delay="0.3s">
-                <h3 className="name">{founder.name}</h3>
-                <span className="role">{founder.role}</span>
               </div>
               <div className="desc wow fadeInUp" data-wow-delay="0.4s">
                 {founder.paragraphs.map((paragraph) => (
