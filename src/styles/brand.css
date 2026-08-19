@@ -525,6 +525,22 @@ html.lenis body {
   object-fit: cover;
 }
 
+/*
+ * The template also clips the portrait's top-left corner away at a 10%
+ * diagonal. With the two now flush that cut is the only thing left breaking
+ * the line: it takes 58px off the top of the photograph's left side, so the
+ * photograph still reads as starting lower than the panel it sits beside -
+ * the same complaint the offset caused, from a different cause.
+ *
+ * It goes, leaving the panel's own cut corner as the single diagonal in the
+ * composition rather than two at different angles facing each other. The
+ * panel keeps overhanging the photograph by 20px, which is what tucks the two
+ * together.
+ */
+.tj-evolute-area .container-xxl-fluid .tj-evolute-image {
+  clip-path: none;
+}
+
 /* The credentials sit directly under the founder story, so they lead with
    the section's own spacing rather than a second heading. */
 .bt-credentials-section {
