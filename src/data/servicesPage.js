@@ -5,7 +5,12 @@ import { services as serviceRoutes } from "./navigation";
 export const hero = {
   eyebrow: "ServiceNow Advisory Services",
   title: "Experienced Guidance for the ServiceNow Decisions That Matter.",
-  desc: "From licensing and platform strategy to ongoing platform leadership, we help organizations make smarter ServiceNow decisions and keep their investment aligned with business value.",
+  // First is the claim and is set as the lead; the rest are supporting
+  // detail at body size - the same shape the about page's opening uses.
+  paragraphs: [
+    "From licensing and platform strategy to ongoing platform leadership, we help organizations make smarter ServiceNow decisions and keep their investment aligned with business value.",
+    "Our advisory spans the full lifecycle, from initial platform decisions through to long-term governance; so you get consistent, experienced guidance at every stage.",
+  ],
 };
 
 export const problemFirst = {

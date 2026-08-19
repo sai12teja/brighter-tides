@@ -9,10 +9,10 @@ import { services } from "../../data/navigation";
  * here.
  *
  * It takes the same treatment as the about page's opening statement - see
- * `.bt-page-intro` in brand.css - and adds the one thing that section does not
- * need: an index. About opens on three paragraphs, which fill their column;
- * this opens on one, and a single paragraph beside a three-line headline left
- * the section mostly empty.
+ * `.bt-page-intro` in brand.css, where the first paragraph is set as the lead
+ * and the rest as supporting detail - and adds the one thing that section does
+ * not need: an index. Two paragraphs beside a three-line headline still leave
+ * the column short.
  *
  * The three advisory areas fill it, and they are the right thing to fill it
  * with: they name what the page covers before the visitor has scrolled, and
@@ -21,6 +21,8 @@ import { services } from "../../data/navigation";
  * service the site does not route to.
  */
 export default function ServicesIntro() {
+  const [lead, ...supporting] = hero.paragraphs;
+
   return (
     <section className="tj-about-info section-space bt-page-intro">
       <div className="container">
@@ -46,7 +48,10 @@ export default function ServicesIntro() {
 
           <div className="col-lg-6 col-md-12">
             <div className="desc mb-0 bt-page-intro-copy wow fadeInUp" data-wow-delay="0.3s">
-              <p className="bt-page-intro-lead">{hero.desc}</p>
+              <p className="bt-page-intro-lead">{lead}</p>
+              {supporting.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
 
               <ul className="bt-services-index">
                 {services.map((service, i) => (
