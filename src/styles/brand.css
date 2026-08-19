@@ -106,7 +106,11 @@
  */
 @media (min-width: 992px) {
   .tj-hero-section {
-    padding-bottom: 140px;
+    /* Named, because the photograph has to reach past it to the section's
+       real bottom edge - see "Hero curves" below, which cancels exactly this
+       much. Two places, one number. */
+    --bt-hero-foot: 140px;
+    padding-bottom: var(--bt-hero-foot);
   }
 }
 
@@ -1220,22 +1224,64 @@ html.lenis body {
 /* ---------------------------------------------------------------------------
    2. The photograph
  *
- * The same idea one level down: the top edge dips towards the middle and the
- * bottom edge lifts towards it, so the picture reads as a curved plate rather
- * than as a rectangle sitting on a curved section.
+ * Two things, and they work together.
  *
- * The mask is an inline SVG rather than a file because it is two quadratics
- * and belongs with the rule that uses it. `preserveAspectRatio="none"` with
- * a 0-100 viewBox makes it a percentage shape, so it scales with the image at
- * every breakpoint instead of needing a size per breakpoint: 3 units of
- * control-point offset resolve to a 1.5% dip - about 11px on the 757px
- * desktop image, about 7px on the phone.
+ * The top edge dips towards the middle, so the picture is a curved plate
+ * rather than a rectangle. The mask is an inline SVG rather than a file
+ * because it is one quadratic and belongs with the rule that uses it;
+ * `preserveAspectRatio='none'` over a 0-100 viewBox makes it a percentage
+ * shape, so it scales with the image at every breakpoint rather than needing
+ * a size per breakpoint.
+ *
+ * Its bottom edge is left square, because from 992px up the picture now runs
+ * all the way down to the section's bottom edge and the curve in 1 above cuts
+ * it there. That is the whole point of the treatment and it was the piece we
+ * were missing: the hero's 140px of foot-room held the photograph clear of
+ * the curve, so the arc swept through empty navy and the picture sat above it
+ * looking untouched. Reaching past that foot-room on this box alone drops the
+ * picture into the curve without moving the section's bottom edge, so the
+ * "Scroll" rail keeps the clearance it was given. Below 992px there is no
+ * foot-room to reach past and the picture already met the curve.
    ------------------------------------------------------------------------- */
 .hero-images {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 Q50 97 0 100 Z' fill='%23000'/%3E%3C/svg%3E");
-          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 Q50 97 0 100 Z' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 L0 100 Z' fill='%23000'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q50 3 100 0 L100 100 L0 100 Z' fill='%23000'/%3E%3C/svg%3E");
   -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
           mask-size: 100% 100%;
+}
+
+@media (min-width: 992px) {
+  /*
+   * The picture is taken out of flow and its box stretched 140px past the
+   * bottom of the row, which lands it exactly on the section's bottom edge.
+   *
+   * Out of flow, and not simply given a negative bottom margin, because a
+   * margin would shorten the flex item and with it the row: the hero would
+   * lose the same 140px it was given, and the "Scroll" rail - which is
+   * anchored to the section's bottom-left - would ride back up into the CTA
+   * row, which is the collision that foot-room exists to prevent.
+   *
+   * `aspect-ratio` then holds the row open to the height the picture used to
+   * contribute in flow. It is the source file's own ratio, so the row is the
+   * height it always was rather than a number copied from a screenshot.
+   */
+  .hero-images-box {
+    aspect-ratio: 1220 / 1514;
+  }
+
+  .hero-images-box .hero-images {
+    position: absolute;
+    inset: 0 0 calc(var(--bt-hero-foot, 0px) * -1) 0;
+  }
+
+  /* The box is now taller than the photograph's own ratio, so the picture
+     fills it and crops rather than stretching. The subjects are centred, so
+     what cover trims is window and floor. */
+  .hero-images-box .hero-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
