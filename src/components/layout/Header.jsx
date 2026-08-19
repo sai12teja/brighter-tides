@@ -59,20 +59,20 @@ export default function Header() {
                   </div>
 
                   <div className="topbar_infos">
-                    {/* Below lg the topbar centres and wraps; the location and
-                        hours drop out there so the row stays one line and the
-                        one actionable item - the email - survives. */}
+                    {/* No opening hours here. The template published a
+                        Mon-Fri 9-18 line; nobody has confirmed those are the
+                        practice's, and it advises remotely rather than keeping
+                        counter hours, so the bar carries only what is known.
+
+                        The location drops out below lg, where the bar centres
+                        and wraps, leaving the email as the only item. Below
+                        768px main.css hides the bar outright, so neither
+                        shows on a phone - both are in the drawer instead. */}
                     <div className="info_item d-none d-lg-inline-flex">
                       <span>
                         <i className="tji-location"></i>
                       </span>
                       <span>{location.label}</span>
-                    </div>
-                    <div className="info_item d-none d-lg-inline-flex">
-                      <span>
-                        <i className="tji-clock"></i>
-                      </span>
-                      <span>Mon - Friday : 9:00 - 18:00</span>
                     </div>
                     <div className="info_item">
                       <span>
