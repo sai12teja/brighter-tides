@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import MainNav from "./MainNav";
 import BrandLogo from "./BrandLogo";
-import { headerCta } from "../../data/navigation";
+import { headerCta, CONTACT_FORM } from "../../data/navigation";
 import { email, location } from "../../data/site";
 
 function HeaderRight() {
@@ -51,7 +51,7 @@ export default function Header() {
                 <div className="header-topbar_wrap">
                   <div className="topbar_note">
                     <i className="tji-check"></i> ServiceNow licensing, strategy and platform leadership
-                    <Link to="/contact">
+                    <Link to={CONTACT_FORM}>
                       <span>Discuss your challenge</span>
                       <i className="tji-angle-right"></i>
                     </Link>

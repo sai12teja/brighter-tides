@@ -487,9 +487,14 @@ html {
 
 /* ---- Cards ----
  *
- * The template gave its cards a hairline border and nothing else. On hover
- * they now lift, and the hairline turns aqua - the same cue on every card
- * grid across the site. */
+ * The template gave its cards a hairline border and nothing else. On hover they
+ * lift, and the hairline turns aqua - the same cue on every card grid across
+ * the site.
+ *
+ * This is the lift only. The template's other hover, `.hover-bg`, wiped the
+ * section tint across a card from the right, which is a different thing: it
+ * repainted the card, so a hovered card stopped matching the row it was in.
+ * That one stays off - see brand.css. */
 .feature-item,
 .tj-feature,
 .tj-contact-area .contact-item.style-2,

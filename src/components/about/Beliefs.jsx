@@ -4,10 +4,15 @@ import { beliefs } from "../../data/about";
  * "What We Believe" - the home page's "Our company" split
  * (`tj-about-section`, from index.html): copy on the right, the template's
  * shape collage filling the left half.
+ *
+ * `bt-beliefs-collage` marks this instance of that collage apart from the
+ * home page's, which is the same block with a different photograph - see
+ * brand.css, where the two are framed differently because their subjects
+ * sit in different parts of the frame.
  */
 export default function Beliefs() {
   return (
-    <section className="tj-about-section">
+    <section className="tj-about-section bt-beliefs-collage">
       <div className="container">
         <div className="row">
           <div className="col-lg-6"></div>

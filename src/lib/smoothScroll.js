@@ -22,6 +22,23 @@
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
+/*
+ * Lenis is for pointer devices only.
+ *
+ * It smooths the wheel; touch is left on the platform's own momentum, which is
+ * the right call and is how it has always been configured here (`syncTouch:
+ * false`). But that means on a phone Lenis smooths nothing at all - and it
+ * still costs a full pass of its RAF on the GSAP ticker every frame, plus a
+ * ScrollTrigger update on every scroll event it forwards.
+ *
+ * Measured on a 6x-throttled phone that ticker was the largest remaining
+ * contributor to frame time by a wide margin: taking it out dropped the median
+ * frame from 50ms to 17ms. So on a coarse pointer the page keeps native
+ * scrolling and ScrollTrigger reads the browser's own scroll position, which is
+ * exactly what it does by default.
+ */
+const COARSE_POINTER = "(pointer: coarse)";
+
 let lenis = null;
 
 /** The header is fixed, so anchor targets need clearing by its height. */
@@ -76,6 +93,7 @@ export function initSmoothScroll() {
   const { Lenis, gsap, ScrollTrigger } = window;
   if (typeof Lenis !== "function" || !gsap) return null;
   if (window.matchMedia(REDUCED_MOTION).matches) return null;
+  if (window.matchMedia(COARSE_POINTER).matches) return null;
 
   lenis = new Lenis({
     // Lenis's own defaults - a ~1s expo-out glide. Slow enough to feel
@@ -96,6 +114,36 @@ export function initSmoothScroll() {
   interceptScrollLinks();
 
   return lenis;
+}
+
+/**
+ * Land on a section, for a visitor who arrived at a URL naming one.
+ *
+ * `scrollIntoView` is not enough once Lenis is driving: it moves the native
+ * position, Lenis still holds its own (0, for a page that has just loaded),
+ * and the next frame eases the page straight back to the top. Measured on
+ * `/contact#inquiry` - the form sat 1,250px down and the page never moved.
+ *
+ * Lenis also brings the header offset with it, which `scrollIntoView` has no
+ * notion of: the bar floats over the page, so a section pinned to the top of
+ * the viewport starts underneath it.
+ *
+ * `immediate`, because this is an arrival rather than a journey - the
+ * visitor asked for that part of the page, and easing 1,250px of a page they
+ * have not seen is a scroll animation with no purpose. Falls back to the
+ * native jump when Lenis is absent (reduced motion, or the bundle failing).
+ */
+export function scrollToSection(target) {
+  if (!target) return;
+
+  if (lenis) {
+    lenis.resize();
+    lenis.scrollTo(target, { offset: anchorOffset(), immediate: true, force: true });
+    return;
+  }
+
+  const top = target.getBoundingClientRect().top + window.scrollY + anchorOffset();
+  window.scrollTo(0, Math.max(0, top));
 }
 
 /**

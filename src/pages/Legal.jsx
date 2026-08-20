@@ -1,41 +1,11 @@
-import { useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import PageHeader from "../components/layout/PageHeader";
 import LegalBody from "../components/legal/LegalBody";
 import LegalContents from "../components/legal/LegalContents";
 import CtaBand from "../components/sections/CtaBand";
-import { whenBundleReady } from "../hooks/useSiteScripts";
+import useHashLanding from "../hooks/useHashLanding";
 import { legalDocuments } from "../data/legal";
-
-/**
- * Deep links into a document (`/privacy-policy#liability`) land before the
- * vendor bundle has laid the page out, so the browser's own hash jump either
- * misses or is undone by the layout's scroll reset. Once everything is in
- * place, put the visitor where they asked to be.
- */
-function useHashLanding() {
-  const { hash } = useLocation();
-
-  useEffect(() => {
-    if (!hash) return;
-    let cancelled = false;
-
-    whenBundleReady().then(() => {
-      if (cancelled) return;
-      const target = document.getElementById(hash.slice(1));
-      if (!target) return;
-      // One frame, so the section is at its final position before we measure.
-      requestAnimationFrame(() => {
-        target.scrollIntoView({ behavior: "auto", block: "start" });
-      });
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [hash]);
-}
 
 /**
  * Privacy Policy and Terms & Conditions - one component, two routes, driven

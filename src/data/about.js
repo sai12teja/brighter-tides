@@ -5,6 +5,7 @@
 // rather than restated, so the two pages cannot drift apart.
 
 import { founder as homeFounder, experience } from "./home";
+import { CONTACT_FORM } from "./navigation";
 
 export const hero = {
   eyebrow: "About Brighter Tides",
@@ -69,7 +70,7 @@ export const founder = {
     "Her experience goes beyond the platform itself. She understands the decisions leaders face around technology investment, governance, vendors, organizational priorities, and demonstrating business value.",
     "Through Brighter Tides, we bring that perspective to organizations that need experienced ServiceNow guidance without the complexity of a traditional large consulting engagement.",
   ],
-  cta: { label: "Learn More About Shannon", to: "/contact" },
+  cta: { label: "Learn More About Shannon", to: CONTACT_FORM },
 };
 
 // Same figures as the home page, with the fuller labels this page uses.
@@ -95,5 +96,5 @@ export const beliefs = {
 export const cta = {
   title: "Have a ServiceNow Decision You're Trying to Make?",
   paragraphs: ["Start with the problem. We'll help you determine the right path forward."],
-  cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
+  cta: { label: "Discuss Your ServiceNow Challenge", to: CONTACT_FORM },
 };

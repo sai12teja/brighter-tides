@@ -1074,6 +1074,37 @@ html.lenis body {
   }
 }
 
+/*
+ * The photograph's own frame.
+ *
+ * `.about-shape-1` is a fixed 676px-tall box carrying a mask sized
+ * `contain` from 780x676 artwork - and at every one of these breakpoints
+ * the mask is width-limited, so it scales to the box's width and is
+ * letterboxed inside its height. At 565px wide that leaves 93px of box
+ * above the picture and 93px below it that the mask never paints.
+ *
+ * The photograph, though, is `cover`-fitted to the whole box, letterbox
+ * included. So the top of the frame - the headroom, and the tops of both
+ * heads - was being laid into a strip the mask then threw away, and the
+ * mask's top edge cut across the two people instead of passing above them.
+ *
+ * Giving the box the mask's own proportions is what fixes it: with nothing
+ * letterboxed, the picture fills exactly what gets painted. The box stays
+ * centred on the same line it always was, so nothing else in the collage
+ * moves - the disc below is anchored to the painted edge, which has not
+ * changed, and the section's floor is measured from the same arithmetic.
+ *
+ * Scoped to this collage, not to `.tj-about-section` at large. The home
+ * page's about section is the same template block with a different
+ * photograph, and the two want opposite things: this one has its subjects
+ * near the top of the frame and needs the full height, that one has a
+ * figure entering at each edge and needs the letterboxed box's tighter
+ * horizontal crop to keep them out. Framing follows the picture.
+ */
+.bt-beliefs-collage .about-bg-images .about-shape-1 {
+  height: calc(var(--bt-collage-width) * 676 / 780);
+}
+
 .tj-about-section .about-bg-images .about-shape-2 {
   /*
    * Anchored to the foot of the photograph, and to the picture's painted
@@ -1219,6 +1250,13 @@ html.lenis body {
   margin-inline: 0;
   padding: 40px 36px;
   border-radius: 14px;
+  /* The template fills this panel with `--tj-color-theme-bg-2`, the paler of
+     the palette's two tints. It is the only place on the site where that tint
+     is used as a large surface, so the panel read a shade lighter than every
+     other band on the page. It takes the band colour the rest of them use.
+     Scoped here rather than remapped on the token, which the contact icons
+     and the light logo strip also read. */
+  background-color: var(--bg-section);
   -webkit-clip-path: none;
           clip-path: none;
 }
@@ -1431,12 +1469,6 @@ html.lenis body {
     box-shadow 0.3s ease-in-out;
 }
 
-.tj-contact-area .contact-item.style-2:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--teal) 34%, transparent);
-  box-shadow: var(--shadow-md);
-}
-
 /*
  * The template's 88px icon badge is filled with the same pale tint the card now
  * takes, so on the light surface the circle disappeared and left the glyph
@@ -1483,64 +1515,22 @@ html.lenis body {
 /*
  * The map.
  *
- * The template ships it at `grayscale(1)`, which is why it arrived black and
- * white. This is the keyless `maps?q=&output=embed` embed, so there is no
- * styling key to pass - the tint has to be done in CSS over the top.
- *
- * Not with a `sepia`/`hue-rotate` filter chain, which is the usual recipe:
- * sepia compresses the tonal range on its way to a single hue, and a map is
- * nothing but tonal range - paper, park, water and road fill all collapsed
- * into one pale wash, which is a tinted rectangle rather than a map.
- *
- * A `color` blend takes hue and saturation from the layer above and leaves the
- * greyscale luminance underneath exactly as it is, so every one of those
- * surfaces keeps its separation. `opacity` is then the one dial on how far the
- * tint goes. `isolation` keeps the blend to the map rather than the page.
- *
- * If a browser will not blend over a cross-origin frame it falls back to the
- * greyscale the template already shipped, which is no worse than today.
- *
- * Both layers clear on hover. A tinted map is a graphic; the moment someone
- * reaches for it they want the real one, legible.
+ * The template ships it at `grayscale(1)`; earlier passes here tinted it to the
+ * brand on top of that. Both are off - Google's own colours are what a map is
+ * read with, and the frame is the only thing this needs to add.
  */
 .google-map {
-  isolation: isolate;
   border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
 }
 
 .google-map iframe {
-  filter: grayscale(1) contrast(1.04);
-  transition: filter 0.45s ease-in-out;
-}
-
-.google-map::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  /* The map stays draggable and clickable under the tint. */
-  pointer-events: none;
-  background-color: var(--teal);
-  mix-blend-mode: color;
-  opacity: 0.5;
-  transition: opacity 0.45s ease-in-out;
-}
-
-.google-map:hover iframe,
-.google-map:focus-within iframe {
   filter: none;
 }
 
-.google-map:hover::after,
-.google-map:focus-within::after {
-  opacity: 0;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .tj-contact-area .contact-item.style-2,
-  .google-map iframe {
+  .tj-contact-area .contact-item.style-2 {
     transition: none;
   }
 
@@ -2660,6 +2650,29 @@ html.lenis body {
    service detail pages both opt in; the numbering is separate, and only the
    home page's takes it.
    ------------------------------------------------------------------------ */
+/*
+ * The three measurements that place a numbered question, declared once here
+ * because the header and the answer below it both have to resolve to the same
+ * left edge. They were computed independently before, and did not match.
+ */
+/* `h7-faq-style` frames the whole stack, which is right for the flat rows it
+   draws and wrong for cards that each carry their own border. */
+.bt-faq-premium {
+  border: 0;
+  --bt-faq-inset: 28px;
+  --bt-faq-gap: 16px;
+  /* The question's type size, declared as a token because the counter below
+     is derived from it and the button has to be set from the same value. */
+  --bt-faq-fs: clamp(16px, 1.15vw, 18px);
+  /* Width of the "01." column, as a resolved length rather than `em`.
+     A custom property holding `em` is substituted verbatim and resolved
+     against whichever element reads it - the button and the answer below it
+     are set at different sizes, so the same token produced two different
+     widths and left the two edges 3px apart. `tabular-nums` on the span keeps
+     every number the same width within it. */
+  --bt-faq-counter: calc(var(--bt-faq-fs) * 1.45);
+}
+
 .bt-faq-premium .accordion-item {
   margin-bottom: 14px;
   border: 1px solid var(--border);
@@ -2684,10 +2697,22 @@ html.lenis body {
   box-shadow: var(--shadow-md), inset 3px 0 0 0 var(--teal);
 }
 
+/*
+ * The toggle is a flex item at the end of this row, not an absolutely placed
+ * badge, so reserving room for it with 84px of right padding parked it well
+ * inside the card and left a wide empty margin beyond it - and on a narrow
+ * screen the question wrapped straight into it. An auto start margin puts it
+ * on the right edge where the padding alone decides the inset, and the gap
+ * keeps the question clear of it however many lines it runs to.
+ */
 .bt-faq-premium .accordion-item .accordion-header .accordion-button {
-  padding: 26px 84px 26px 28px;
+  gap: var(--bt-faq-gap);
+  /* The toggle is absolutely positioned 24px from the right edge and is 38px
+     wide, so the question has to stop 62px in, plus a gap. Without this a
+     long question runs straight under it. */
+  padding: 26px 78px 26px var(--bt-faq-inset);
   background-color: transparent;
-  font-size: clamp(16px, 1.15vw, 18px);
+  font-size: var(--bt-faq-fs);
   line-height: 1.45;
   color: var(--text-primary);
 }
@@ -2704,12 +2729,29 @@ html.lenis body {
   font-family: var(--tj-ff-heading);
   font-weight: var(--tj-fw-sbold);
   font-variant-numeric: tabular-nums;
-  margin-inline-end: 12px;
+  /* A column of a known width, so the answer below can line up with the
+     question rather than guessing where the number ends. The 12px margin it
+     carried is gone: the flex `gap` was already separating the two, so the
+     number and its question sat 28px apart when 16px was intended. */
+  flex: 0 0 var(--bt-faq-counter);
+  margin-inline-end: 0;
 }
 
-/* The toggle. The template draws a glyph in a bordered circle; this keeps the
-   circle but fills it on open and turns the plus a quarter turn into a cross,
-   so the state change is a movement rather than a swapped character. */
+/*
+ * The toggle.
+ *
+ * There are two candidates on this button - the template's icon-font glyph on
+ * `::before` and Bootstrap's chevron on `::after` - and the template settles
+ * it: `tj-faq-style` sets `.accordion-button:after { display: none }`, so the
+ * chevron cannot draw while that class is on the element. The glyph is the
+ * toggle; this only dresses it for a card.
+ *
+ * A plus that becomes a minus, in a well that fills with teal on open. The
+ * template swaps the glyph itself, so nothing here has to rotate it.
+ *
+ * Being absolutely positioned it reserves no width of its own, which is what
+ * the button's right padding is for - see the padding note above.
+ */
 .bt-faq-premium .accordion-item .accordion-header .accordion-button::before {
   inset-inline-end: 24px;
   height: 38px;
@@ -2717,15 +2759,17 @@ html.lenis body {
   border-color: var(--border);
   color: var(--teal);
   background-color: var(--bg-light);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease,
-    border-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 .bt-faq-premium .accordion-item .accordion-header .accordion-button:not(.collapsed)::before {
-  transform: translateY(-50%) rotate(135deg);
   background-color: var(--teal);
   border-color: var(--teal);
   color: var(--on-dark);
+}
+
+.bt-faq-premium .accordion-item:hover .accordion-button.collapsed::before {
+  border-color: var(--aqua-light);
 }
 
 /*
@@ -2735,14 +2779,42 @@ html.lenis body {
  * reading column on a service page. It also drew itself again above every
  * paragraph after the first.
  */
-.bt-faq-premium .accordion-body {
-  margin-inline: 28px;
+/* `.accordion-item` is in the selector to match the weight of
+   `.tj-faq-style .accordion-item .accordion-body`, which sets `margin: 0 25px`
+   and `padding: 0`. Without it this rule lost the tie and the answer sat at
+   25px with no top padding. */
+.bt-faq-premium .accordion-item .accordion-body {
+  margin-inline: var(--bt-faq-inset);
+  /* Bootstrap's own 20px of inline padding sat on top of the margin and put
+     the answer at neither the card's edge nor the question's. */
+  padding-inline: 0;
   padding-top: 18px;
   padding-bottom: 26px;
   border-top: 1px solid var(--border);
 }
 
-.bt-faq-premium .accordion-body p {
+/*
+ * Where the question is numbered, its answer is indented past the counter so
+ * the two start on the same left edge - an answer hanging 34px to the left of
+ * the question it answers read as a separate column of text.
+ *
+ * Keyed off `:has()` rather than the numbering's class, so it follows the
+ * markup: the service detail pages use this same treatment unnumbered, and
+ * their answers correctly stay at the card's edge.
+ */
+.bt-faq-premium .accordion-item:has(.accordion-button > span) .accordion-body {
+  margin-inline-start: calc(var(--bt-faq-inset) + var(--bt-faq-counter) + var(--bt-faq-gap));
+}
+
+/*
+ * The template hangs the separator and its spacing on the paragraph, so an
+ * answer of two paragraphs gets a rule above each of them. Both belong to the
+ * card - they are set on `.accordion-body` above - so they come off here.
+ * Weighted to match `.tj-faq-style .accordion-item .accordion-body p`.
+ */
+.bt-faq-premium .accordion-item .accordion-body p {
+  padding-top: 0;
+  border-top: 0;
   color: var(--text-secondary);
   max-width: 60ch;
 }
@@ -2756,7 +2828,10 @@ html.lenis body {
    ------------------------------------------------------------------------ */
 .h7-faq .faq-banner {
   height: 100%;
-  min-height: clamp(300px, 34vw, 460px);
+  /* The lower bound is what a phone gets, and the copy alone needs ~200px of
+     it. At 300px the block filled the frame edge to edge; 340px leaves a
+     band of the photograph above it, which is the point of using one. */
+  min-height: clamp(340px, 34vw, 460px);
   overflow: hidden;
   border-radius: 14px;
   isolation: isolate;
@@ -2771,24 +2846,62 @@ html.lenis body {
   z-index: -2;
 }
 
-/* Deepest at the foot, where the copy and the button sit. */
+/*
+ * Deepest at the foot, where the copy and the button sit.
+ *
+ * Measured in pixels from the bottom rather than in percent of the panel,
+ * because the panel has two very different heights and the copy does not
+ * scale with them. At 628px on the desktop the block sits 68-95% down, inside
+ * the old gradient's 0.95 floor. On a phone the panel collapses to its
+ * minimum and the same block is pushed up to 37%, where that gradient was
+ * still only ~0.86 and thinning fast - white copy over a lit office window.
+ *
+ * A bottom-anchored ramp holds the same physical depth behind the copy at
+ * every size: opaque for the ~200px the block occupies, then released so the
+ * photograph still reads on the tall panel.
+ *
+ * Mixed from `--primary` (#0a0f1e) rather than the template's old #061b32,
+ * which the rest of the palette moved off.
+ */
 .h7-faq .faq-banner::after {
   content: "";
   position: absolute;
   inset: 0;
+  /*
+   * Both of these undo the template, and both are load-bearing.
+   *
+   * It draws this scrim as a 40%-tall band pinned to the top and mirrored
+   * (`height: 40%; top: 0; transform: scaleY(-1)`), because its own heading
+   * sits at the top of the banner. Ours sits at the foot.
+   *
+   * `inset: 0` alone does not move it: when `top`, `bottom` and `height` are
+   * all set on an absolutely positioned box, `height` wins and `bottom` is
+   * ignored - so the band stayed 40% tall, stayed at the top, and the mirror
+   * flipped the ramp below on its head. Measured: 0.95 over the top 40%, and
+   * nothing at all behind the copy.
+   */
+  height: auto;
+  transform: none;
   z-index: -1;
   background-image: linear-gradient(
-      180deg,
-      rgba(6, 27, 50, 0.32) 0%,
-      rgba(6, 27, 50, 0.84) 32%,
-      rgba(6, 27, 50, 0.95) 64%,
-      rgba(6, 27, 50, 0.97) 100%
+      to top,
+      rgba(10, 15, 30, 0.96) 0,
+      rgba(10, 15, 30, 0.94) 200px,
+      rgba(10, 15, 30, 0.6) 300px,
+      rgba(10, 15, 30, 0.3) 100%
     ),
-    linear-gradient(153deg, rgba(16, 160, 169, 0.3) 0%, rgba(6, 27, 50, 0) 60%);
+    linear-gradient(153deg, rgba(16, 160, 169, 0.28) 0%, rgba(10, 15, 30, 0) 60%);
 }
 
 .h7-faq .faq-banner .sec-heading {
   position: relative;
+  /* The template pins this overlay with `position: absolute; top: 30px`.
+     Laying it out in flow instead keeps the `top` declaration live, where it
+     stops pinning and starts *offsetting* - shunting the whole block 30px
+     down, past the banner's `overflow: hidden` edge. It was clipping 30px of
+     the foot: the button ended up 2px off the bottom instead of the 32px the
+     padding asks for. */
+  top: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -2798,14 +2911,15 @@ html.lenis body {
   margin-bottom: 0;
 }
 
-.h7-faq .faq-banner .sec-heading .sub-title {
-  color: var(--aqua-light);
-}
-
-.h7-faq .faq-banner .sec-heading .sec-title {
-  font-size: clamp(24px, 2vw, 34px);
+/* The panel's heading is an `h3` under the section's `h2` and is sized to
+   match - it introduces the way out of the list, not the list itself. Held
+   a step below the old `sec-title` clamp so the two never read as rivals. */
+.h7-faq .faq-banner .bt-faq-panel-title {
+  font-size: clamp(21px, 1.5vw, 26px);
+  line-height: 1.25;
   letter-spacing: -0.02em;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  color: var(--on-dark);
 }
 
 /* Near-white, not the muted on-dark token: that tone is drawn for flat navy
@@ -2825,38 +2939,6 @@ html.lenis body {
   }
 }
 
-/* The toggle.
- *
- * In this project the template's own glyph is switched off (`content: none`),
- * so what actually draws is Bootstrap's `::after` chevron - a 20px background
- * image. Rather than fight that, it is given the circle: same chevron, seated
- * in a 38px well that fills with teal when the question opens. Bootstrap
- * already rotates it 180deg on open, so the mark and its well turn together.
- */
-.bt-faq-premium .accordion-item .accordion-header .accordion-button::after {
-  width: 38px;
-  height: 38px;
-  flex: 0 0 38px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background-color: var(--bg-light);
-  background-size: 13px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2310a0a9'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease,
-    border-color 0.25s ease;
-}
-
-.bt-faq-premium .accordion-item .accordion-header .accordion-button:not(.collapsed)::after {
-  background-color: var(--teal);
-  border-color: var(--teal);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
-
-.bt-faq-premium .accordion-item:hover .accordion-button.collapsed::after {
-  border-color: var(--aqua-light);
-}
 
 /*
  * Services dropdown.
@@ -2949,6 +3031,28 @@ html.lenis body {
  * vocabulary the rest of the site uses, and the tick moves into a soft brand
  * chip instead of floating loose against the text.
  */
+/*
+ * The page's own eyebrow sits directly in the post body rather than inside a
+ * `.sec-heading`, so the theme's eyebrow rules never reached it: it stayed
+ * `display: inline` with no bottom margin and landed 4px off the headline,
+ * which read as one crowded block instead of a label and a title. Every other
+ * eyebrow on the page is inline-block on 12px - this matches them.
+ */
+.tj-post-single-post > .sub-title {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+/*
+ * The tiles carried no bottom margin, so the block under them - an eyebrow, a
+ * heading, or the outcome panel depending on the service - started against
+ * their last row. 40px is the same step `.check-list`'s own `mb-40` sets, so
+ * the column keeps one rhythm down its whole length.
+ */
+.tj-post-wrapper .service-check-list {
+  margin-bottom: 40px;
+}
+
 .tj-post-wrapper .service-check-list ul {
   gap: 14px;
   border: 0;
@@ -2966,6 +3070,12 @@ html.lenis body {
     box-shadow 0.3s ease-in-out;
 }
 
+.tj-post-wrapper .service-check-list ul li:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--teal) 34%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
 .tj-post-wrapper .service-check-list ul li i {
   flex-shrink: 0;
   display: inline-flex;
@@ -2978,12 +3088,6 @@ html.lenis body {
   font-size: 14px;
   background-color: color-mix(in srgb, var(--aqua) 16%, transparent);
   color: var(--teal-dark);
-}
-
-.tj-post-wrapper .service-check-list ul li:hover {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--teal) 34%, transparent);
-  box-shadow: var(--shadow-sm);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3113,5 +3217,361 @@ html.lenis body {
   .tj-hero-section,
   .tj-page-header {
     padding-top: 200px;
+  }
+}
+
+/*
+ * "How we work" - the rail's travelled portion.
+ *
+ * The template paints it in `--tj-color-border-1`, which in this palette is a
+ * 22%-alpha tint sitting on a track that is already a pale hairline. The two
+ * were indistinguishable, so the rail looked identical whichever step was live
+ * and the sequence read as though it never moved.
+ */
+#tj-process .process-inner .process-line-active {
+  background-color: var(--teal);
+}
+
+/*
+ * The home page's collage, framed for its own photograph.
+ *
+ * That picture is a wider scene than the shape it sits in: a colleague
+ * entering at the left edge and a third person's forearm and half a face at
+ * the right. At the widths where the mask stops cropping (745px of shape
+ * against a 1490px file is an exact 2:1, so nothing is trimmed at all), both
+ * of them land inside the circle and read as accidents rather than as
+ * company.
+ *
+ * A scale on the image is the crop the mask cannot give: the mask clips
+ * whatever the element paints, so enlarging the photograph inside it throws
+ * the outer edges away and leaves the man and the table filling the shape.
+ * Off-centre origin, because the two edges are not equally expendable - the
+ * colleague on the left belongs to the conversation, the forearm on the
+ * right does not.
+ */
+.tj-about-section:not(.bt-beliefs-collage) .about-bg-images .about-shape-1 img {
+  -webkit-transform: scale(1.22);
+      -ms-transform: scale(1.22);
+          transform: scale(1.22);
+  -webkit-transform-origin: 38% 50%;
+      -ms-transform-origin: 38% 50%;
+          transform-origin: 38% 50%;
+}
+
+/*
+ * FAQ cards on a phone.
+ *
+ * The card is drawn for a desktop column: 26px of padding above and below a
+ * question, 14px between cards, a 38px toggle held 24px off the edge. On a
+ * 430px screen the same question wraps to two lines, so each collapsed card
+ * comes out 100px tall and four of them fill the screen with more air than
+ * answers - and the toggle, sized for a mouse, takes a bite out of the line
+ * it sits beside.
+ *
+ * Everything steps down together so the proportions hold: the padding, the
+ * gap between cards, the toggle and the inset that positions it, and the
+ * room the question has to leave for it. The toggle finishes tighter to the
+ * card's edge than it does on desktop, which is where it should be when the
+ * card is this narrow.
+ */
+@media (max-width: 991.98px) {
+  .bt-faq-premium {
+    --bt-faq-inset: 20px;
+  }
+
+  .bt-faq-premium .accordion-item {
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+
+  .bt-faq-premium .accordion-item .accordion-header .accordion-button {
+    /* 14px inset + a 34px toggle + 12px of clearance for the question. */
+    padding: 18px 60px 18px var(--bt-faq-inset);
+  }
+
+  .bt-faq-premium .accordion-item .accordion-header .accordion-button::before {
+    inset-inline-end: 14px;
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+    font-size: 12px;
+  }
+
+  .bt-faq-premium .accordion-body {
+    padding-top: 14px;
+    padding-bottom: 18px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Book a Consult
+
+   A standing call to action pinned to the bottom-right of the viewport, taking
+   the visitor to the contact form. See components/layout/BookConsult for when
+   it shows itself and when it keeps out of the way.
+
+   It is the site's action colour, because that is what it is: the same gold
+   pill as every other filled call to action, carrying the same navy label.
+   ------------------------------------------------------------------------ */
+.bt-book-consult {
+  position: fixed;
+  inset-block-end: 24px;
+  inset-inline-end: 24px;
+  /* Under the footer's GO TOP rail at 99. They are never on screen together -
+     the button hides once the closing band is reached - but if that ever
+     changes, the page's own furniture should win. */
+  z-index: 98;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* The glyph and the label are one phrase, but at this weight 10px read as
+     crowding - the calendar's own square edge sits closer to the B than the
+     letterforms do to each other. */
+  gap: 14px;
+  height: 56px;
+  width: 56px;
+  padding: 0;
+  border-radius: 999px;
+  background-color: var(--gold);
+  /* Shallow, and lit from the top edge rather than corner to corner. A steep
+     two-stop ramp on something this small reads as a gradient; this reads as
+     one piece of metal catching the light. */
+  background-image: linear-gradient(160deg, #f3ba63 0%, var(--gold) 46%, var(--gold-deep) 100%);
+  color: var(--primary);
+  font-family: var(--tj-ff-heading);
+  font-weight: var(--tj-fw-sbold);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-decoration: none;
+  /* Three layers doing three jobs: a hairline of light along the top edge, a
+     close contact shadow that seats it on the page, and a wide soft one for
+     depth. The single hard shadow it had before read as a sticker. */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 6px rgba(10, 15, 30, 0.12),
+    0 14px 32px rgba(10, 15, 30, 0.2);
+  /* Parked below the fold and inert until `is-visible`. `visibility` rather
+     than `display` so the entrance has something to transition from, and it is
+     taken out of the tab order in the component while hidden. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.35s, box-shadow 0.3s ease;
+}
+
+.bt-book-consult.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.bt-book-consult:hover,
+.bt-book-consult:focus-visible {
+  color: var(--primary);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 2px 8px rgba(10, 15, 30, 0.14),
+    0 18px 38px rgba(217, 149, 44, 0.36);
+  transform: translateY(-3px);
+}
+
+/*
+ * The glyph carries no colour of its own - `currentColor`, so it is the same
+ * navy as the label beside it and stays that way through every state.
+ *
+ * It used to sit in a filled navy disc, borrowed from the primary button.
+ * That button is 325px of pill and can carry a disc; at 56px the disc was
+ * most of the button, and a dark circle inside a gold circle is two shapes
+ * and two colours where one of each will do. The logo works the same way:
+ * one mark, one weight.
+ */
+.bt-book-consult-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  font-size: 21px;
+  line-height: 1;
+}
+
+/* Below `lg` the button is the icon alone at a 56px touch target. The label is
+   still announced - the component carries it as `aria-label` - it just has
+   nowhere to sit on a phone without crowding the thumb. */
+.bt-book-consult-label {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .bt-book-consult {
+    width: auto;
+    /* Slightly tighter on the glyph side than the label side, which is what
+       keeps a pill looking balanced rather than end-heavy. */
+    padding: 0 26px 0 22px;
+  }
+
+  .bt-book-consult-label {
+    display: inline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt-book-consult {
+    transition: opacity 0.2s linear, visibility 0.2s;
+    transform: none;
+  }
+
+  .bt-book-consult.is-visible,
+  .bt-book-consult:hover,
+  .bt-book-consult:focus-visible {
+    transform: none;
+  }
+}
+
+/* The form's anchor. `lib/smoothScroll` offsets in-page clicks by the header's
+   height, but a landing straight from `/contact#inquiry` is a browser scroll,
+   which needs the clearance declared here. */
+#inquiry {
+  scroll-margin-top: 110px;
+}
+
+/* ---------------------------------------------------------------------------
+   Cards on a white section
+
+   Swept every page for cards painted white on a white section: the expertise
+   grid on the home page, the approach grid on the about page, and the FAQ
+   cards on the home and service-detail pages. On those, only a hairline told
+   the reader a card was there at all.
+
+   They take `--bg-section` (#daeff1) - already the palette's section tint, so
+   this introduces no new colour. Grids that already sit on a tinted section
+   (the challenge and why-us rows) keep their white cards: there the contrast
+   runs the other way and is doing its job.
+   ------------------------------------------------------------------------ */
+.tj-feature-section .feature-item,
+.bt-faq-premium .accordion-item {
+  background-color: var(--bg-section);
+}
+
+/*
+ * The template's `.hover-bg` wipe stays exactly as it was: the tint slides
+ * across the card from the right on hover.
+ *
+ * It fills with `--tj-color-theme-bg`, which is this same #daeff1. On the rows
+ * that kept white cards - challenge, why us - that is the colour change it
+ * always was. On the grids recoloured above it now fills a card already painted
+ * that colour, so it simply has nothing left to do, which is what stopped a
+ * hovered card there from breaking step with its row.
+ */
+
+/*
+ * The dropdown's hover state.
+ *
+ * The template moves two things when a service is hovered: the icon disc
+ * fills with teal, and the arrow at the end fades up. The row itself does
+ * nothing - no ground changes under the cursor - so on a panel of three
+ * near-identical rows there is nothing telling you which one you are about
+ * to open except a 54px disc at the far left of it.
+ *
+ * The row takes the site's light surface behind it, which is the same thing
+ * the FAQ cards and the capability tiles do when the cursor is over them,
+ * and the arrow picks up the accent instead of staying navy. Both are
+ * transitioned so the panel does not flicker as the cursor runs down it.
+ *
+ * The title steps to `--teal-dark` rather than the vivid teal the template
+ * hands it: at 16px semibold, teal on this surface is 3.2:1, which is under
+ * the 4.5:1 that body-sized text needs. The darker step reads 4.8:1 and the
+ * two are half a shade apart on screen.
+ */
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single {
+  border-radius: 10px;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single:hover,
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single.active {
+  background-color: var(--bg-light);
+}
+
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single:hover
+  .mega-menu-service-title,
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single.active
+  .mega-menu-service-title {
+  color: var(--teal-dark);
+}
+
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single:hover
+  .mega-menu-service-nav,
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single.active
+  .mega-menu-service-nav {
+  color: var(--teal-dark);
+}
+
+/* The page you are already on reads as chosen rather than as hoverable: the
+   disc is filled the way a hovered one is, and its arrow is already up. */
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single.active
+  .mega-menu-service-icon {
+  background-color: var(--teal);
+  color: var(--on-dark);
+}
+
+.mainmenu ul > li > .mega-menu-service li > a.mega-menu-service-single.active
+  .mega-menu-service-nav {
+  opacity: 1;
+}
+
+/*
+ * The service cards, on a phone.
+ *
+ * On desktop these two cards pin: each one holds still at the top of the
+ * viewport and fades away under the card scrolling up over it. That effect
+ * is deliberately off below 992px in main.js, and it should stay off - a
+ * pinned card needs to be shorter than the screen to work, and here each one
+ * is 855-892px tall against about 770px of usable height on a phone. Pinning
+ * them would park a card at the top with its own button off the bottom of
+ * the screen and no way to reach it.
+ *
+ * What the phone gets instead is the same idea without the pin: as a card
+ * leaves through the top of the screen it fades and settles back, so the one
+ * behind it arrives over something receding rather than over a hard edge.
+ * The stack reads the same; nothing is ever held still.
+ *
+ * Driven by a view timeline rather than by script. GSAP's version of this
+ * would be another ScrollTrigger measuring on every frame - on a phone,
+ * where Lenis has just been taken off the ticker for exactly that reason,
+ * that is the wrong trade. A view timeline runs off the compositor, costs
+ * nothing on the main thread, and where it is unsupported (Firefox, Safari
+ * before 26) the cards simply scroll, which is what they do today.
+ */
+@media (max-width: 991.98px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /*
+     * A view timeline is measured against the nearest scroll container, and
+     * the template makes this section one of those with `overflow: hidden`.
+     * The cards were being timed against a box that never scrolls, so the
+     * animation sat at -5% and never moved. `clip` clips identically without
+     * creating a scroll container, which hands the timeline back to the
+     * viewport where it belongs. Scoped here, where the desktop pin - the
+     * other thing that overflow is holding in - is off anyway.
+     */
+    .tj-service-section {
+      overflow: clip;
+    }
+
+    .tj-service-section .service-item.service-stack {
+      animation: bt-service-recede linear both;
+      animation-timeline: view();
+      /* Only while the card is on its way out through the top, and finished
+         a little before it has fully gone - a card still fading at the last
+         pixel reads as a rendering fault rather than as a transition. */
+      animation-range: exit 0% exit 70%;
+      transform-origin: 50% 0%;
+    }
+  }
+}
+
+@keyframes bt-service-recede {
+  to {
+    opacity: 0.15;
+    transform: scale(0.94) translateY(20px);
   }
 }

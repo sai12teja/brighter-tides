@@ -26,6 +26,7 @@
  */
 
 import { email as contactEmail, location } from "./site";
+import { CONTACT_FORM } from "./navigation";
 
 /** Shown in the meta line under the title on both documents. */
 export const lastUpdated = "18 August 2026";
@@ -155,7 +156,7 @@ export const legalDocuments = {
     ],
     closing: {
       title: "Questions about how we handle your information?",
-      cta: { label: "Get in touch", to: "/contact" },
+      cta: { label: "Get in touch", to: CONTACT_FORM },
     },
   },
 
@@ -269,7 +270,7 @@ export const legalDocuments = {
     ],
     closing: {
       title: "Want to talk about an actual ServiceNow decision?",
-      cta: { label: "Discuss Your Challenge", to: "/contact" },
+      cta: { label: "Discuss Your Challenge", to: CONTACT_FORM },
     },
   },
 };

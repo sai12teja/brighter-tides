@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { services } from "../../data/navigation";
+import { services, CONTACT_FORM } from "../../data/navigation";
 
 /**
  * service-details.html's sidebar: the other services, then a contact card.
@@ -48,7 +48,7 @@ export default function ServiceSidebar({ currentSlug }) {
                 service's own long CTA overflowed the card. The full call to
                 action is on the button above the copy and in the closing
                 band. */}
-            <Link to="/contact" className="tj-primary-btn white-btn">
+            <Link to={CONTACT_FORM} className="tj-primary-btn white-btn">
               <div className="btn_inner">
                 <div className="btn_icon">
                   <span>

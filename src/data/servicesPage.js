@@ -1,6 +1,6 @@
 // Brighter Tides - Services page content.
 
-import { services as serviceRoutes } from "./navigation";
+import { services as serviceRoutes, CONTACT_FORM } from "./navigation";
 
 export const hero = {
   eyebrow: "ServiceNow Advisory Services",
@@ -20,7 +20,7 @@ export const problemFirst = {
   paragraphs: [
     "Tell us what's happening with your ServiceNow environment, what decision you're facing, or where you're struggling to get value. We'll help determine the right approach.",
   ],
-  cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
+  cta: { label: "Discuss Your ServiceNow Challenge", to: CONTACT_FORM },
 };
 
 // The template's services page card (`service-style-2`) carries an icon, a
@@ -75,5 +75,5 @@ export const expertise = {
 export const cta = {
   title: "Not Sure Which Service Fits?",
   paragraphs: ["That's okay. Start with the challenge, not the service."],
-  cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
+  cta: { label: "Discuss Your ServiceNow Challenge", to: CONTACT_FORM },
 };

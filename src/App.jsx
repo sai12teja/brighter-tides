@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import SiteLayout from "./components/layout/SiteLayout";
 import Home from "./pages/Home";
@@ -24,7 +24,10 @@ export default function App() {
               pages/Legal from data/legal.js. */}
           <Route path="privacy-policy" element={<Legal slug="privacy-policy" />} />
           <Route path="terms-and-conditions" element={<Legal slug="terms-and-conditions" />} />
-          <Route path="*" element={<Home />} />
+          {/* An unknown URL rendered the home page while the address bar kept
+              the URL that did not exist, which reads as the site having jumped
+              to the home page on its own. Redirecting makes the two agree. */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

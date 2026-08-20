@@ -1,5 +1,7 @@
 // Brighter Tides - Home page content.
 
+import { CONTACT_FORM } from "./navigation";
+
 export const hero = {
   eyebrow: "Independent ServiceNow Advisory",
   titleLead: "Get More Value From Your",
@@ -19,7 +21,7 @@ export const hero = {
   // jump.
   titlePhrases: ["ServiceNow Investment."],
   desc: "We provide independent, executive-level ServiceNow advisory to help organizations make smarter decisions around licensing, platform strategy, governance, and leadership—without the complexity of a large consulting engagement.",
-  primaryCta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
+  primaryCta: { label: "Discuss Your ServiceNow Challenge", to: CONTACT_FORM },
   secondaryCta: { label: "Explore Our Services", to: "/services" },
 };
 
@@ -136,13 +138,13 @@ export const process = {
   eyebrow: "How We Work",
   title: "From ServiceNow Challenge to Clear Direction.",
   image: "/assets/images/bt/photos/services-problem-main.webp",
-  cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
+  cta: { label: "Discuss Your ServiceNow Challenge", to: CONTACT_FORM },
   steps: [
     {
       number: "01",
       title: "Start With the Problem",
       desc: "Tell us what's happening or what decision you're facing.",
-      link: { label: "Start the conversation", to: "/contact" },
+      link: { label: "Start the conversation", to: CONTACT_FORM },
     },
     {
       number: "02",
@@ -165,9 +167,12 @@ export const faq = {
   // The panel beside the accordion - a room rather than a face, so the
   // heading laid over it has somewhere quiet to sit.
   image: "/assets/images/bt/photos/contact-hero.webp",
-  panelTitle: "Questions and answers.",
-  panelNote: "Not covered here? Tell us the decision you are facing and we will point you at the right starting place.",
-  panelCta: { label: "Ask us directly", to: "/contact" },
+  // The panel no longer carries the section heading - that sits above the
+  // row now - so it says what it is actually for. "Not covered here?" moved
+  // out of the note and became the heading it always was.
+  panelTitle: "Not covered here?",
+  panelNote: "Tell us the decision you are facing and we will point you at the right starting place.",
+  panelCta: { label: "Ask us directly", to: CONTACT_FORM },
   items: [
     {
       id: "advisory-consultant",
@@ -209,5 +214,5 @@ export const finalCta = {
     "Tell us what's happening with your ServiceNow environment, what decision you're facing, or where you're struggling to get value.",
     "We'll help determine what makes sense next.",
   ],
-  cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
+  cta: { label: "Discuss Your ServiceNow Challenge", to: CONTACT_FORM },
 };

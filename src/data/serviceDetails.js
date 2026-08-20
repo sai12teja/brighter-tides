@@ -4,13 +4,15 @@
 // (pages/ServiceDetail.jsx). Optional blocks are simply omitted:
 // `advocate` appears only on fractional leadership, and `engagementFirst`
 // swaps the engagement and outcome blocks for strategic advisory.
+import { CONTACT_FORM } from "./navigation";
+
 
 export const serviceDetails = {
   "servicenow-licensing-contract-advisory": {
     eyebrow: "ServiceNow Licensing & Contract Advisory",
     title: "Make Your Next ServiceNow Investment Decision With Confidence.",
     desc: "We provide independent guidance to help you understand your ServiceNow licensing, utilization, future needs, and options before you renew, expand, or true-up.",
-    cta: { label: "Discuss Your Licensing Challenge", to: "/contact" },
+    cta: { label: "Discuss Your Licensing Challenge", to: CONTACT_FORM },
     image: "/assets/images/bt/photos/service-01-banner.webp",
     imageSmall: "/assets/images/bt/photos/service-01-banner-831.webp",
 
@@ -100,7 +102,7 @@ export const serviceDetails = {
     closing: {
       title: "Have a ServiceNow Renewal or Licensing Decision Ahead?",
       paragraphs: ["Let's make sure you understand your options before you commit."],
-      cta: { label: "Discuss Your Licensing Challenge", to: "/contact" },
+      cta: { label: "Discuss Your Licensing Challenge", to: CONTACT_FORM },
     },
   },
 
@@ -108,7 +110,7 @@ export const serviceDetails = {
     eyebrow: "ServiceNow Strategic Advisory",
     title: "Solve the Challenge Without Creating More Complexity.",
     desc: "Sometimes you don't need another implementation partner. You need experienced perspective to evaluate the problem, challenge assumptions, and determine what makes sense.",
-    cta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
+    cta: { label: "Discuss Your ServiceNow Challenge", to: CONTACT_FORM },
     image: "/assets/images/bt/photos/service-02-banner.webp",
     imageSmall: "/assets/images/bt/photos/service-02-banner-831.webp",
     engagementFirst: true,
@@ -209,7 +211,7 @@ export const serviceDetails = {
     closing: {
       title: "Facing a ServiceNow Decision Without a Clear Answer?",
       paragraphs: ["Let's evaluate the options and determine what makes sense."],
-      cta: { label: "Discuss Your Challenge", to: "/contact" },
+      cta: { label: "Discuss Your Challenge", to: CONTACT_FORM },
     },
   },
 
@@ -217,7 +219,7 @@ export const serviceDetails = {
     eyebrow: "Fractional ServiceNow Platform Leadership",
     title: "Senior ServiceNow Leadership Without Another Full-Time Hire.",
     desc: "We provide experienced platform leadership through a flexible engagement—helping protect your investment, guide priorities, manage partners, and keep ServiceNow aligned with business value.",
-    cta: { label: "Discuss Fractional Leadership", to: "/contact" },
+    cta: { label: "Discuss Fractional Leadership", to: CONTACT_FORM },
     image: "/assets/images/bt/photos/service-03-banner.webp",
     imageSmall: "/assets/images/bt/photos/service-03-banner-831.webp",
 
@@ -327,7 +329,7 @@ export const serviceDetails = {
     closing: {
       title: "Your ServiceNow Investment Deserves Experienced Leadership.",
       paragraphs: ["Get senior platform guidance without adding another full-time position."],
-      cta: { label: "Discuss Fractional Leadership", to: "/contact" },
+      cta: { label: "Discuss Fractional Leadership", to: CONTACT_FORM },
     },
   },
 };

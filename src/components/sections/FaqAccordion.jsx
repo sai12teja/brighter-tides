@@ -9,7 +9,7 @@
  */
 export default function FaqAccordion({ id, items, openFirst = true, numbered = false, variant = "" }) {
   return (
-    <div className={`accordion tj-faq-style ${variant} wow fadeInUp`.replace(/s+/g, " ").trim()} data-wow-delay="0.2s" id={id}>
+    <div className={`accordion tj-faq-style ${variant} wow fadeInUp`.replace(/\s+/g, " ").trim()} data-wow-delay="0.2s" id={id}>
       {items.map((item, i) => {
         const bodyId = `${id}-${item.id}`;
         const headingId = `${bodyId}-heading`;

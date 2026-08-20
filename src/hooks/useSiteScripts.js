@@ -20,6 +20,42 @@ function initOdometer() {
   window.Odometer?.init?.();
 }
 
+/**
+ * How often WOW re-checks whether a box has come into view.
+ *
+ * WOW ships a 50ms poll. Its callback walks every unrevealed `.wow` box and
+ * measures each one, so on the home page that is dozens of forced layouts
+ * twenty times a second - and it only does the work when the page has actually
+ * moved, which means the whole cost lands while you are scrolling. Measured on
+ * a 6x-throttled phone it was the single largest contributor to frame time.
+ *
+ * A reveal that arrives up to a fifth of a second after the box crosses the
+ * fold is not perceptible; these tiles already carry `data-wow-delay` of up to
+ * 0.8s by design.
+ */
+const WOW_POLL_MS = 200;
+
+/**
+ * Patches the poll interval on every WOW instance, including the one main.js
+ * builds for the first page, which it never exposes. Wrapping `start` on the
+ * prototype is the only hook that catches that one, and it has to be installed
+ * as wow.min.js lands rather than after the bundle - by then main.js has run.
+ */
+function slowWowPolling() {
+  const WOW = window.WOW;
+  if (typeof WOW !== "function" || typeof WOW.prototype?.start !== "function") return;
+
+  const start = WOW.prototype.start;
+  WOW.prototype.start = function patchedStart(...args) {
+    const result = start.apply(this, args);
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = setInterval(this.scrollCallback, WOW_POLL_MS);
+    }
+    return result;
+  };
+}
+
 // Order matters: jQuery must load before the plugins that extend it,
 // and main.js must load last since it wires everything together.
 const SCRIPTS = [
@@ -32,7 +68,7 @@ const SCRIPTS = [
   // Lenis, not smooth-scroll.min.js - see lib/smoothScroll.js for why.
   "/assets/js/lenis.min.js",
   "/assets/js/appear.min.js",
-  "/assets/js/wow.min.js",
+  { src: "/assets/js/wow.min.js", afterLoad: slowWowPolling },
   { src: "/assets/js/odometer.min.js", afterLoad: initOdometer },
   "/assets/js/jquery-knob.js",
   "/assets/js/swiper.min.js",

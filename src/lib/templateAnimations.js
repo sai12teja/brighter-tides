@@ -382,6 +382,13 @@ function initScrollTransitions() {
   if (!gsap || !ScrollTrigger) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+  // Desktop only, as the hero parallax and the SVG draw already are. Each of
+  // these is a scrubbed tween, which means GSAP keeps ticking every one that is
+  // in range on every frame; on a phone eight sections are in range at once and
+  // each block fills the screen anyway, so the rise is paying a per-frame cost
+  // for movement nobody can see.
+  if (!isDesktop()) return;
+
   document.querySelectorAll("main > section > .container, main > div > .container").forEach((el) => {
     if (el.dataset.btScrollTx === "true") return;
 
@@ -431,12 +438,51 @@ function initProcessRail() {
     marker.style.insetInlineStart = "0";
     marker.style.top = "0";
 
-    items.forEach((item, i) => {
-      item.addEventListener("mouseenter", () => {
-        items.forEach((other) => other.classList.remove("active"));
-        marker.style.top = `${portion * i}%`;
-        item.classList.add("active");
-      });
+    const setActive = (i) => {
+      items.forEach((other, j) => other.classList.toggle("active", j === i));
+      marker.style.top = `${portion * i}%`;
+    };
+
+    // Pointer devices: the template's own behaviour.
+    items.forEach((item, i) => item.addEventListener("mouseenter", () => setActive(i)));
+
+    /*
+     * Scroll: the step you are reading is the step that is lit.
+     *
+     * Hover alone left the rail stuck on step one for anyone who never put a
+     * pointer on it - every touch device, and any visitor who simply scrolled
+     * past. A sequence that never advances reads as broken rather than as
+     * interactive, which is exactly what it looked like.
+     *
+     * One trigger over the whole rail rather than one per step: the steps are
+     * tall and closely spaced, so per-step ranges overlap and whichever fired
+     * last wins, which ran the sequence to its end while step one was still on
+     * screen. Measuring which step is nearest the middle of the viewport cannot
+     * get that wrong, and it reverses correctly on the way back up.
+     *
+     * The trigger hangs off the section's own node, so the route-change sweep
+     * in killDetachedScrollTriggers collects it with the rest.
+     */
+    window.ScrollTrigger?.create?.({
+      trigger: container.querySelector(".process-inner") || container,
+      start: "top center",
+      end: "bottom center",
+      onUpdate: () => {
+        const middle = window.innerHeight / 2;
+        let nearest = 0;
+        let shortest = Infinity;
+
+        items.forEach((item, i) => {
+          const box = item.getBoundingClientRect();
+          const distance = Math.abs(box.top + box.height / 2 - middle);
+          if (distance < shortest) {
+            shortest = distance;
+            nearest = i;
+          }
+        });
+
+        setActive(nearest);
+      },
     });
   });
 }
@@ -495,7 +541,15 @@ function initVideoPopup() {
  * the route's images have actually settled.
  */
 function refreshWhenImagesSettle() {
-  const images = Array.from(document.querySelectorAll("main img")).filter((img) => !img.complete);
+  // Lazy images are excluded on purpose. They only fetch as they near the
+  // viewport, so waiting on them held this open until the visitor had scrolled
+  // past the last one - and then fired a full ScrollTrigger re-measure into the
+  // middle of that scroll. They also all carry width/height, so their boxes are
+  // reserved before they load and nothing moves when they arrive. What is left
+  // is the eager images, which are the ones that decide the initial layout.
+  const images = Array.from(document.querySelectorAll("main img")).filter(
+    (img) => !img.complete && img.loading !== "lazy"
+  );
   if (images.length === 0) return;
 
   let pending = images.length;

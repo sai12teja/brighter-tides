@@ -9,6 +9,7 @@ import CustomCursor from "./CustomCursor";
 import HamburgerMenu from "./HamburgerMenu";
 import Header from "./Header";
 import Footer from "./Footer";
+import BookConsult from "./BookConsult";
 
 /**
  * Closes the mobile drawer on navigation. The template's
@@ -69,6 +70,10 @@ export default function SiteLayout() {
       </main>
 
       <Footer />
+
+      {/* Outside <main>, which is keyed by route: this is viewport chrome and
+          should not be torn down and rebuilt on every navigation. */}
+      <BookConsult />
     </>
   );
 }
