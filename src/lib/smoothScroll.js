@@ -41,10 +41,28 @@ const COARSE_POINTER = "(pointer: coarse)";
 
 let lenis = null;
 
-/** The header is fixed, so anchor targets need clearing by its height. */
+
+
+/**
+ * Where to land when an anchor names a section.
+ *
+ * This used to reserve the header's height, which put the section's top that
+ * far down the viewport - and filled the space above it with the tail of the
+ * previous section. On the contact page that meant arriving at the form and
+ * still reading "Every inquiry is read by Shannon" above it.
+ *
+ * The header is the wrong thing to measure anyway: it is `header-absolute` and
+ * scrolls away, and the fixed copy only slides back in on an upward scroll -
+ * so after a downward jump there is no header there to clear.
+ *
+ * So the section's own top edge goes to the top of the screen. Nothing of what
+ * came before it is left showing, and the 60-84px of padding every one of these
+ * sections opens with is exactly the clearance the header needs on the rare
+ * occasion it slides back in - the card's own inner padding keeps its heading
+ * below the bar either way.
+ */
 function anchorOffset() {
-  const header = document.querySelector(".header-area, .tj-header-area, header");
-  return header ? -header.getBoundingClientRect().height : 0;
+  return 0;
 }
 
 /**
@@ -76,7 +94,7 @@ function interceptScrollLinks() {
 
       event.preventDefault();
       event.stopPropagation();
-      lenis.scrollTo(target, { offset: anchorOffset(), duration: 1.2 });
+      lenis.scrollTo(target, { offset: anchorOffset(target), duration: 1.2 });
     },
     true
   );
@@ -136,14 +154,23 @@ export function initSmoothScroll() {
 export function scrollToSection(target) {
   if (!target) return;
 
-  if (lenis) {
-    lenis.resize();
-    lenis.scrollTo(target, { offset: anchorOffset(), immediate: true, force: true });
-    return;
-  }
+  const land = () => {
+    if (lenis) {
+      lenis.resize();
+      lenis.scrollTo(target, { offset: anchorOffset(target), immediate: true, force: true });
+      return;
+    }
 
-  const top = target.getBoundingClientRect().top + window.scrollY + anchorOffset();
-  window.scrollTo(0, Math.max(0, top));
+    const top = target.getBoundingClientRect().top + window.scrollY + anchorOffset(target);
+    window.scrollTo(0, Math.max(0, top));
+  };
+
+  land();
+  // The page is still settling as this runs - ScrollTrigger re-measures, WOW
+  // reveals boxes above the target - and any of it moves the target out from
+  // under the landing by a few dozen pixels. One more pass on the next frame,
+  // once that has happened, puts it back.
+  requestAnimationFrame(land);
 }
 
 /**
