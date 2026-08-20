@@ -24,11 +24,9 @@ export default function Hero() {
                     character reveal; the accent line types itself instead. */}
                 <h1 className="hero-title">
                   <span className="text-anim hero-title-lead">{hero.titleLead}</span>
-                  <TypedText
-                    phrases={hero.titlePhrases}
-                    readAs={hero.titleReadAs}
-                    className="active-color"
-                  />
+                  {/* No `readAs`: with one phrase the phrase is itself the
+                      settled line, which is what TypedText falls back to. */}
+                  <TypedText phrases={hero.titlePhrases} className="active-color" />
                 </h1>
                 <div className="desc wow fadeInUp" data-wow-delay="0.1s">
                   <p>{hero.desc}</p>

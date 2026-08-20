@@ -5,18 +5,19 @@ export const hero = {
   titleLead: "Get More Value From Your",
   // The accent line - theme accent colour, as the template's highlighted
   // phrase always was - is typed out a character at a time behind a caret,
-  // held, cleared, and followed by the next word, on a loop. Each is a whole
-  // sentence with the lead: "Get More Value From Your ServiceNow." then
-  // "...From Your Investment."
+  // held, cleared and typed again.
   //
-  // The full stop belongs to each phrase so it arrives with the word it
-  // punctuates instead of hanging in space while the line is empty. Add or
-  // reorder freely - the space the line reserves is sized to whichever
-  // phrase is tallest, so a longer one cannot make the headline jump.
-  titlePhrases: ["ServiceNow.", "Investment."],
-  // What the <h1> says to a screen reader, and what a visitor copying the
-  // headline gets: one settled line rather than a rotation.
-  titleReadAs: "ServiceNow Investment.",
+  // One phrase, not two: "ServiceNow Investment" is a single thing the
+  // headline is about, so it types straight through and wraps onto its
+  // second line the way any other phrase would. Rotating the two words
+  // separately made them read as alternatives.
+  //
+  // The full stop belongs to the phrase so it arrives with the words it
+  // punctuates instead of hanging in space while the line is empty. A
+  // second string here would rotate - the space the line reserves is sized
+  // to whichever phrase is tallest, so adding one cannot make the headline
+  // jump.
+  titlePhrases: ["ServiceNow Investment."],
   desc: "We provide independent, executive-level ServiceNow advisory to help organizations make smarter decisions around licensing, platform strategy, governance, and leadership—without the complexity of a large consulting engagement.",
   primaryCta: { label: "Discuss Your ServiceNow Challenge", to: "/contact" },
   secondaryCta: { label: "Explore Our Services", to: "/services" },
