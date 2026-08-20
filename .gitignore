@@ -25,3 +25,8 @@ dist-ssr
 
 # Browser-automation session logs
 .playwright-mcp/
+
+# Original artwork the .webp files in public/ are exported from. The exports
+# are committed; these are the masters, kept in Drive - see the header of
+# scripts/build-about-banner.mjs. 18MB that every clone would carry forever.
+assets-source/

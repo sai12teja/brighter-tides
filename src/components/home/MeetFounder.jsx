@@ -18,7 +18,7 @@ export default function MeetFounder() {
                 <div className="hover:shine">
                   <img
                     src={founder.image}
-                    srcSet={`${founder.imageSmall} 645w, ${founder.image} 1290w`}
+                    srcSet={`${founder.imageTiny} 430w, ${founder.imageSmall} 645w, ${founder.image} 1290w`}
                     sizes="(max-width: 991px) 100vw, 545px"
                     alt={`${founder.name}, ${founder.role}`}
                     width="1290"

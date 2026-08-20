@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { LinkedInIcon } from "../icons/SocialIcons";
 import {
   footerBrand,
   footerCompany,
@@ -7,6 +8,7 @@ import {
   footerLegal,
   socialLinks,
   copyright,
+  credit,
 } from "../../data/footer";
 
 // The brand/logo marquee that used to open the footer now lives on the pages
@@ -123,6 +125,11 @@ export default function Footer() {
                 <div className="copyright-text">
                   <p>
                     © {new Date().getFullYear()} {copyright}
+                    <span className="bt-credit">
+                      <a href={credit.href} target="_blank" rel="noreferrer">
+                        {credit.label}
+                      </a>
+                    </span>
                   </p>
                 </div>
                 <div className="copyright-socails">
@@ -130,7 +137,7 @@ export default function Footer() {
                     {socialLinks.map((social) => (
                       <li key={social.icon}>
                         <a href={social.href} target="_blank" rel="noreferrer" aria-label={social.label}>
-                          <i className={`fa-brands ${social.icon}`}></i>
+                          <LinkedInIcon />
                         </a>
                       </li>
                     ))}

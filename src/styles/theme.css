@@ -372,7 +372,10 @@ html {
    brand's, and the banner picks up the hero's aqua wash so the two dark
    bands at the top of a page read as the same surface. */
 .tj-page-header::before {
-  background-color: rgba(5, 8, 15, 0.82);
+  /* Was 0.82, which flattened the photograph behind it into a navy panel -
+     nobody in the picture read as a person. 0.62 still carries white type at
+     well past AA while letting the room and the people in it come through. */
+  background-color: rgba(5, 8, 15, 0.62);
   background-image:
     radial-gradient(95% 120% at 85% 0%, rgba(66, 186, 190, 0.2) 0%, rgba(66, 186, 190, 0) 60%),
     linear-gradient(168deg, rgba(23, 34, 69, 0.5) 0%, rgba(5, 8, 15, 0.4) 100%);

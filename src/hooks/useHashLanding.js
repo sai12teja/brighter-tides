@@ -55,8 +55,13 @@ export default function useHashLanding() {
       const ST = window.ScrollTrigger;
       if (!ST?.addEventListener) return;
 
+      // Near the top, not exactly at it. A refresh does not always put the
+      // page back at 0 - measured landings that had been reset were sitting at
+      // 49px, which slipped under a 30px test and never recovered. Anyone who
+      // has genuinely scrolled away from a landing this far down the page is
+      // well past 200.
       const onRefresh = () => {
-        if (window.scrollY < 30) land();
+        if (window.scrollY < 200) land();
       };
 
       ST.addEventListener("refresh", onRefresh);

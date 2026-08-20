@@ -51,7 +51,13 @@ Description: Solvior - Business Consulting HTML Template
 
 -------------------------------------------------*/
 /* START: Default CSS */
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap");
+/* BRIGHTER TIDES: the template's Google Fonts import is removed. Lato and
+   Libre Franklin are self-hosted from src/styles/fonts.css and
+   public/assets/fonts/webfonts, so this line fetched the same two families a
+   second time - and did it from inside a stylesheet, which means the browser
+   could not even start the request until main.css had arrived. Measured at
+   836ms of render-blocking time and two extra origins to connect to.
+   This is the one edit to a vendor stylesheet in the project. */
 :root {
   /**
     @Font-Family Declaration

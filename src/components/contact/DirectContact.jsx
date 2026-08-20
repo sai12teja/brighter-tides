@@ -1,4 +1,5 @@
 import { direct } from "../../data/contact";
+import { LinkedInIcon } from "../icons/SocialIcons";
 
 /**
  * Direct contact details, on contact.html's own `contact-item style-2` cards
@@ -44,7 +45,7 @@ export default function DirectContact() {
           <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6">
             <div className="contact-item style-2 wow fadeInUp" data-wow-delay="0.3s">
               <div className="contact-icon">
-                <i className="fa-brands fa-linkedin-in"></i>
+                <LinkedInIcon />
               </div>
               <h3 className="contact-title">Connect on LinkedIn</h3>
               <ul className="contact-list">

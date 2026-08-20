@@ -50,10 +50,22 @@ export default function Hero() {
                   </Link>
                 </div>
                 <div className="hero-shapes-1 move-anim">
-                  <img src="/assets/images/shapes/hero-1.png" alt="Shapes" />
+                  <img
+                    src="/assets/images/shapes/hero-1.png"
+                    alt=""
+                    aria-hidden="true"
+                    fetchPriority="low"
+                    decoding="async"
+                  />
                 </div>
                 <div className="hero-shapes-2 zoominout">
-                  <img src="/assets/images/shapes/hero-3.png" alt="Shapes" />
+                  <img
+                    src="/assets/images/shapes/hero-3.png"
+                    alt=""
+                    aria-hidden="true"
+                    fetchPriority="low"
+                    decoding="async"
+                  />
                 </div>
               </div>
               <div className="hero-images-box">
@@ -65,7 +77,7 @@ export default function Hero() {
                       is the largest image on the page. */}
                   <img
                     src="/assets/images/bt/photos/hero.webp"
-                    srcSet="/assets/images/bt/photos/hero-610.webp 610w, /assets/images/bt/photos/hero.webp 1220w"
+                    srcSet="/assets/images/bt/photos/hero-610.webp 610w, /assets/images/bt/photos/hero-760.webp 760w, /assets/images/bt/photos/hero.webp 1220w"
                     sizes="(max-width: 991px) 100vw, 610px"
                     alt="Two advisors reviewing platform data on a tablet in an office"
                     width="1220"
@@ -74,7 +86,13 @@ export default function Hero() {
                   />
                 </div>
                 <div className="images-shapes move-anim-2">
-                  <img src="/assets/images/shapes/hero-2.png" alt="Shapes" />
+                  <img
+                    src="/assets/images/shapes/hero-2.png"
+                    alt=""
+                    aria-hidden="true"
+                    fetchPriority="low"
+                    decoding="async"
+                  />
                 </div>
                 {/* The template's "PLAY OUR PROMOTIONAL VIDEO" badge is gone.
                     It opened a Venobox lightbox on a hard-coded YouTube URL

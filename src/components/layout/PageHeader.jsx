@@ -10,7 +10,10 @@ import { Link } from "react-router-dom";
  * that has no photograph of its own still gets a real one rather than the
  * template's placeholder.
  */
-const DEFAULT_IMAGE = "/assets/images/bt/photos/about-hero.webp";
+// Composed for this band rather than cropped into it: the header bar covers
+// the top third, so the frame gives that third to ceiling and puts her face in
+// the lower two thirds. See scripts/build-about-banner.mjs.
+const DEFAULT_IMAGE = "/assets/images/bt/photos/about-hero-banner.webp";
 
 export default function PageHeader({ title, crumbs = [], image = DEFAULT_IMAGE }) {
   return (

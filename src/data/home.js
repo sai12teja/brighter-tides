@@ -47,6 +47,8 @@ export const founder = {
   // the panel it sits in.
   image: "/assets/images/bt/photos/shannon-home.webp",
   imageSmall: "/assets/images/bt/photos/shannon-home-645.webp",
+  // A phone-sized step: the 645 file is 85KB for a 372px-wide slot.
+  imageTiny: "/assets/images/bt/photos/shannon-home-430.webp",
   paragraphs: [
     "Shannon brings 18+ years of enterprise technology and business transformation leadership, combining deep ServiceNow experience with an executive understanding of strategy, governance, technology investment, and business priorities.",
     "Her approach is practical: understand the challenge, challenge assumptions, and create a clear path forward.",

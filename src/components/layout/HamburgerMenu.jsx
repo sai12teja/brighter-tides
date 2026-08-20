@@ -1,4 +1,5 @@
 import BrandLogo from "./BrandLogo";
+import { LinkedInIcon, CloseIcon } from "../icons/SocialIcons";
 import { socialLinks } from "../../data/footer";
 import { email, location } from "../../data/site";
 
@@ -15,7 +16,7 @@ export default function HamburgerMenu() {
             </div>
             <div className="hamburger_close">
               <button className="hamburger_close_btn hamburgerCloseBtn">
-                <i className="fa-thin fa-times"></i>
+                <CloseIcon />
               </button>
             </div>
           </div>
@@ -47,7 +48,7 @@ export default function HamburgerMenu() {
               {socialLinks.map((social) => (
                 <li key={social.icon}>
                   <a href={social.href} target="_blank" rel="noreferrer" aria-label={social.label}>
-                    <i className={`fa-brands ${social.icon}`}></i>
+                    <LinkedInIcon />
                   </a>
                 </li>
               ))}

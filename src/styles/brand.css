@@ -3250,12 +3250,17 @@ html.lenis body {
  * right does not.
  */
 .tj-about-section:not(.bt-beliefs-collage) .about-bg-images .about-shape-1 img {
-  -webkit-transform: scale(1.22);
-      -ms-transform: scale(1.22);
-          transform: scale(1.22);
-  -webkit-transform-origin: 38% 50%;
-      -ms-transform-origin: 38% 50%;
-          transform-origin: 38% 50%;
+  /*
+   * Zoomed back out. The 1.22 scale this used to carry filled the shape with
+   * the man and the table and pushed his colleague off the left edge - she is
+   * part of the conversation the picture is of, so the frame has to hold both.
+   *
+   * At scale 1 the crop is `cover` alone: a 1.10 source in a 0.98 box, so 11%
+   * comes off the width. Taking it from the right - the forearm and the laptop
+   * - rather than the middle is what brings her in.
+   */
+  -o-object-position: 34% 50%;
+     object-position: 34% 50%;
 }
 
 /*
@@ -3573,5 +3578,276 @@ html.lenis body {
   to {
     opacity: 0.15;
     transform: scale(0.94) translateY(20px);
+  }
+}
+
+/*
+ * 4 - Rules between the founder's credentials.
+ *
+ * Only where the four sit on one row. Below `xl` the grid drops to two
+ * columns and a vertical rule between a 2x2 block reads as a table, so the
+ * whitespace carries the separation there instead.
+ */
+@media (min-width: 1200px) {
+  .bt-stats-grid {
+    /* Content-width columns rather than four equal ones: "Fortune 500" is half
+       again as wide as "$10M+" and an equal share broke it over two lines. The
+       rules then land wherever each credential ends, which is what the four
+       look like set as a row. */
+    grid-template-columns: repeat(4, auto);
+    justify-content: space-between;
+    column-gap: 0;
+  }
+
+  .bt-stats-grid li {
+    padding-inline: 16px;
+  }
+
+  .bt-stats-grid li:first-child {
+    padding-inline-start: 0;
+  }
+
+  .bt-stats-grid li + li {
+    border-inline-start: 1px solid var(--border);
+  }
+}
+
+/*
+ * 5 - The build credit, beside the copyright line in the footer's bottom bar.
+ * A divider on one line, its own line once the bar wraps.
+ */
+.footer-copyright-area .bt-credit {
+  display: inline-block;
+  margin-inline-start: 10px;
+  padding-inline-start: 12px;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-copyright-area .bt-credit a {
+  color: var(--tj-color-common-white-2);
+  transition: color 0.3s ease-in-out;
+}
+
+.footer-copyright-area .bt-credit a:hover {
+  color: var(--aqua);
+}
+
+@media (max-width: 575px) {
+  .footer-copyright-area .bt-credit {
+    display: block;
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+}
+
+/*
+ * 9 - Page-header framing, per photograph.
+ *
+ * `cover` centres by default, which on the about page's corridor shot cropped
+ * to the middle of the frame - desks and glass. Biasing it upward brings the
+ * walking figure and the people behind her into the band.
+ *
+ * The about page's banner is delivered at the band's own ratio, so this only
+ * decides what survives on a narrow screen.
+ */
+.tj-page-header[data-bg-image$="about-hero-banner.webp"] {
+  /* The file is already the band's shape, so at desktop widths there is nothing
+     to crop and this only bites on a narrow screen - where holding 68% keeps her
+     in frame instead of centring on the empty middle of the room. */
+  background-position: 68% top;
+}
+
+/*
+ * 7 - Separating the approach grid from the founder story.
+ *
+ * Both sit on white and both are painted the same #daeff1 - the cards above,
+ * the copy panel below - so with nothing between them the two read as one long
+ * block. Putting the founder story on its own band gives the page the boundary
+ * it was missing: the band is the paler of the two surfaces, so the panel
+ * inside it still reads as a panel.
+ */
+.tj-evolute-area {
+  padding-block: var(--bt-section-y);
+  background-color: var(--bg-light);
+}
+
+/* The full-bleed copy at >=1400 sets its own grid; it keeps the band but not
+   the block padding, which its own layout already carries. */
+@media (min-width: 1400px) {
+  .tj-evolute-area {
+    padding-block: 0;
+  }
+}
+
+/*
+ * The hero's decorative shapes, on a phone.
+ *
+ * Three floating blobs sit around the hero: 35KB, 7KB and 1KB of PNG that
+ * say nothing. On a small screen they also do real damage - the hero
+ * photograph is below the fold there, so the largest thing actually painted
+ * in the first viewport was a 230px decorative blob, and Lighthouse was
+ * measuring Largest Contentful Paint against it. Taking them off the small
+ * screens hands that measurement back to the headline, which paints with the
+ * stylesheet, and drops 43KB from the phone's first screen.
+ *
+ * They stay on desktop, where there is room for them and where the
+ * photograph is comfortably the largest paint.
+ */
+@media (max-width: 991.98px) {
+  .hero-content .hero-shapes-1,
+  .hero-content .hero-shapes-2,
+  .hero-images-box .images-shapes {
+    display: none;
+  }
+}
+
+/*
+ * The logo rail.
+ *
+ * Two identical tracks side by side, the pair translated left by exactly one
+ * track's width. At the end of the cycle the second track is standing where
+ * the first began, so the reset is invisible and the rail reads as endless.
+ * `linear` because a constant speed is the whole point - any easing would
+ * make the loop point visible.
+ *
+ * The tile styling is the template's own (`.brand-slider-1 .brand-logo`),
+ * restated here because the Swiper classes it hung off are gone.
+ */
+.bt-marquee {
+  display: flex;
+  gap: 24px;
+  overflow: hidden;
+  /* The track is laid out at its natural width; without this the flex parent
+     would squeeze both copies into the container and the loop would jump. */
+  width: 100%;
+}
+
+.bt-marquee-track {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: bt-marquee-scroll 42s linear infinite;
+  will-change: transform;
+}
+
+@keyframes bt-marquee-scroll {
+  to {
+    /* One track plus the gap that follows it - the distance to where the
+       next copy is standing. */
+    transform: translateX(calc(-100% - 24px));
+  }
+}
+
+/* A visitor reading a logo can hold it still. */
+.bt-marquee:hover .bt-marquee-track,
+.bt-marquee:focus-within .bt-marquee-track {
+  animation-play-state: paused;
+}
+
+/*
+ * The tile.
+ *
+ * A solid white card, not the template's 10%-white wash. These marks are dark
+ * artwork on transparent - a Citrix wordmark in near-black, a navy NCL block -
+ * and a barely-there tint on a navy band leaves them unreadable. White is what
+ * a logo wall is normally set on, and it is what this band carried before the
+ * rail was rebuilt.
+ */
+.bt-marquee .brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 195px;
+  width: 195px;
+  height: 74px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background-color: var(--bg-primary);
+}
+
+.bt-marquee .brand-logo img {
+  width: auto;
+  height: auto;
+  /* The padded box is the margin; the mark fills what is left of it. */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* The light strip on the about page sits on white, where a white-tinted tile
+   would disappear. */
+.tj-brand-section-two .bt-marquee .brand-logo {
+  background-color: transparent;
+}
+
+@media (max-width: 575px) {
+  .bt-marquee .brand-logo {
+    flex-basis: 165px;
+    width: 165px;
+    height: 60px;
+  }
+}
+
+/* Motion that never stops is exactly what this setting is for: the rail
+   holds still and can be scrolled by hand instead. */
+@media (prefers-reduced-motion: reduce) {
+  .bt-marquee-track {
+    animation: none;
+  }
+
+  .bt-marquee {
+    overflow-x: auto;
+  }
+
+  .bt-marquee-track[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+/* The loading screen fades itself out now rather than waiting for main.js's
+   jQuery `fadeOut` - see components/layout/Preloader. */
+.preloader.bt-preloader-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/*
+ * The accordion's open/close, without Bootstrap.
+ *
+ * Bootstrap's collapse plugin measured each panel and animated its height in
+ * JavaScript. `grid-template-rows` does the same transition in CSS: the row
+ * goes from `0fr` to `1fr`, which the browser resolves to the content's own
+ * height, so nothing has to be measured and the panel cannot end up stuck at
+ * a stale pixel value after a resize.
+ *
+ * `.collapse`/`.show` are kept as the class names because main.css and the
+ * premium FAQ treatment both style against them - only the mechanism has
+ * changed.
+ */
+.tj-faq-style .accordion-collapse.collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  visibility: hidden;
+}
+
+.tj-faq-style .accordion-collapse.collapse.show {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+.tj-faq-style .accordion-collapse.collapse > .bt-collapse-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tj-faq-style .accordion-collapse.collapse {
+    transition: none;
   }
 }

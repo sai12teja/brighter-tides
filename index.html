@@ -16,17 +16,67 @@
     <link rel="icon" type="image/png" href="/assets/images/logos/brighter-tides-mark.png" />
     <link rel="apple-touch-icon" href="/assets/images/logos/apple-touch-icon.png" />
 
-    <!-- Vendor CSS -->
+    <!--
+      Vendor CSS. Every one of these blocks the first paint, so the list is
+      only what the site actually renders with:
+
+      - odometer's theme went with the odometer itself - the figures are
+        `hooks/useCountUp` now, and nothing on the site carries `.odometer`.
+      - venobox's went with the video lightbox, which has no trigger left on
+        any page.
+      - meanmenu's was never used at all: the mobile drawer is
+        `components/layout/HamburgerMenu`, written for this site.
+      - font-awesome-pro was 98KB of render-blocking CSS for two glyphs, a
+        LinkedIn mark and a close cross. Both are inline SVG now - see
+        `components/icons/SocialIcons`.
+    -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/font-awesome-pro.min.css" />
     <link rel="stylesheet" href="/assets/css/animate.css" />
     <link rel="stylesheet" href="/assets/css/solvior-icons.css" />
-    <link rel="stylesheet" href="/assets/css/swiper.min.css" />
-    <link rel="stylesheet" href="/assets/css/odometer-theme-default.css" />
-    <link rel="stylesheet" href="/assets/css/nice-select.css" />
-    <link rel="stylesheet" href="/assets/css/venobox.min.css" />
-    <link rel="stylesheet" href="/assets/css/meanmenu.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!--
+      The template stylesheet, trimmed to what this site renders: 931KB of
+      shop, blog and portfolio CSS reduced to 537KB by scripts/purge-vendor-css.mjs.
+      The original stays in the repo untouched so the template remains
+      upgradeable - re-run `npm run css:trim` after an upgrade, or after
+      adding markup that uses template classes not already on the site.
+    -->
+    <link rel="stylesheet" href="/assets/css/main.trimmed.css" />
+
+    <!--
+      One stylesheet the first screen never needs: nice-select dresses a
+      single dropdown on the contact page. Loading it as `print` keeps it out
+      of the render-blocking set; `onload` promotes it to `all` the moment it
+      arrives, long before anyone reaches that field. The `noscript` copy
+      covers the case where the swap cannot run.
+
+      Swiper's stylesheet is gone entirely - the logo rail is a CSS animation
+      now (components/sections/LogoMarquee) and nothing else used it.
+    -->
+    <link
+      rel="stylesheet"
+      href="/assets/css/nice-select.css"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="/assets/css/nice-select.css" />
+    </noscript>
+
+    <!--
+      The hero photograph is the home page's largest paint, and React has to
+      mount before the browser can even see the tag. Preloading it here puts
+      the request in flight with the stylesheets instead of after them -
+      `imagesrcset` and `imagesizes` mirror the <img> exactly, so the browser
+      picks the same file it would have picked and fetches it once.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/images/bt/photos/hero.webp"
+      imagesrcset="/assets/images/bt/photos/hero-610.webp 610w, /assets/images/bt/photos/hero-760.webp 760w, /assets/images/bt/photos/hero.webp 1220w"
+      imagesizes="(max-width: 991px) 100vw, 610px"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <div id="root"></div>

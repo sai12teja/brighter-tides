@@ -4,7 +4,6 @@ import ContactIntro from "../components/contact/ContactIntro";
 import DirectContact from "../components/contact/DirectContact";
 import ContactForm from "../components/contact/ContactForm";
 import ContactMap from "../components/contact/ContactMap";
-import ContactReassurance from "../components/contact/ContactReassurance";
 import CtaBand from "../components/sections/CtaBand";
 import { cta } from "../data/contact";
 
@@ -44,7 +43,8 @@ export default function Contact() {
         </div>
       </section>
 
-      <ContactReassurance />
+      {/* "What happens next?" is hidden for now - the component and its copy
+          stay in place so it can be put back by restoring this line. */}
       {/* `compact`, like every other inner page: this closer is a full
           sentence, and the template's display size sets it in 72px uppercase
           - three lines of shouting across the foot of the page. The home

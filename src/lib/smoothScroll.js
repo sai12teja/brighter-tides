@@ -41,6 +41,20 @@ const COARSE_POINTER = "(pointer: coarse)";
 
 let lenis = null;
 
+/*
+ * The browser keeps a scroll offset for each history entry and puts it back
+ * after a navigation - including after resetScroll has already jumped to the
+ * top. While Lenis was driving every page it absorbed that; with Lenis off on
+ * touch the restore wins, and landing on a page tall enough not to clamp the
+ * old offset drops the visitor part-way down it. Measured going from the
+ * contact page to the home page on a phone: 4,043px down.
+ *
+ * Routing is this app's job, so scroll position is too.
+ */
+if (typeof history !== "undefined" && "scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
 
 
 /**
@@ -162,7 +176,7 @@ export function scrollToSection(target) {
     }
 
     const top = target.getBoundingClientRect().top + window.scrollY + anchorOffset(target);
-    window.scrollTo(0, Math.max(0, top));
+    window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
   };
 
   land();
@@ -201,7 +215,18 @@ export function resetScroll() {
       // this runs.
       lenis.scrollTo(0, { immediate: true, force: true });
     }
-    window.scrollTo(0, 0);
+    /*
+     * `instant` explicitly, not the default.
+     *
+     * The stylesheet only cancels the browser's smooth scrolling under
+     * `.lenis.lenis-smooth` - a class that exists only while Lenis is running.
+     * With Lenis off on touch that reset no longer applies, so a plain
+     * `scrollTo(0, 0)` became an animation: measured going from the contact
+     * page to the home page on a phone it eased down from 4,064px and stalled
+     * at 1,389 when the next pass interrupted it. This says what it means
+     * regardless of what any stylesheet asks for.
+     */
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   };
 
   toTop();

@@ -19,7 +19,7 @@ export const hero = {
 
 export const purpose = {
   eyebrow: "Our Purpose",
-  title: "Better Decisions Before More Technology.",
+  title: "Making Better ServiceNow Decisions.",
   paragraphs: [
     "ServiceNow can create tremendous business value—but only when platform decisions, licensing, governance, and investment stay aligned with what the organization actually needs.",
     "That's where we come in.",
@@ -90,6 +90,7 @@ export const beliefs = {
     "We don't believe every ServiceNow challenge needs to become a six-month consulting project.",
     "Sometimes the right answer is optimizing what you already own. Sometimes it's simplifying the platform, improving governance, making a better licensing decision, or bringing in the right implementation support.",
     "Our role is to help you understand which path actually makes sense.",
+    "Then we help you move forward with confidence, control, and clear direction.",
   ],
 };
 

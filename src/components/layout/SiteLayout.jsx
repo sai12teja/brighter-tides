@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 import useSiteScripts from "../../hooks/useSiteScripts";
@@ -48,16 +48,38 @@ function usePageAnimations(scriptsReady) {
   }, [pathname, scriptsReady]);
 }
 
+/**
+ * Chrome that exists only in a browser, kept out of the build-time render.
+ *
+ * The home page's markup is rendered at build time (scripts/prerender.mjs)
+ * and React attaches to it. Anything whose markup differs between that
+ * render and the browser's first render breaks the attachment - React
+ * reports a hydration mismatch and rebuilds the whole tree from scratch,
+ * which is the cost the prerender was meant to avoid.
+ *
+ * The loading screen is exactly that: it renders, then removes itself on a
+ * timer, so the server's version and the browser's disagree the moment the
+ * timer has run. The cursor is a desktop pointer effect with nothing to say
+ * in static HTML. Both are mounted a tick after hydration instead, where
+ * they cost nothing and can differ freely.
+ */
+function useMounted() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted;
+}
+
 export default function SiteLayout() {
   const { pathname } = useLocation();
   const scriptsReady = useSiteScripts();
+  const mounted = useMounted();
   useCloseOverlaysOnNavigate();
   usePageAnimations(scriptsReady);
 
   return (
     <>
-      <CustomCursor />
-      <Preloader />
+      {mounted && <CustomCursor />}
+      {mounted && <Preloader />}
       <HamburgerMenu />
       <Header />
 

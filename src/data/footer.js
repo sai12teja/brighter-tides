@@ -45,6 +45,9 @@ export const socialLinks = [
 
 export const copyright = "Brighter Tides. All rights reserved.";
 
+// Sits beside the copyright line in the footer's bottom bar.
+export const credit = { label: "Designed by Rovix AI", href: "https://rovix.ai" };
+
 // Consumed by components/sections/LogoMarquee, which the home and about pages
 // use for the "experience shaped across leading organizations" strip.
 //
