@@ -21,7 +21,7 @@ export default function BrandLogo({ className = "logo", variant = "light" }) {
 
   return (
     <Link to="/" className={`${className} bt-logo`} aria-label={`${brand.first} ${brand.second} - home`}>
-      <img src={src} alt={`${brand.first} ${brand.second}`} width="875" height="172" />
+      <img src={src} alt={`${brand.first} ${brand.second}`} width="1636" height="330" />
     </Link>
   );
 }

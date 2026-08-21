@@ -46,8 +46,8 @@ export default function Footer() {
                   <img
                     src="/assets/images/logos/brighter-tides-lockup-light.png"
                     alt={footerBrand.name}
-                    width="875"
-                    height="172"
+                    width="1636"
+                    height="330"
                   />
                 </div>
                 <p className="bt-footer-blurb">{footerBrand.desc}</p>
