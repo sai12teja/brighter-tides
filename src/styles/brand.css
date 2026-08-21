@@ -3851,3 +3851,15 @@ html.lenis body {
     transition: none;
   }
 }
+
+/*
+ * Contact form "What can we help with?" select.
+ *
+ * nice-select's generated box has no intrinsic width, so it shrinks to fit
+ * its selected text instead of filling the column - fine in the template's
+ * original half-width layout, but this field now spans the full row.
+ */
+.contact-form-one .tj-nice-select-box,
+.contact-form-one .tj-nice-select-box .nice-select {
+  width: 100%;
+}

@@ -117,7 +117,7 @@ export default function ContactForm() {
               />
             </div>
           </div>
-          <div className="col-sm-6">
+          <div className="col-12">
             <div className="form-input">
               <label className="bt-visually-hidden" htmlFor="enquiry">
                 {fields.enquiry.label}
@@ -139,27 +139,6 @@ export default function ContactForm() {
                   Please choose what we can help with.
                 </p>
               )}
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="form-input">
-              <label className="bt-visually-hidden" htmlFor="renewalDate">
-                {fields.renewalDate.label}
-              </label>
-              {/* `text` until focused, so the optional field shows its full
-                  label rather than an empty date widget the user must decode. */}
-              <input
-                type="text"
-                id="renewalDate"
-                name={fields.renewalDate.name}
-                placeholder={fields.renewalDate.placeholder}
-                onFocus={(event) => {
-                  event.target.type = "date";
-                }}
-                onBlur={(event) => {
-                  if (!event.target.value) event.target.type = "text";
-                }}
-              />
             </div>
           </div>
           <div className="col-12">

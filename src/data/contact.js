@@ -27,11 +27,6 @@ export const form = {
     email: { name: "email", label: "Work Email", placeholder: "Work Email*", required: true, type: "email" },
     role: { name: "role", label: "Role / Title", placeholder: "Role / Title" },
     enquiry: { name: "enquiry", label: "What can we help with?", placeholder: "What can we help with?*", required: true },
-    renewalDate: {
-      name: "renewalDate",
-      label: "Upcoming ServiceNow Renewal Date",
-      placeholder: "Upcoming ServiceNow Renewal Date (optional)",
-    },
     challenge: {
       name: "challenge",
       label: "Tell us about your ServiceNow challenge",
